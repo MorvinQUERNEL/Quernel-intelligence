@@ -10,7 +10,7 @@
         "api-platform/doctrine-orm": "^4.2",
         "api-platform/symfony": "*",
         "doctrine/doctrine-bundle": "*",
-        "doctrine/doctrine-migrations-bundle": "^4.0",
+        "doctrine/doctrine-migrations-bundle": "^3.7",
         "doctrine/orm": "*",
         "lexik/jwt-authentication-bundle": "*",
         "nelmio/cors-bundle": "*",

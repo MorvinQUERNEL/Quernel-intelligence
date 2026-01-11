@@ -43,9 +43,6 @@ backend/var/sessions/
 backend/.phpunit.result.cache
 backend/phpunit.xml
 
-# Composer
-backend/composer.lock
-
 # =====================
 # Docker
 # =====================
