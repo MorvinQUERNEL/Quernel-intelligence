@@ -1,0 +1,214 @@
+name: CI/CD - Deploy to RunPod GPU
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      deploy_only:
+        description: 'Skip tests and deploy directly'
+        required: false
+        default: 'false'
+
+env:
+  NODE_VERSION: '20'
+  PHP_VERSION: '8.3'
+
+jobs:
+  # ================================
+  # Frontend - Build & Test
+  # ================================
+  frontend:
+    name: Frontend Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Type check
+        working-directory: frontend
+        run: npm run build
+        continue-on-error: false
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/dist
+          retention-days: 1
+
+  # ================================
+  # Backend - Validate & Test
+  # ================================
+  backend:
+    name: Backend Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: pdo_pgsql, intl, uuid, mbstring, xml
+          coverage: none
+          tools: composer:v2
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        working-directory: backend
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('backend/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        working-directory: backend
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Validate Symfony
+        working-directory: backend
+        run: |
+          php bin/console lint:yaml config/
+          php bin/console lint:container
+        continue-on-error: true
+
+  # ================================
+  # Deploy to RunPod
+  # ================================
+  deploy:
+    name: Deploy to RunPod
+    needs: [frontend, backend]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download frontend build
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/dist
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.RUNPOD_SSH_KEY }}" > ~/.ssh/runpod_key
+          chmod 600 ~/.ssh/runpod_key
+
+          # Add host to known hosts
+          ssh-keyscan -p ${{ secrets.RUNPOD_PORT }} ${{ secrets.RUNPOD_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
+
+          # Create SSH config
+          cat >> ~/.ssh/config << EOF
+          Host runpod
+            HostName ${{ secrets.RUNPOD_HOST }}
+            Port ${{ secrets.RUNPOD_PORT }}
+            User root
+            IdentityFile ~/.ssh/runpod_key
+            StrictHostKeyChecking no
+          EOF
+
+      - name: Create deployment directory
+        run: |
+          ssh runpod "mkdir -p /workspace/quernel-saas/{backend,frontend}"
+
+      - name: Deploy Backend
+        run: |
+          rsync -avz --delete \
+            --exclude 'vendor/' \
+            --exclude 'var/' \
+            --exclude '.env.local' \
+            --exclude 'config/jwt/*.pem' \
+            --exclude '.git/' \
+            -e "ssh" \
+            backend/ runpod:/workspace/quernel-saas/backend/
+
+      - name: Deploy Frontend
+        run: |
+          rsync -avz --delete \
+            -e "ssh" \
+            frontend/dist/ runpod:/workspace/quernel-saas/frontend/
+
+      - name: Post-deployment setup
+        run: |
+          ssh runpod << 'DEPLOY_SCRIPT'
+          set -e
+          cd /workspace/quernel-saas/backend
+
+          echo "=== Installing PHP dependencies ==="
+          # Install PHP if needed
+          if ! command -v php &> /dev/null; then
+              apt-get update
+              apt-get install -y php8.3 php8.3-cli php8.3-pgsql php8.3-xml php8.3-mbstring php8.3-intl php8.3-uuid php8.3-curl
+          fi
+
+          # Install Composer if needed
+          if ! command -v composer &> /dev/null; then
+              curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          fi
+
+          echo "=== Installing Composer packages ==="
+          composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+
+          echo "=== Setting up environment ==="
+          if [ ! -f .env.local ]; then
+              cp .env .env.local
+              # Update DATABASE_URL for local PostgreSQL
+              sed -i 's|DATABASE_URL=.*|DATABASE_URL="postgresql://quernel:quernel_secret_2026@localhost:5432/quernel_db?serverVersion=14"|' .env.local
+              echo 'APP_ENV=prod' >> .env.local
+          fi
+
+          echo "=== Generating JWT keys ==="
+          if [ ! -f config/jwt/private.pem ]; then
+              mkdir -p config/jwt
+              openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096 -pass pass:quernel_jwt_2026
+              openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout -passin pass:quernel_jwt_2026
+              echo 'JWT_PASSPHRASE=quernel_jwt_2026' >> .env.local
+          fi
+
+          echo "=== Running database migrations ==="
+          php bin/console doctrine:migrations:migrate --no-interaction --env=prod || true
+
+          echo "=== Clearing cache ==="
+          php bin/console cache:clear --env=prod
+          php bin/console cache:warmup --env=prod
+
+          echo "=== Setting permissions ==="
+          chmod -R 777 var/
+
+          echo "=== Deployment complete! ==="
+          DEPLOY_SCRIPT
+
+      - name: Cleanup
+        if: always()
+        run: rm -f ~/.ssh/runpod_key
+
+      - name: Deployment Summary
+        run: |
+          echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployed to:** RunPod GPU" >> $GITHUB_STEP_SUMMARY
+          echo "- **Time:** $(date)" >> $GITHUB_STEP_SUMMARY

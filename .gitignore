@@ -1,0 +1,66 @@
+# =====================
+# QUERNEL INTELLIGENCE
+# =====================
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# =====================
+# FRONTEND (React/Vite)
+# =====================
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/*.local
+
+# =====================
+# BACKEND (Symfony)
+# =====================
+backend/var/
+backend/vendor/
+backend/.env.local
+backend/.env.*.local
+backend/config/jwt/*.pem
+backend/public/bundles/
+backend/public/build/
+
+# Symfony cache and logs
+backend/var/cache/
+backend/var/log/
+backend/var/sessions/
+
+# PHPUnit
+backend/.phpunit.result.cache
+backend/phpunit.xml
+
+# Composer
+backend/composer.lock
+
+# =====================
+# Docker
+# =====================
+docker-compose.override.yml
+
+# =====================
+# Secrets (NEVER COMMIT)
+# =====================
+*.pem
+*.key
+.env.local
+.env.*.local
+secrets/
+credentials/
+
+# =====================
+# Logs and temp files
+# =====================
+*.log
+*.tmp
+*.temp
