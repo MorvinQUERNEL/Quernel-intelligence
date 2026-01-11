@@ -17,6 +17,7 @@ Thumbs.db
 # =====================
 frontend/node_modules/
 frontend/dist/
+frontend/.env
 frontend/.env.local
 frontend/*.local
 
@@ -25,7 +26,9 @@ frontend/*.local
 # =====================
 backend/var/
 backend/vendor/
+backend/.env
 backend/.env.local
+backend/.env.dev
 backend/.env.*.local
 backend/config/jwt/*.pem
 backend/public/bundles/
