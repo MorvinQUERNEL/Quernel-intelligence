@@ -10,7 +10,7 @@ RUNPOD_HOST="${RUNPOD_HOST:-38.147.83.30}"
 RUNPOD_PORT="${RUNPOD_PORT:-39690}"
 RUNPOD_USER="root"
 SSH_KEY="~/.ssh/id_ed25519"
-REMOTE_DIR="/workspace/quernel-saas"
+REMOTE_DIR="/workspace/saas"
 
 # Colors
 GREEN='\033[0;32m'
@@ -52,7 +52,7 @@ rsync -avz --delete \
 # Run post-deployment on RunPod
 echo -e "${YELLOW}Running post-deployment commands...${NC}"
 ssh -i $SSH_KEY -p $RUNPOD_PORT $RUNPOD_USER@$RUNPOD_HOST << 'EOF'
-cd /workspace/quernel-saas/backend
+cd /workspace/saas/backend
 
 # Install PHP if not present
 if ! command -v php &> /dev/null; then

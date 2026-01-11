@@ -132,7 +132,7 @@ jobs:
 
       - name: Create deployment directory
         run: |
-          ssh runpod "mkdir -p /workspace/quernel-saas/{backend,frontend}"
+          ssh runpod "mkdir -p /workspace/saas/{backend,frontend}"
 
       - name: Deploy Backend
         run: |
@@ -143,19 +143,19 @@ jobs:
             --exclude 'config/jwt/*.pem' \
             --exclude '.git/' \
             -e "ssh" \
-            backend/ runpod:/workspace/quernel-saas/backend/
+            backend/ runpod:/workspace/saas/backend/
 
       - name: Deploy Frontend
         run: |
           rsync -avz --delete \
             -e "ssh" \
-            frontend/dist/ runpod:/workspace/quernel-saas/frontend/
+            frontend/dist/ runpod:/workspace/saas/frontend/
 
       - name: Post-deployment setup
         run: |
           ssh runpod << 'DEPLOY_SCRIPT'
           set -e
-          cd /workspace/quernel-saas/backend
+          cd /workspace/saas/backend
 
           echo "=== Installing PHP dependencies ==="
           # Install PHP if needed
