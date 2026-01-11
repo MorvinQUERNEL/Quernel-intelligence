@@ -161,7 +161,7 @@ jobs:
           # Install PHP if needed
           if ! command -v php &> /dev/null; then
               apt-get update
-              apt-get install -y php8.3 php8.3-cli php8.3-pgsql php8.3-xml php8.3-mbstring php8.3-intl php8.3-uuid php8.3-curl
+              apt-get install -y php8.3 php8.3-cli php8.3-pgsql php8.3-xml php8.3-mbstring php8.3-intl php8.3-uuid php8.3-curl php8.3-fpm nginx
           fi
 
           # Install Composer if needed
@@ -173,23 +173,29 @@ jobs:
           composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
           echo "=== Setting up environment ==="
-          if [ ! -f .env.local ]; then
-              cp .env .env.local
-              # Update DATABASE_URL for local PostgreSQL
-              sed -i 's|DATABASE_URL=.*|DATABASE_URL="postgresql://quernel:quernel_secret_2026@localhost:5432/quernel_db?serverVersion=14"|' .env.local
-              echo 'APP_ENV=prod' >> .env.local
-          fi
+          # Always update .env.local with correct settings
+          cat > .env.local << 'ENVFILE'
+APP_ENV=prod
+APP_SECRET=$(openssl rand -hex 32)
+DATABASE_URL="postgresql://quernel:quernel_secret_2026@localhost:5432/quernel_db?serverVersion=14"
+VLLM_API_URL=http://localhost:8000/v1
+CORS_ALLOW_ORIGIN='^https?://(localhost|127\.0\.0\.1|.*\.runpod\.io)(:[0-9]+)?$'
+ENVFILE
 
           echo "=== Generating JWT keys ==="
           if [ ! -f config/jwt/private.pem ]; then
               mkdir -p config/jwt
-              openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096 -pass pass:quernel_jwt_2026
-              openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout -passin pass:quernel_jwt_2026
-              echo 'JWT_PASSPHRASE=quernel_jwt_2026' >> .env.local
+              JWT_PASS=$(openssl rand -hex 16)
+              openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096 -pass pass:$JWT_PASS
+              openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout -passin pass:$JWT_PASS
+              echo "JWT_PASSPHRASE=$JWT_PASS" >> .env.local
           fi
 
           echo "=== Running database migrations ==="
           php bin/console doctrine:migrations:migrate --no-interaction --env=prod || true
+
+          echo "=== Loading fixtures if database is empty ==="
+          php bin/console doctrine:fixtures:load --no-interaction --env=prod --append || true
 
           echo "=== Clearing cache ==="
           php bin/console cache:clear --env=prod
@@ -198,7 +204,54 @@ jobs:
           echo "=== Setting permissions ==="
           chmod -R 777 var/
 
+          echo "=== Setting up Nginx ==="
+          cat > /etc/nginx/sites-available/quernel << 'NGINX'
+server {
+    listen 8080;
+    server_name _;
+    root /workspace/saas/backend/public;
+
+    location / {
+        try_files $uri /index.php$is_args$args;
+    }
+
+    location ~ ^/index\.php(/|$) {
+        fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+        internal;
+    }
+
+    location ~ \.php$ {
+        return 404;
+    }
+}
+
+server {
+    listen 3000;
+    server_name _;
+    root /workspace/saas/frontend;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+NGINX
+
+          ln -sf /etc/nginx/sites-available/quernel /etc/nginx/sites-enabled/
+          rm -f /etc/nginx/sites-enabled/default
+
+          echo "=== Starting services ==="
+          service php8.3-fpm restart || true
+          service nginx restart || true
+
           echo "=== Deployment complete! ==="
+          echo "Backend API: http://localhost:8080"
+          echo "Frontend: http://localhost:3000"
+          echo "vLLM: http://localhost:8000"
           DEPLOY_SCRIPT
 
       - name: Cleanup

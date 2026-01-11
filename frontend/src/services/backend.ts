@@ -167,6 +167,89 @@ class BackendApi {
     })
   }
 
+  // Streaming message - returns async generator
+  async *streamMessage(
+    conversationId: number,
+    content: string
+  ): AsyncGenerator<
+    | { type: "content"; content: string }
+    | { type: "done"; assistantMessageId: number; tokensUsed: number; conversationTitle: string }
+    | { type: "error"; error: string },
+    void,
+    unknown
+  > {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    }
+
+    if (this.token) {
+      headers["Authorization"] = `Bearer ${this.token}`
+    }
+
+    const response = await fetch(
+      `${this.baseUrl}/api/chat/conversations/${conversationId}/stream`,
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ content }),
+      }
+    )
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      throw new Error(errorData.error || `Erreur HTTP ${response.status}`)
+    }
+
+    const reader = response.body?.getReader()
+    if (!reader) {
+      throw new Error("No response body")
+    }
+
+    const decoder = new TextDecoder()
+    let buffer = ""
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+
+      buffer += decoder.decode(value, { stream: true })
+      const lines = buffer.split("\n")
+      buffer = lines.pop() || ""
+
+      for (const line of lines) {
+        if (line.startsWith("data: ")) {
+          const data = line.slice(6).trim()
+          if (!data) continue
+
+          try {
+            const parsed = JSON.parse(data)
+
+            if (parsed.error) {
+              yield { type: "error", error: parsed.error }
+              return
+            }
+
+            if (parsed.done) {
+              yield {
+                type: "done",
+                assistantMessageId: parsed.assistantMessageId,
+                tokensUsed: parsed.tokensUsed,
+                conversationTitle: parsed.conversationTitle,
+              }
+              return
+            }
+
+            if (parsed.content) {
+              yield { type: "content", content: parsed.content }
+            }
+          } catch {
+            // Ignore parsing errors
+          }
+        }
+      }
+    }
+  }
+
   // === AGENTS ===
 
   async getAgents() {
