@@ -36,7 +36,7 @@
         "bump-after-update": true,
         "sort-packages": true,
         "platform": {
-            "php": "8.3.29"
+            "php": "8.2.29"
         }
     },
     "autoload": {

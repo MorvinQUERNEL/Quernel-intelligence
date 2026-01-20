@@ -95,6 +95,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $stripeCustomerId = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $googleId = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $appleId = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(['user:read'])]
+    private ?string $authProvider = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups(['user:read'])]
     private ?\DateTimeInterface $createdAt = null;
@@ -375,5 +385,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getApiKeys(): Collection
     {
         return $this->apiKeys;
+    }
+
+    public function getGoogleId(): ?string
+    {
+        return $this->googleId;
+    }
+
+    public function setGoogleId(?string $googleId): static
+    {
+        $this->googleId = $googleId;
+        return $this;
+    }
+
+    public function getAppleId(): ?string
+    {
+        return $this->appleId;
+    }
+
+    public function setAppleId(?string $appleId): static
+    {
+        $this->appleId = $appleId;
+        return $this;
+    }
+
+    public function getAuthProvider(): ?string
+    {
+        return $this->authProvider;
+    }
+
+    public function setAuthProvider(?string $authProvider): static
+    {
+        $this->authProvider = $authProvider;
+        return $this;
     }
 }

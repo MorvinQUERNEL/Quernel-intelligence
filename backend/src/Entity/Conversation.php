@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\ConversationRepository;
+use App\State\ConversationStateProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -25,7 +26,7 @@ use Symfony\Component\Uid\Uuid;
     operations: [
         new Get(security: "is_granted('ROLE_USER') and object.getUser() == user"),
         new GetCollection(security: "is_granted('ROLE_USER')"),
-        new Post(security: "is_granted('ROLE_USER')"),
+        new Post(security: "is_granted('ROLE_USER')", processor: ConversationStateProcessor::class),
         new Patch(security: "is_granted('ROLE_USER') and object.getUser() == user"),
         new Delete(security: "is_granted('ROLE_USER') and object.getUser() == user"),
     ],

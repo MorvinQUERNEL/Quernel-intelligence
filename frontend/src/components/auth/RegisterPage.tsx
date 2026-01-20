@@ -7,9 +7,10 @@ import { cn } from "@/lib/utils"
 interface RegisterPageProps {
   onRegister: (data: { email: string; password: string; firstName: string; lastName: string }) => Promise<void>
   onNavigateToLogin: () => void
+  onNavigateToLanding?: () => void
 }
 
-export function RegisterPage({ onRegister, onNavigateToLogin }: RegisterPageProps) {
+export function RegisterPage({ onRegister, onNavigateToLogin, onNavigateToLanding }: RegisterPageProps) {
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
@@ -64,12 +65,15 @@ export function RegisterPage({ onRegister, onNavigateToLogin }: RegisterPageProp
       {/* Left Panel - Branding */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[var(--color-primary)] via-[var(--color-accent)] to-[var(--color-secondary)] p-12 flex-col justify-between">
         <div>
-          <div className="flex items-center gap-3">
+          <button
+            onClick={onNavigateToLanding}
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+          >
             <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
               <span className="text-white font-bold text-2xl">Q</span>
             </div>
             <span className="text-white font-semibold text-xl">QUERNEL INTELLIGENCE</span>
-          </div>
+          </button>
         </div>
 
         <div className="space-y-6">
@@ -106,10 +110,15 @@ export function RegisterPage({ onRegister, onNavigateToLogin }: RegisterPageProp
         <div className="w-full max-w-md space-y-6">
           {/* Mobile Logo */}
           <div className="lg:hidden flex items-center justify-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center">
-              <span className="text-white font-bold text-xl">Q</span>
-            </div>
-            <span className="font-semibold text-xl text-[var(--color-foreground)]">QUERNEL</span>
+            <button
+              onClick={onNavigateToLanding}
+              className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+            >
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center">
+                <span className="text-white font-bold text-xl">Q</span>
+              </div>
+              <span className="font-semibold text-xl text-[var(--color-foreground)]">QUERNEL</span>
+            </button>
           </div>
 
           <div className="text-center lg:text-left">

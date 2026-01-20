@@ -7,6 +7,13 @@ doctrine:
         #server_version: '16'
 
         profiling_collect_backtrace: '%kernel.debug%'
+
+        # MySQL connection options to prevent "server has gone away"
+        options:
+            # Reconnect on connection loss
+            !php/const PDO::ATTR_PERSISTENT: false
+            !php/const PDO::ATTR_TIMEOUT: 120
+            !php/const PDO::MYSQL_ATTR_USE_BUFFERED_QUERY: true
     orm:
         validate_xml_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware

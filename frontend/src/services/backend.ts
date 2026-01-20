@@ -97,6 +97,45 @@ class BackendApi {
     })
   }
 
+  // === OAUTH ===
+
+  async googleAuth(credential: string) {
+    return this.request<{
+      token: string
+      user: {
+        id: string
+        email: string
+        firstName: string
+        lastName: string
+        avatarUrl?: string
+        plan: string
+        authProvider: string
+      }
+      message: string
+    }>("/api/oauth/google/callback", {
+      method: "POST",
+      body: JSON.stringify({ credential }),
+    })
+  }
+
+  async appleAuth(idToken: string, user?: { name?: { firstName?: string; lastName?: string } }) {
+    return this.request<{
+      token: string
+      user: {
+        id: string
+        email: string
+        firstName: string
+        lastName: string
+        plan: string
+        authProvider: string
+      }
+      message: string
+    }>("/api/oauth/apple/callback", {
+      method: "POST",
+      body: JSON.stringify({ id_token: idToken, user }),
+    })
+  }
+
   // === CONVERSATIONS ===
 
   async getConversations() {

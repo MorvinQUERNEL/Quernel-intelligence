@@ -32,6 +32,8 @@ interface AuthState {
     firstName: string
     lastName: string
   }) => Promise<void>
+  loginWithGoogle: (credential: string) => Promise<void>
+  loginWithApple: (idToken: string, user?: { name?: { firstName?: string; lastName?: string } }) => Promise<void>
   logout: () => void
   updateUser: (user: Partial<User>) => void
   checkAuth: () => Promise<void>
@@ -81,6 +83,48 @@ export const useAuthStore = create<AuthState>()(
           backendApi.setToken(response.token)
 
           // Récupérer les infos utilisateur complètes
+          const user = await backendApi.getMe()
+
+          set({
+            user,
+            token: response.token,
+            isAuthenticated: true,
+            isLoading: false,
+          })
+        } catch (error) {
+          set({ isLoading: false })
+          throw error
+        }
+      },
+
+      loginWithGoogle: async (credential: string) => {
+        set({ isLoading: true })
+
+        try {
+          const response = await backendApi.googleAuth(credential)
+
+          backendApi.setToken(response.token)
+          const user = await backendApi.getMe()
+
+          set({
+            user,
+            token: response.token,
+            isAuthenticated: true,
+            isLoading: false,
+          })
+        } catch (error) {
+          set({ isLoading: false })
+          throw error
+        }
+      },
+
+      loginWithApple: async (idToken: string, userInfo?: { name?: { firstName?: string; lastName?: string } }) => {
+        set({ isLoading: true })
+
+        try {
+          const response = await backendApi.appleAuth(idToken, userInfo)
+
+          backendApi.setToken(response.token)
           const user = await backendApi.getMe()
 
           set({

@@ -7,6 +7,7 @@ use App\Entity\Message;
 use App\Entity\User;
 use App\Repository\AgentRepository;
 use App\Repository\ConversationRepository;
+use App\Service\WebSearchService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,6 +24,7 @@ class ChatController extends AbstractController
         private HttpClientInterface $httpClient,
         private ConversationRepository $conversationRepository,
         private AgentRepository $agentRepository,
+        private WebSearchService $webSearchService,
         private string $vllmApiUrl,
     ) {}
 
@@ -170,9 +172,12 @@ class ChatController extends AbstractController
         ];
 
         // Get model from agent or use default
-        $model = $agent ? $agent->getModel() : 'Qwen/Qwen2.5-32B-Instruct-AWQ';
+        $model = $agent ? $agent->getModel() : '/workspace/models/Qwen2.5-32B-Instruct-AWQ';
 
-        // Call vLLM API
+        // Define available tools
+        $tools = $this->getAvailableTools();
+
+        // Call vLLM API with tools
         try {
             $response = $this->httpClient->request('POST', $this->vllmApiUrl . '/chat/completions', [
                 'json' => [
@@ -180,16 +185,51 @@ class ChatController extends AbstractController
                     'messages' => $apiMessages,
                     'max_tokens' => 2048,
                     'temperature' => 0.7,
+                    'tools' => $tools,
+                    'tool_choice' => 'auto',
                 ],
                 'timeout' => 120,
             ]);
 
             $result = $response->toArray();
 
+            // Check if the model wants to use a tool
+            $message = $result['choices'][0]['message'] ?? [];
+            $toolCalls = $message['tool_calls'] ?? [];
+
+            if (!empty($toolCalls)) {
+                // Execute tool calls and get results
+                $toolResults = $this->executeToolCalls($toolCalls);
+
+                // Add assistant message with tool calls
+                $apiMessages[] = $message;
+
+                // Add tool results
+                foreach ($toolResults as $toolResult) {
+                    $apiMessages[] = $toolResult;
+                }
+
+                // Call the API again with tool results
+                $response = $this->httpClient->request('POST', $this->vllmApiUrl . '/chat/completions', [
+                    'json' => [
+                        'model' => $model,
+                        'messages' => $apiMessages,
+                        'max_tokens' => 2048,
+                        'temperature' => 0.7,
+                    ],
+                    'timeout' => 120,
+                ]);
+
+                $result = $response->toArray();
+            }
+
             $assistantContent = $result['choices'][0]['message']['content'] ?? '';
             $promptTokens = $result['usage']['prompt_tokens'] ?? 0;
             $completionTokens = $result['usage']['completion_tokens'] ?? 0;
             $totalTokens = $promptTokens + $completionTokens;
+
+            // Reconnect database if connection was lost during API call
+            $this->ensureDatabaseConnection();
 
             // Save assistant message
             $assistantMessage = new Message();
@@ -291,7 +331,13 @@ class ChatController extends AbstractController
             // Default system prompt
             $apiMessages[] = [
                 'role' => 'system',
-                'content' => "Tu es QUERNEL IA, un assistant intelligent développé par QUERNEL INTELLIGENCE, une entreprise française. Tu es professionnel, précis et utile. Tu réponds en français par défaut.",
+                'content' => "Tu es QUERNEL IA, un assistant intelligent développé par QUERNEL INTELLIGENCE, une entreprise française. Tu es professionnel, précis et utile. Tu réponds en français par défaut.
+
+Tu as accès aux outils suivants:
+- web_search: Pour rechercher des informations actuelles sur internet (actualités, données récentes, vérification de faits)
+- get_current_datetime: Pour obtenir la date et l'heure actuelles
+
+N'hésite pas à utiliser ces outils quand c'est pertinent pour répondre aux questions de l'utilisateur, surtout pour les informations qui nécessitent des données actuelles ou en temps réel.",
             ];
         }
 
@@ -439,5 +485,130 @@ class ChatController extends AbstractController
         $this->em->flush();
 
         return $this->json(['message' => 'Conversation archivee']);
+    }
+
+    /**
+     * Get available tools for function calling
+     */
+    private function getAvailableTools(): array
+    {
+        return [
+            [
+                'type' => 'function',
+                'function' => [
+                    'name' => 'web_search',
+                    'description' => 'Recherche des informations sur internet. Utilise cet outil quand tu as besoin d\'informations actuelles, de nouvelles, de données en temps réel, ou de vérifier des faits.',
+                    'parameters' => [
+                        'type' => 'object',
+                        'properties' => [
+                            'query' => [
+                                'type' => 'string',
+                                'description' => 'La requête de recherche à effectuer sur internet',
+                            ],
+                        ],
+                        'required' => ['query'],
+                    ],
+                ],
+            ],
+            [
+                'type' => 'function',
+                'function' => [
+                    'name' => 'get_current_datetime',
+                    'description' => 'Obtient la date et l\'heure actuelles. Utilise cet outil quand on te demande la date ou l\'heure.',
+                    'parameters' => [
+                        'type' => 'object',
+                        'properties' => [],
+                        'required' => [],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Execute tool calls and return results
+     */
+    private function executeToolCalls(array $toolCalls): array
+    {
+        $results = [];
+
+        foreach ($toolCalls as $toolCall) {
+            $functionName = $toolCall['function']['name'] ?? '';
+            $arguments = json_decode($toolCall['function']['arguments'] ?? '{}', true);
+            $toolCallId = $toolCall['id'] ?? uniqid('call_');
+
+            $result = match ($functionName) {
+                'web_search' => $this->executeWebSearch($arguments['query'] ?? ''),
+                'get_current_datetime' => $this->executeGetDateTime(),
+                default => 'Outil non reconnu: ' . $functionName,
+            };
+
+            $results[] = [
+                'role' => 'tool',
+                'tool_call_id' => $toolCallId,
+                'content' => $result,
+            ];
+        }
+
+        return $results;
+    }
+
+    /**
+     * Execute web search tool
+     */
+    private function executeWebSearch(string $query): string
+    {
+        if (empty($query)) {
+            return 'Erreur: requête de recherche vide';
+        }
+
+        $results = $this->webSearchService->search($query, 5);
+        return $this->webSearchService->formatResultsForAI($results);
+    }
+
+    /**
+     * Execute get datetime tool
+     */
+    private function executeGetDateTime(): string
+    {
+        $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        return sprintf(
+            "Date et heure actuelles (Paris): %s\nJour: %s\nHeure: %s",
+            $now->format('d/m/Y H:i:s'),
+            $this->getFrenchDayName($now->format('N')),
+            $now->format('H:i')
+        );
+    }
+
+    private function getFrenchDayName(string $dayNumber): string
+    {
+        return match ($dayNumber) {
+            '1' => 'Lundi',
+            '2' => 'Mardi',
+            '3' => 'Mercredi',
+            '4' => 'Jeudi',
+            '5' => 'Vendredi',
+            '6' => 'Samedi',
+            '7' => 'Dimanche',
+            default => 'Inconnu',
+        };
+    }
+
+    /**
+     * Ensure database connection is alive, reconnect if needed
+     */
+    private function ensureDatabaseConnection(): void
+    {
+        $connection = $this->em->getConnection();
+
+        try {
+            // Try to ping the connection
+            $connection->executeQuery('SELECT 1');
+        } catch (\Exception $e) {
+            // Connection lost, close it (it will auto-reconnect on next query)
+            if ($connection->isConnected()) {
+                $connection->close();
+            }
+        }
     }
 }

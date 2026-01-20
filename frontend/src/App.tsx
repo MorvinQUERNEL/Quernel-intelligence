@@ -1,16 +1,17 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { Layout } from "@/components/layout/Layout"
 import { ChatInterface } from "@/components/chat/ChatInterface"
 import { Dashboard } from "@/components/dashboard/Dashboard"
 import { LoginPage } from "@/components/auth/LoginPage"
 import { RegisterPage } from "@/components/auth/RegisterPage"
+import { LandingPage } from "@/components/landing/LandingPage"
 import { useAuthStore } from "@/stores/authStore"
 
-type AuthView = "login" | "register"
+type AppView = "landing" | "login" | "register" | "app"
 
 function App() {
   const [currentPath, setCurrentPath] = useState("/chat")
-  const [authView, setAuthView] = useState<AuthView>("login")
+  const [hashView, setHashView] = useState<"login" | "register" | null>(null)
 
   const { isAuthenticated, isLoading, login, register, checkAuth } = useAuthStore()
 
@@ -18,6 +19,38 @@ function App() {
   useEffect(() => {
     checkAuth()
   }, [checkAuth])
+
+  // Handle URL hash for navigation (allows direct linking)
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1)
+      if (hash === "login") {
+        setHashView("login")
+      } else if (hash === "register") {
+        setHashView("register")
+      } else {
+        setHashView(null)
+      }
+    }
+
+    handleHashChange()
+    window.addEventListener("hashchange", handleHashChange)
+    return () => window.removeEventListener("hashchange", handleHashChange)
+  }, [])
+
+  // Compute the current view based on auth state and hash
+  const appView = useMemo<AppView>(() => {
+    if (isAuthenticated) {
+      return "app"
+    }
+    if (hashView === "login") {
+      return "login"
+    }
+    if (hashView === "register") {
+      return "register"
+    }
+    return "landing"
+  }, [isAuthenticated, hashView])
 
   // Show loading state
   if (isLoading) {
@@ -33,21 +66,47 @@ function App() {
     )
   }
 
-  // Show auth pages if not authenticated
-  if (!isAuthenticated) {
-    if (authView === "login") {
-      return (
-        <LoginPage
-          onLogin={login}
-          onNavigateToRegister={() => setAuthView("register")}
-        />
-      )
-    }
+  // Navigation handlers
+  const handleNavigateToLogin = () => {
+    window.location.hash = "login"
+  }
 
+  const handleNavigateToRegister = () => {
+    window.location.hash = "register"
+  }
+
+  const handleNavigateToLanding = () => {
+    window.location.hash = ""
+  }
+
+  // Show landing page for non-authenticated users
+  if (appView === "landing") {
+    return (
+      <LandingPage
+        onNavigateToLogin={handleNavigateToLogin}
+        onNavigateToRegister={handleNavigateToRegister}
+      />
+    )
+  }
+
+  // Show login page
+  if (appView === "login") {
+    return (
+      <LoginPage
+        onLogin={login}
+        onNavigateToRegister={handleNavigateToRegister}
+        onNavigateToLanding={handleNavigateToLanding}
+      />
+    )
+  }
+
+  // Show register page
+  if (appView === "register") {
     return (
       <RegisterPage
         onRegister={register}
-        onNavigateToLogin={() => setAuthView("login")}
+        onNavigateToLogin={handleNavigateToLogin}
+        onNavigateToLanding={handleNavigateToLanding}
       />
     )
   }
