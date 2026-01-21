@@ -158,7 +158,7 @@ jobs:
         run: |
           sshpass -e ssh -p ${{ env.HOSTINGER_PORT }} -o StrictHostKeyChecking=no ${{ env.HOSTINGER_USER }}@${{ env.HOSTINGER_HOST }} '\
             cd ~/domains/quernel-intelligence.com/backend && \
-            php composer.phar install --no-interaction --prefer-dist --optimize-autoloader --no-dev 2>/dev/null || composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev && \
+            composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --ignore-platform-reqs && \
             php bin/console cache:clear --env=prod && \
             php bin/console cache:warmup --env=prod && \
             chmod -R 755 var/'
