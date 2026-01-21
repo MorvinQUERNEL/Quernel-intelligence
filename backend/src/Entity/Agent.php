@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -9,6 +11,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
 use App\Repository\AgentRepository;
+use App\State\PublicAgentsProvider;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -19,8 +22,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
     operations: [
-        new Get(security: "is_granted('ROLE_USER') and (object.getUser() == user or object.isPublic())"),
+        new GetCollection(
+            uriTemplate: '/agents/public',
+            provider: PublicAgentsProvider::class,
+            normalizationContext: ['groups' => ['agent:read']],
+            name: 'get_public_agents'
+        ),
         new GetCollection(security: "is_granted('ROLE_USER')"),
+        new Get(security: "is_granted('ROLE_USER') and (object.getUser() == user or object.isPublic())"),
         new Post(security: "is_granted('ROLE_USER')"),
         new Patch(security: "is_granted('ROLE_USER') and object.getUser() == user"),
         new Delete(security: "is_granted('ROLE_USER') and object.getUser() == user"),
@@ -28,6 +37,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['agent:read']],
     denormalizationContext: ['groups' => ['agent:write']],
 )]
+#[ApiFilter(BooleanFilter::class, properties: ['isPublic'])]
 class Agent
 {
     #[ORM\Id]

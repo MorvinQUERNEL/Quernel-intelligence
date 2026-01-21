@@ -48,6 +48,15 @@
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 
+  /* Glassmorphism */
+  --glass-bg: oklch(0.98 0.01 270 / 0.7);
+  --glass-bg-dark: oklch(0.15 0.02 270 / 0.8);
+  --glass-border: oklch(0.9 0 0 / 0.3);
+  --glass-border-dark: oklch(0.3 0.02 270 / 0.4);
+  --shadow-glow: 0 0 20px oklch(0.55 0.2 270 / 0.3);
+  --shadow-card-hover: 0 8px 32px oklch(0 0 0 / 0.12);
+  --shadow-glow-accent: 0 0 30px oklch(0.6 0.18 290 / 0.4);
+
   /* Fonts */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;

@@ -319,6 +319,45 @@ class BackendApi {
       }>
     >("/api/plans")
   }
+
+  // === STRIPE ===
+
+  async createCheckoutSession(planSlug: string, interval: "monthly" | "yearly") {
+    return this.request<{ sessionId: string; url: string }>("/api/stripe/checkout", {
+      method: "POST",
+      body: JSON.stringify({ plan: planSlug, interval }),
+    })
+  }
+
+  async createPortalSession() {
+    return this.request<{ url: string }>("/api/stripe/portal", {
+      method: "POST",
+    })
+  }
+
+  async getSubscription() {
+    return this.request<{
+      id: string
+      planSlug: string
+      status: "active" | "canceled" | "past_due" | "trialing"
+      currentPeriodStart: string
+      currentPeriodEnd: string
+      cancelAtPeriodEnd: boolean
+      interval: "monthly" | "yearly"
+    } | null>("/api/stripe/subscription")
+  }
+
+  async cancelSubscription() {
+    return this.request<{ message: string }>("/api/stripe/subscription/cancel", {
+      method: "POST",
+    })
+  }
+
+  async resumeSubscription() {
+    return this.request<{ message: string }>("/api/stripe/subscription/resume", {
+      method: "POST",
+    })
+  }
 }
 
 export const backendApi = new BackendApi(BACKEND_URL)

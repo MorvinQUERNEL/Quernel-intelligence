@@ -18,6 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Subscription;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -124,11 +125,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ApiKey::class, orphanRemoval: true)]
     private Collection $apiKeys;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Subscription::class)]
+    private Collection $subscriptions;
+
     public function __construct()
     {
         $this->conversations = new ArrayCollection();
         $this->agents = new ArrayCollection();
         $this->apiKeys = new ArrayCollection();
+        $this->subscriptions = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
     }
@@ -418,5 +423,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->authProvider = $authProvider;
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Subscription>
+     */
+    public function getSubscriptions(): Collection
+    {
+        return $this->subscriptions;
+    }
+
+    public function getActiveSubscription(): ?Subscription
+    {
+        foreach ($this->subscriptions as $subscription) {
+            if ($subscription->isActive()) {
+                return $subscription;
+            }
+        }
+        return null;
     }
 }

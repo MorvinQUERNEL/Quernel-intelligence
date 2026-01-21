@@ -40,7 +40,8 @@ security:
         - { path: ^/api/register, roles: PUBLIC_ACCESS }
         - { path: ^/api/oauth, roles: PUBLIC_ACCESS }
         - { path: ^/api/plans, roles: PUBLIC_ACCESS }
-        - { path: ^/api/agents, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/agents/public, roles: PUBLIC_ACCESS }
+        - { path: ^/api/stripe/webhook, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
     role_hierarchy:

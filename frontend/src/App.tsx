@@ -5,13 +5,21 @@ import { Dashboard } from "@/components/dashboard/Dashboard"
 import { LoginPage } from "@/components/auth/LoginPage"
 import { RegisterPage } from "@/components/auth/RegisterPage"
 import { LandingPage } from "@/components/landing/LandingPage"
+import { PricingPage } from "@/components/pricing/PricingPage"
+import { BillingPage } from "@/components/billing/BillingPage"
+import { PrivacyPolicy } from "@/components/legal/PrivacyPolicy"
+import { TermsOfService } from "@/components/legal/TermsOfService"
+import { LegalMentions } from "@/components/legal/LegalMentions"
+import { CookiePolicy } from "@/components/legal/CookiePolicy"
+import { CookieConsent } from "@/components/cookies/CookieConsent"
+import { CookiePreferences } from "@/components/cookies/CookiePreferences"
 import { useAuthStore } from "@/stores/authStore"
 
-type AppView = "landing" | "login" | "register" | "app"
+type AppView = "landing" | "login" | "register" | "pricing" | "privacy" | "terms" | "legal" | "cookies" | "app"
 
 function App() {
   const [currentPath, setCurrentPath] = useState("/chat")
-  const [hashView, setHashView] = useState<"login" | "register" | null>(null)
+  const [hashView, setHashView] = useState<string | null>(null)
 
   const { isAuthenticated, isLoading, login, register, checkAuth } = useAuthStore()
 
@@ -23,11 +31,34 @@ function App() {
   // Handle URL hash for navigation (allows direct linking)
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.slice(1)
+      const hash = window.location.hash.slice(1) // Remove the #
+
+      // Handle checkout return URLs
+      if (hash.includes("checkout=success")) {
+        // TODO: Show success message
+        window.location.hash = ""
+        return
+      }
+      if (hash.includes("checkout=cancel")) {
+        // TODO: Show cancel message
+        window.location.hash = ""
+        return
+      }
+
       if (hash === "login") {
         setHashView("login")
       } else if (hash === "register") {
         setHashView("register")
+      } else if (hash === "pricing") {
+        setHashView("pricing")
+      } else if (hash === "privacy") {
+        setHashView("privacy")
+      } else if (hash === "terms") {
+        setHashView("terms")
+      } else if (hash === "legal") {
+        setHashView("legal")
+      } else if (hash === "cookies") {
+        setHashView("cookies")
       } else {
         setHashView(null)
       }
@@ -40,6 +71,13 @@ function App() {
 
   // Compute the current view based on auth state and hash
   const appView = useMemo<AppView>(() => {
+    // Legal pages are accessible regardless of auth state
+    if (hashView === "privacy") return "privacy"
+    if (hashView === "terms") return "terms"
+    if (hashView === "legal") return "legal"
+    if (hashView === "cookies") return "cookies"
+    if (hashView === "pricing") return "pricing"
+
     if (isAuthenticated) {
       return "app"
     }
@@ -51,6 +89,14 @@ function App() {
     }
     return "landing"
   }, [isAuthenticated, hashView])
+
+  // Check dark mode preference for cookie consent
+  const isDark = useMemo(() => {
+    if (typeof document !== "undefined") {
+      return document.documentElement.classList.contains("dark")
+    }
+    return true // Default to dark
+  }, [appView])
 
   // Show loading state
   if (isLoading) {
@@ -79,35 +125,105 @@ function App() {
     window.location.hash = ""
   }
 
+  // Show privacy policy page
+  if (appView === "privacy") {
+    return (
+      <>
+        <PrivacyPolicy onNavigateBack={handleNavigateToLanding} />
+        <CookieConsent isDark={isDark} />
+        <CookiePreferences isDark={isDark} />
+      </>
+    )
+  }
+
+  // Show terms of service page
+  if (appView === "terms") {
+    return (
+      <>
+        <TermsOfService onNavigateBack={handleNavigateToLanding} />
+        <CookieConsent isDark={isDark} />
+        <CookiePreferences isDark={isDark} />
+      </>
+    )
+  }
+
+  // Show legal mentions page
+  if (appView === "legal") {
+    return (
+      <>
+        <LegalMentions onNavigateBack={handleNavigateToLanding} />
+        <CookieConsent isDark={isDark} />
+        <CookiePreferences isDark={isDark} />
+      </>
+    )
+  }
+
+  // Show cookie policy page
+  if (appView === "cookies") {
+    return (
+      <>
+        <CookiePolicy onNavigateBack={handleNavigateToLanding} />
+        <CookieConsent isDark={isDark} />
+        <CookiePreferences isDark={isDark} />
+      </>
+    )
+  }
+
+  // Show pricing page
+  if (appView === "pricing") {
+    return (
+      <>
+        <PricingPage
+          onNavigateBack={handleNavigateToLanding}
+          onNavigateToRegister={handleNavigateToRegister}
+        />
+        <CookieConsent isDark={isDark} />
+        <CookiePreferences isDark={isDark} />
+      </>
+    )
+  }
+
   // Show landing page for non-authenticated users
   if (appView === "landing") {
     return (
-      <LandingPage
-        onNavigateToLogin={handleNavigateToLogin}
-        onNavigateToRegister={handleNavigateToRegister}
-      />
+      <>
+        <LandingPage
+          onNavigateToLogin={handleNavigateToLogin}
+          onNavigateToRegister={handleNavigateToRegister}
+        />
+        <CookieConsent isDark={isDark} />
+        <CookiePreferences isDark={isDark} />
+      </>
     )
   }
 
   // Show login page
   if (appView === "login") {
     return (
-      <LoginPage
-        onLogin={login}
-        onNavigateToRegister={handleNavigateToRegister}
-        onNavigateToLanding={handleNavigateToLanding}
-      />
+      <>
+        <LoginPage
+          onLogin={login}
+          onNavigateToRegister={handleNavigateToRegister}
+          onNavigateToLanding={handleNavigateToLanding}
+        />
+        <CookieConsent isDark={isDark} />
+        <CookiePreferences isDark={isDark} />
+      </>
     )
   }
 
   // Show register page
   if (appView === "register") {
     return (
-      <RegisterPage
-        onRegister={register}
-        onNavigateToLogin={handleNavigateToLogin}
-        onNavigateToLanding={handleNavigateToLanding}
-      />
+      <>
+        <RegisterPage
+          onRegister={register}
+          onNavigateToLogin={handleNavigateToLogin}
+          onNavigateToLanding={handleNavigateToLanding}
+        />
+        <CookieConsent isDark={isDark} />
+        <CookiePreferences isDark={isDark} />
+      </>
     )
   }
 
@@ -118,6 +234,8 @@ function App() {
         return <ChatInterface />
       case "/dashboard":
         return <Dashboard />
+      case "/billing":
+        return <BillingPage />
       default:
         return (
           <div className="flex items-center justify-center h-full">
@@ -135,9 +253,13 @@ function App() {
   }
 
   return (
-    <Layout currentPath={currentPath} onNavigate={setCurrentPath}>
-      {renderPage()}
-    </Layout>
+    <>
+      <Layout currentPath={currentPath} onNavigate={setCurrentPath}>
+        {renderPage()}
+      </Layout>
+      <CookieConsent isDark={false} />
+      <CookiePreferences isDark={false} />
+    </>
   )
 }
 

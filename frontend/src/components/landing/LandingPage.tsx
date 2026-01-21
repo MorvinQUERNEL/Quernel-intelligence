@@ -11,7 +11,6 @@ import {
   Calculator,
   Briefcase,
   MessageSquare,
-  Check,
   Star,
   ArrowRight,
   Menu,
@@ -26,6 +25,7 @@ import {
   Clock,
 } from "lucide-react"
 import { Button } from "@/components/ui/Button"
+import { PricingSection } from "@/components/pricing/PricingSection"
 
 // Types
 interface Agent {
@@ -752,84 +752,7 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className={`py-20 ${isDark ? "bg-[#12121a]" : "bg-white"}`}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className={`text-3xl sm:text-4xl font-bold mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
-              Un prix simple et <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">transparent</span>
-            </h2>
-            <p className={`text-lg ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-              Accédez à tous nos agents IA pour un tarif unique
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className={`relative p-8 rounded-3xl border-2 ${
-              isDark
-                ? "bg-gradient-to-br from-[#12121a] to-[#0a0a0f] border-violet-500/50"
-                : "bg-gradient-to-br from-white to-gray-50 border-violet-500"
-            }`}
-          >
-            {/* Popular badge */}
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-              <span className="px-4 py-1.5 rounded-full bg-gradient-to-r from-violet-500 to-purple-600 text-white text-sm font-semibold">
-                Offre Pro
-              </span>
-            </div>
-
-            <div className="text-center mb-8">
-              <div className="flex items-baseline justify-center gap-2 mb-2">
-                <span className={`text-5xl font-bold ${isDark ? "text-white" : "text-gray-900"}`}>129,99</span>
-                <span className={`text-xl ${isDark ? "text-gray-400" : "text-gray-500"}`}>€/mois</span>
-              </div>
-              <p className={`${isDark ? "text-gray-400" : "text-gray-500"}`}>
-                Essai gratuit de 7 jours - Sans engagement
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-4 mb-8">
-              {[
-                "Accès aux 9 agents IA",
-                "Conversations illimitées",
-                "Support prioritaire 24/7",
-                "Intégrations avancées (API)",
-                "Historique illimité",
-                "Exports PDF & JSON",
-                "Mises à jour automatiques",
-                "Formation personnalisée",
-              ].map((feature, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center flex-shrink-0">
-                    <Check className="w-3 h-3 text-white" />
-                  </div>
-                  <span className={`${isDark ? "text-gray-300" : "text-gray-700"}`}>{feature}</span>
-                </div>
-              ))}
-            </div>
-
-            <Button
-              size="lg"
-              onClick={onNavigateToRegister}
-              className="w-full bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white border-0 text-lg py-6 h-auto"
-            >
-              Commencer l'essai gratuit
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-
-            <p className={`text-center text-sm mt-4 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
-              Paiement sécurisé par Stripe - Annulation à tout moment
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PricingSection isDark={isDark} onNavigateToRegister={onNavigateToRegister} />
 
       {/* FAQ Section */}
       <section id="faq" className={`py-20 ${isDark ? "bg-[#0a0a0f]" : "bg-gray-50"}`}>
@@ -972,10 +895,10 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
             <div>
               <h4 className={`font-semibold mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>Légal</h4>
               <ul className={`space-y-2 text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                <li><a href="#" className="hover:text-violet-500 transition-colors">Mentions légales</a></li>
-                <li><a href="#" className="hover:text-violet-500 transition-colors">Politique de confidentialité</a></li>
-                <li><a href="#" className="hover:text-violet-500 transition-colors">CGU</a></li>
-                <li><a href="#" className="hover:text-violet-500 transition-colors">Cookies</a></li>
+                <li><a href="#legal" className="hover:text-violet-500 transition-colors">Mentions légales</a></li>
+                <li><a href="#privacy" className="hover:text-violet-500 transition-colors">Politique de confidentialité</a></li>
+                <li><a href="#terms" className="hover:text-violet-500 transition-colors">CGU</a></li>
+                <li><a href="#cookies" className="hover:text-violet-500 transition-colors">Cookies</a></li>
               </ul>
             </div>
           </div>

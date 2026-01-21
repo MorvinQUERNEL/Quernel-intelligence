@@ -314,13 +314,16 @@ export function Dashboard() {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="font-medium text-[var(--color-foreground)]">
-                            Passez au Pro pour 129,99€/mois
+                            Passez au Pro pour 29€/mois
                           </p>
                           <p className="text-sm text-[var(--color-muted-foreground)]">
-                            Tokens illimités, support prioritaire, et plus
+                            5 agents, 500K tokens, support prioritaire
                           </p>
                         </div>
-                        <Button className="bg-gradient-to-r from-violet-500 to-purple-600">
+                        <Button
+                          className="bg-gradient-to-r from-violet-500 to-purple-600"
+                          onClick={() => window.location.hash = "pricing"}
+                        >
                           <TrendingUp className="w-4 h-4 mr-2" />
                           Upgrade
                         </Button>
