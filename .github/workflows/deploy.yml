@@ -152,6 +152,21 @@ jobs:
             -e "ssh -p ${{ env.HOSTINGER_PORT }} -o StrictHostKeyChecking=no" \
             frontend/dist/ ${{ env.HOSTINGER_USER }}@${{ env.HOSTINGER_HOST }}:~/domains/quernel-intelligence.com/public_html/
 
+      - name: Create .env on server
+        env:
+          SSHPASS: ${{ secrets.HOSTINGER_PASSWORD }}
+        run: |
+          sshpass -e ssh -p ${{ env.HOSTINGER_PORT }} -o StrictHostKeyChecking=no ${{ env.HOSTINGER_USER }}@${{ env.HOSTINGER_HOST }} '\
+            cd ~/domains/quernel-intelligence.com/backend && \
+            echo "APP_ENV=prod" > .env && \
+            echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> .env && \
+            echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env && \
+            echo "CORS_ALLOW_ORIGIN=^https?://(localhost|127\\.0\\.0\\.1|quernel-intelligence\\.com)(:[0-9]+)?$" >> .env && \
+            echo "JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem" >> .env && \
+            echo "JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem" >> .env && \
+            echo "JWT_PASSPHRASE=${{ secrets.JWT_PASSPHRASE }}" >> .env && \
+            echo "MAILER_DSN=null://null" >> .env'
+
       - name: Post-deployment setup
         env:
           SSHPASS: ${{ secrets.HOSTINGER_PASSWORD }}
@@ -159,7 +174,7 @@ jobs:
           sshpass -e ssh -p ${{ env.HOSTINGER_PORT }} -o StrictHostKeyChecking=no ${{ env.HOSTINGER_USER }}@${{ env.HOSTINGER_HOST }} '\
             cd ~/domains/quernel-intelligence.com/backend && \
             composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --ignore-platform-reqs && \
-            php bin/console cache:clear --env=prod && \
+            php bin/console cache:clear --env=prod --no-warmup && \
             php bin/console cache:warmup --env=prod && \
             chmod -R 755 var/'
 
