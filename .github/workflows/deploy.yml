@@ -1,4 +1,4 @@
-name: CI/CD - Deploy to RunPod GPU
+name: CI/CD - Deploy to Hostinger
 
 on:
   push:
@@ -6,15 +6,13 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
-    inputs:
-      deploy_only:
-        description: 'Skip tests and deploy directly'
-        required: false
-        default: 'false'
 
 env:
   NODE_VERSION: '20'
   PHP_VERSION: '8.3'
+  HOSTINGER_HOST: 82.25.113.5
+  HOSTINGER_PORT: 65002
+  HOSTINGER_USER: u729245499
 
 jobs:
   # ================================
@@ -38,10 +36,9 @@ jobs:
         working-directory: frontend
         run: npm ci
 
-      - name: Type check
+      - name: Build
         working-directory: frontend
         run: npm run build
-        continue-on-error: false
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
@@ -64,7 +61,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.PHP_VERSION }}
-          extensions: pdo_pgsql, intl, uuid, mbstring, xml
+          extensions: pdo_pgsql, pdo_mysql, intl, uuid, mbstring, xml
           coverage: none
           tools: composer:v2
 
@@ -92,7 +89,7 @@ jobs:
           JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
           JWT_PASSPHRASE=ci_test_passphrase
           MAILER_DSN=null://null
-          DATABASE_URL="postgresql://app:test@127.0.0.1:5432/app?serverVersion=16&charset=utf8"
+          DATABASE_URL="mysql://user:pass@127.0.0.1:3306/db?serverVersion=8.0"
           CORS_ALLOW_ORIGIN='^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'
           ENVFILE
 
@@ -108,14 +105,13 @@ jobs:
         continue-on-error: true
 
   # ================================
-  # Deploy to RunPod
+  # Deploy to Hostinger
   # ================================
   deploy:
-    name: Deploy to RunPod
+    name: Deploy to Hostinger
     needs: [frontend, backend]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    environment: production
 
     steps:
       - name: Checkout code
@@ -127,135 +123,50 @@ jobs:
           name: frontend-build
           path: frontend/dist
 
-      - name: Setup SSH
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
+
+      - name: Setup SSH known hosts
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.RUNPOD_SSH_KEY }}" > ~/.ssh/runpod_key
-          chmod 600 ~/.ssh/runpod_key
-
-          # Add host to known hosts
-          ssh-keyscan -p ${{ secrets.RUNPOD_PORT }} ${{ secrets.RUNPOD_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
-
-          # Create SSH config
-          cat >> ~/.ssh/config << EOF
-          Host runpod
-            HostName ${{ secrets.RUNPOD_HOST }}
-            Port ${{ secrets.RUNPOD_PORT }}
-            User root
-            IdentityFile ~/.ssh/runpod_key
-            StrictHostKeyChecking no
-          EOF
-
-      - name: Create deployment directory
-        run: |
-          ssh runpod "mkdir -p /workspace/saas/{backend,frontend}"
+          ssh-keyscan -p ${{ env.HOSTINGER_PORT }} ${{ env.HOSTINGER_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
 
       - name: Deploy Backend
+        env:
+          SSHPASS: ${{ secrets.HOSTINGER_PASSWORD }}
         run: |
-          rsync -avz --delete \
+          sshpass -e rsync -avz --delete \
             --exclude 'vendor/' \
             --exclude 'var/' \
             --exclude '.env.local' \
             --exclude 'config/jwt/*.pem' \
             --exclude '.git/' \
-            -e "ssh" \
-            backend/ runpod:/workspace/saas/backend/
+            -e "ssh -p ${{ env.HOSTINGER_PORT }} -o StrictHostKeyChecking=no" \
+            backend/ ${{ env.HOSTINGER_USER }}@${{ env.HOSTINGER_HOST }}:~/domains/quernel-intelligence.com/backend/
 
       - name: Deploy Frontend
+        env:
+          SSHPASS: ${{ secrets.HOSTINGER_PASSWORD }}
         run: |
-          rsync -avz --delete \
-            -e "ssh" \
-            frontend/dist/ runpod:/workspace/saas/frontend/
+          sshpass -e rsync -avz --delete \
+            -e "ssh -p ${{ env.HOSTINGER_PORT }} -o StrictHostKeyChecking=no" \
+            frontend/dist/ ${{ env.HOSTINGER_USER }}@${{ env.HOSTINGER_HOST }}:~/domains/quernel-intelligence.com/public_html/
 
       - name: Post-deployment setup
+        env:
+          SSHPASS: ${{ secrets.HOSTINGER_PASSWORD }}
         run: |
-          ssh runpod 'set -e && cd /workspace/saas/backend && \
-            echo "=== Installing PHP dependencies ===" && \
-            if ! command -v php > /dev/null 2>&1; then \
-              apt-get update && \
-              apt-get install -y php8.3 php8.3-cli php8.3-pgsql php8.3-xml php8.3-mbstring php8.3-intl php8.3-uuid php8.3-curl php8.3-fpm nginx; \
-            fi && \
-            if ! command -v composer > /dev/null 2>&1; then \
-              curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer; \
-            fi && \
-            echo "=== Installing Composer packages ===" && \
-            composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev && \
-            echo "=== Setting up environment ===" && \
-            echo "APP_ENV=prod" > .env.local && \
-            echo "APP_SECRET=$(openssl rand -hex 32)" >> .env.local && \
-            echo "DATABASE_URL=postgresql://quernel:quernel_secret_2026@localhost:5432/quernel_db?serverVersion=14" >> .env.local && \
-            echo "VLLM_API_URL=http://localhost:8000/v1" >> .env.local && \
-            echo "CORS_ALLOW_ORIGIN=^https?://(localhost|127\\.0\\.0\\.1|.*\\.runpod\\.io)(:[0-9]+)?$" >> .env.local && \
-            echo "=== Generating JWT keys ===" && \
-            if [ ! -f config/jwt/private.pem ]; then \
-              mkdir -p config/jwt && \
-              JWT_PASS=$(openssl rand -hex 16) && \
-              openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096 -pass pass:$JWT_PASS && \
-              openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout -passin pass:$JWT_PASS && \
-              echo "JWT_PASSPHRASE=$JWT_PASS" >> .env.local; \
-            fi && \
-            echo "=== Running database migrations ===" && \
-            php bin/console doctrine:migrations:migrate --no-interaction --env=prod || true && \
-            echo "=== Loading fixtures if database is empty ===" && \
-            php bin/console doctrine:fixtures:load --no-interaction --env=prod --append || true && \
-            echo "=== Clearing cache ===" && \
+          sshpass -e ssh -p ${{ env.HOSTINGER_PORT }} -o StrictHostKeyChecking=no ${{ env.HOSTINGER_USER }}@${{ env.HOSTINGER_HOST }} '\
+            cd ~/domains/quernel-intelligence.com/backend && \
+            php composer.phar install --no-interaction --prefer-dist --optimize-autoloader --no-dev 2>/dev/null || composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev && \
             php bin/console cache:clear --env=prod && \
             php bin/console cache:warmup --env=prod && \
-            echo "=== Setting permissions ===" && \
-            chmod -R 777 var/ && \
-            echo "=== Deployment complete! ==="'
-
-      - name: Configure Nginx
-        run: |
-          ssh runpod 'cat > /etc/nginx/sites-available/quernel << NGINXEOF
-          server {
-              listen 8080;
-              server_name _;
-              root /workspace/saas/backend/public;
-              location / {
-                  try_files \$uri /index.php\$is_args\$args;
-              }
-              location ~ ^/index\\.php(/|\$) {
-                  fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
-                  fastcgi_split_path_info ^(.+\\.php)(/.*)$;
-                  include fastcgi_params;
-                  fastcgi_param SCRIPT_FILENAME \$realpath_root\$fastcgi_script_name;
-                  fastcgi_param DOCUMENT_ROOT \$realpath_root;
-                  internal;
-              }
-              location ~ \\.php\$ {
-                  return 404;
-              }
-          }
-          server {
-              listen 3000;
-              server_name _;
-              root /workspace/saas/frontend;
-              index index.html;
-              location / {
-                  try_files \$uri \$uri/ /index.html;
-              }
-          }
-          NGINXEOF'
-
-      - name: Start services
-        run: |
-          ssh runpod 'ln -sf /etc/nginx/sites-available/quernel /etc/nginx/sites-enabled/ && \
-            rm -f /etc/nginx/sites-enabled/default && \
-            service php8.3-fpm restart || true && \
-            service nginx restart || true && \
-            echo "Backend API: http://localhost:8080" && \
-            echo "Frontend: http://localhost:3000" && \
-            echo "vLLM: http://localhost:8000"'
-
-      - name: Cleanup
-        if: always()
-        run: rm -f ~/.ssh/runpod_key
+            chmod -R 755 var/'
 
       - name: Deployment Summary
         run: |
           echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
           echo "- **Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Deployed to:** RunPod GPU" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployed to:** Hostinger Cloud" >> $GITHUB_STEP_SUMMARY
           echo "- **Time:** $(date)" >> $GITHUB_STEP_SUMMARY
