@@ -172,7 +172,7 @@ class ChatController extends AbstractController
         ];
 
         // Get model from agent or use default
-        $model = $agent ? $agent->getModel() : '/workspace/models/Qwen2.5-32B-Instruct-AWQ';
+        $model = $agent ? $agent->getModel() : '/workspace/models/hermes-3-llama-8b';
 
         // Define available tools
         $tools = $this->getAvailableTools();
@@ -358,7 +358,7 @@ N'hésite pas à utiliser ces outils quand c'est pertinent pour répondre aux qu
         ];
 
         // Get model from agent or use default
-        $model = $agent ? $agent->getModel() : '/workspace/models/Qwen2.5-32B-Instruct-AWQ';
+        $model = $agent ? $agent->getModel() : '/workspace/models/hermes-3-llama-8b';
 
         $vllmUrl = $this->vllmApiUrl;
         $httpClient = $this->httpClient;

@@ -42,6 +42,7 @@ security:
         - { path: ^/api/plans, roles: PUBLIC_ACCESS }
         - { path: ^/api/agents/public, roles: PUBLIC_ACCESS }
         - { path: ^/api/stripe/webhook, roles: PUBLIC_ACCESS }
+        - { path: ^/api/demo, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
     role_hierarchy:

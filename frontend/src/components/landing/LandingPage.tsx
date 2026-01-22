@@ -26,6 +26,7 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/Button"
 import { PricingSection } from "@/components/pricing/PricingSection"
+import { backendApi } from "@/services/backend"
 
 // Types
 interface Agent {
@@ -267,7 +268,7 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
     document.documentElement.classList.toggle("dark", isDark)
   }, [isDark])
 
-  // Demo chat simulation
+  // Demo chat - connected to real AI via webhook
   const handleDemoSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!demoMessage.trim()) return
@@ -275,25 +276,37 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
     setIsDemoTyping(true)
     setDemoResponse("")
 
-    // Simulate typing response
-    const responses: Record<string, string> = {
-      tom: "Bonjour ! Je suis Tom, votre expert en relation client. Je peux vous aider à qualifier vos leads, planifier des rendez-vous et optimiser votre service téléphonique. Comment puis-je vous assister aujourd'hui ?",
-      john: "Salut ! Je suis John, spécialiste marketing digital. Je peux créer des stratégies de campagne, analyser vos performances et optimiser votre ROI. Quel est votre objectif marketing ?",
-      lou: "Bonjour ! Je suis Lou, experte SEO et rédaction web. Je peux optimiser votre contenu pour les moteurs de recherche et créer des textes engageants. Parlez-moi de votre projet !",
-      julia: "Bonjour ! Je suis Julia, votre conseillère juridique IA. Je maîtrise le droit français et peux vous aider avec vos contrats, la conformité RGPD et vos questions légales.",
-      elio: "Hey ! Je suis Elio, votre expert commercial. Scripts de vente, techniques de négociation, stratégies de prospection... Je suis là pour booster vos performances !",
-      charly: "Bonjour ! Je suis Charly+, votre assistant polyvalent. Que ce soit pour de la recherche, de la rédaction ou de l'organisation, je m'adapte à tous vos besoins !",
-      manue: "Bonjour ! Je suis Manue, spécialiste comptabilité et finance. Je peux vous aider avec vos analyses financières, votre optimisation fiscale et votre gestion comptable.",
-      rony: "Bonjour ! Je suis Rony, expert RH et recrutement. Gestion des talents, processus de recrutement, droit du travail... Je suis votre partenaire RH !",
-      chatbot: "Bonjour ! Je suis votre assistant service client. Je peux répondre aux questions fréquentes, gérer les réclamations et assurer un support 24/7.",
+    // System prompts for each agent
+    const systemPrompts: Record<string, string> = {
+      tom: "Tu es Tom, expert en téléphonie et relation client. Tu aides avec la qualification de leads, la prise de rendez-vous et le service client. Réponds en français de manière professionnelle et chaleureuse. Sois concis (max 3 phrases).",
+      john: "Tu es John, expert marketing digital. Tu aides avec les stratégies marketing, les campagnes pub et l'analyse de performances. Réponds en français avec des conseils actionnables. Sois concis (max 3 phrases).",
+      lou: "Tu es Lou, experte SEO et rédaction web. Tu aides avec le référencement, les mots-clés et le contenu optimisé. Réponds en français avec des conseils SEO pratiques. Sois concis (max 3 phrases).",
+      julia: "Tu es Julia, conseillère juridique IA. Tu donnes des informations générales sur le droit français, RGPD et contrats. Réponds en français avec prudence. Sois concis (max 3 phrases).",
+      elio: "Tu es Elio, expert commercial. Tu aides avec les techniques de vente, la prospection et la négociation. Réponds en français avec énergie. Sois concis (max 3 phrases).",
+      charly: "Tu es Charly+, assistant IA polyvalent. Tu peux aider sur tous les sujets. Réponds en français de manière claire et utile. Sois concis (max 3 phrases).",
+      manue: "Tu es Manue, experte comptabilité et finance. Tu donnes des informations générales sur la compta française et la fiscalité. Réponds en français avec rigueur. Sois concis (max 3 phrases).",
+      rony: "Tu es Rony, expert RH et recrutement. Tu aides avec le recrutement, le droit du travail français et la gestion des talents. Réponds en français avec professionnalisme. Sois concis (max 3 phrases).",
+      chatbot: "Tu es le chatbot service client. Tu réponds aux questions fréquentes et gères les réclamations. Réponds en français de manière concise et empathique. Sois concis (max 3 phrases).",
     }
 
-    const response = responses[activeAgent.id] || "Je suis là pour vous aider ! Comment puis-je vous assister ?"
+    try {
+      // Call real AI webhook
+      const response = await backendApi.callAIWebhook(
+        demoMessage,
+        activeAgent.id,
+        systemPrompts[activeAgent.id]
+      )
 
-    // Simulate typing effect
-    for (let i = 0; i <= response.length; i++) {
-      await new Promise((resolve) => setTimeout(resolve, 15))
-      setDemoResponse(response.slice(0, i))
+      // Typing effect for the response
+      for (let i = 0; i <= response.length; i++) {
+        await new Promise((resolve) => setTimeout(resolve, 12))
+        setDemoResponse(response.slice(0, i))
+      }
+    } catch (error) {
+      console.error("Demo chat error:", error)
+      // Fallback to simulated response if webhook fails
+      const fallback = `Bonjour ! Je suis ${activeAgent.name}. Notre service est temporairement indisponible, mais je serai bientôt prêt à vous aider !`
+      setDemoResponse(fallback)
     }
 
     setIsDemoTyping(false)
@@ -318,9 +331,11 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">Q</span>
-              </div>
+              <img
+                src="/logo-qi.png"
+                alt="QUERNEL INTELLIGENCE"
+                className="h-10 w-auto"
+              />
               <span className={`font-bold text-xl ${isDark ? "text-white" : "text-gray-900"}`}>
                 QUERNEL
               </span>
@@ -422,6 +437,19 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
                 <span className={`text-sm font-medium ${isDark ? "text-violet-300" : "text-violet-600"}`}>
                   Propulsé par l'IA française
                 </span>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                className="mb-6"
+              >
+                <img
+                  src="/logo-quernel-intelligence.png"
+                  alt="QUERNEL INTELLIGENCE"
+                  className="h-20 sm:h-24 lg:h-28 w-auto"
+                />
               </motion.div>
 
               <motion.h1
@@ -857,9 +885,11 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
             {/* Brand */}
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">Q</span>
-                </div>
+                <img
+                  src="/logo-qi.png"
+                  alt="QUERNEL INTELLIGENCE"
+                  className="h-10 w-auto"
+                />
                 <span className={`font-bold text-xl ${isDark ? "text-white" : "text-gray-900"}`}>
                   QUERNEL
                 </span>

@@ -320,6 +320,123 @@ class BackendApi {
     >("/api/plans")
   }
 
+  // === AI DEMO (Public endpoint) ===
+
+  /**
+   * Call the demo chat endpoint (public, no auth required)
+   * Uses Symfony backend which proxies to vLLM
+   */
+  async callDemoChat(message: string, agentId?: string): Promise<string> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/demo/chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message,
+          agentId: agentId || "charly",
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || `Erreur HTTP ${response.status}`)
+      }
+
+      const data = await response.json()
+      return data.response || "Désolé, je n'ai pas pu générer de réponse."
+    } catch (error) {
+      console.error("Demo chat error:", error)
+      throw error
+    }
+  }
+
+  /**
+   * Check if the demo endpoint is available
+   */
+  async checkDemoHealth(): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/demo/health`, {
+        method: "GET",
+      })
+      return response.ok
+    } catch {
+      return false
+    }
+  }
+
+  // === WEBHOOK AI (Flask on RunPod) ===
+
+  async callAIWebhook(message: string, agentId?: string, _systemPrompt?: string): Promise<string> {
+    // Primary: Flask webhook on RunPod (set up by Terminal 2)
+    const webhookUrl = import.meta.env.VITE_AI_WEBHOOK_URL || "http://localhost:5680/webhook/chat"
+
+    try {
+      const response = await fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message,
+          agentId: agentId || "charly",
+          userId: this.token ? "authenticated" : "anonymous",
+          timestamp: new Date().toISOString()
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error(`Webhook error: ${response.status}`)
+      }
+
+      const data = await response.json()
+
+      // Handle different response formats
+      if (typeof data === "string") {
+        return data
+      }
+      // Handle array response: [{"response": "..."}]
+      if (Array.isArray(data) && data.length > 0) {
+        const first = data[0]
+        if (first.response) return first.response
+        if (first.message) return first.message
+        if (first.content) return first.content
+        if (first.output) return first.output
+        if (first.text) return first.text
+        return JSON.stringify(first)
+      }
+      if (data.response) {
+        return data.response
+      }
+      if (data.message) {
+        return data.message
+      }
+      if (data.content) {
+        return data.content
+      }
+      if (data.output) {
+        return data.output
+      }
+      if (data.text) {
+        return data.text
+      }
+
+      // Return stringified data if no known field
+      return JSON.stringify(data)
+    } catch (error) {
+      console.warn("Flask webhook failed, trying Symfony fallback:", error)
+
+      // Fallback to Symfony demo endpoint
+      try {
+        return await this.callDemoChat(message, agentId)
+      } catch (fallbackError) {
+        console.error("All AI endpoints failed:", fallbackError)
+        throw new Error("Service IA temporairement indisponible. Veuillez réessayer.")
+      }
+    }
+  }
+
   // === STRIPE ===
 
   async createCheckoutSession(planSlug: string, interval: "monthly" | "yearly") {

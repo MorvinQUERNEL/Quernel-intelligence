@@ -2,10 +2,12 @@ import { useState, useRef, useEffect, useCallback } from "react"
 import { Plus, History, Sparkles, AlertCircle, Trash2 } from "lucide-react"
 import { ChatMessage, type Message } from "./ChatMessage"
 import { ChatInput } from "./ChatInput"
+import { AgentSelector } from "./AgentSelector"
 import { Button } from "@/components/ui/Button"
 import { cn } from "@/lib/utils"
 import { backendApi } from "@/services/backend"
 import { useAuthStore } from "@/stores/authStore"
+import { useAgentStore } from "@/stores/agentStore"
 
 interface Conversation {
   id: number
@@ -27,6 +29,7 @@ export function ChatInterface() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const { isAuthenticated, user } = useAuthStore()
+  const { selectedAgent } = useAgentStore()
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -126,23 +129,22 @@ export function ChatInterface() {
       setMessages((prev) => [...prev, assistantMessage])
 
       try {
-        let fullContent = ""
+        // Call the AI webhook with agent info
+        const aiResponse = await backendApi.callAIWebhook(
+          content,
+          selectedAgent?.id,
+          selectedAgent?.systemPrompt
+        )
 
-        for await (const chunk of backendApi.streamMessage(convId, content)) {
-          if (chunk.type === "content") {
-            fullContent += chunk.content
-            setMessages((prev) =>
-              prev.map((m) =>
-                m.id === assistantMessageId ? { ...m, content: fullContent } : m
-              )
-            )
-          } else if (chunk.type === "done") {
-            // Update conversation list
-            await loadConversations()
-          } else if (chunk.type === "error") {
-            throw new Error(chunk.error)
-          }
-        }
+        // Update the assistant message with the response
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantMessageId ? { ...m, content: aiResponse } : m
+          )
+        )
+
+        // Update conversation list
+        await loadConversations()
       } catch (err) {
         console.error("Error:", err)
         setError(
@@ -271,7 +273,7 @@ export function ChatInterface() {
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <header className="h-14 border-b border-[var(--color-border)] flex items-center justify-between px-4 bg-[var(--color-card)]">
+        <header className="h-16 border-b border-[var(--color-border)] flex items-center justify-between px-4 bg-[var(--color-card)]">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
@@ -281,6 +283,7 @@ export function ChatInterface() {
             >
               <History className="h-5 w-5" />
             </Button>
+            <AgentSelector isDark={true} />
             <div className="flex items-center gap-2">
               <div
                 className={cn(
@@ -292,11 +295,8 @@ export function ChatInterface() {
                     : "bg-[var(--color-destructive)]"
                 )}
               />
-              <span className="font-medium text-[var(--color-foreground)]">
-                QUERNEL IA
-              </span>
               <span className="text-xs text-[var(--color-muted-foreground)] px-2 py-0.5 rounded-full bg-[var(--color-muted)]">
-                Qwen2.5-32B
+                En ligne
               </span>
             </div>
           </div>
