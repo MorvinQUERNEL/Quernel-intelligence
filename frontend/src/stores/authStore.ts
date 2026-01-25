@@ -60,6 +60,9 @@ export const useAuthStore = create<AuthState>()(
           // Récupérer les infos utilisateur
           const user = await backendApi.getMe()
 
+          // Définir le userId pour l'API IA
+          backendApi.setUserId(user.id.toString())
+
           set({
             user,
             token: response.token,
@@ -85,6 +88,9 @@ export const useAuthStore = create<AuthState>()(
           // Récupérer les infos utilisateur complètes
           const user = await backendApi.getMe()
 
+          // Définir le userId pour l'API IA
+          backendApi.setUserId(user.id.toString())
+
           set({
             user,
             token: response.token,
@@ -105,6 +111,9 @@ export const useAuthStore = create<AuthState>()(
 
           backendApi.setToken(response.token)
           const user = await backendApi.getMe()
+
+          // Définir le userId pour l'API IA
+          backendApi.setUserId(user.id.toString())
 
           set({
             user,
@@ -127,6 +136,9 @@ export const useAuthStore = create<AuthState>()(
           backendApi.setToken(response.token)
           const user = await backendApi.getMe()
 
+          // Définir le userId pour l'API IA
+          backendApi.setUserId(user.id.toString())
+
           set({
             user,
             token: response.token,
@@ -141,6 +153,7 @@ export const useAuthStore = create<AuthState>()(
 
       logout: () => {
         backendApi.setToken(null)
+        backendApi.setUserId(null)
         set({
           user: null,
           token: null,
@@ -172,12 +185,16 @@ export const useAuthStore = create<AuthState>()(
           // Valider le token en récupérant l'utilisateur
           const user = await backendApi.getMe()
 
+          // Définir le userId pour l'API IA
+          backendApi.setUserId(user.id.toString())
+
           set({
             user,
             isAuthenticated: true,
           })
         } catch {
           backendApi.setToken(null)
+          backendApi.setUserId(null)
           set({ isAuthenticated: false, user: null, token: null })
         }
       },

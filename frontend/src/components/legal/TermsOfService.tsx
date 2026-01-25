@@ -36,9 +36,10 @@ export function TermsOfService({ onNavigateBack }: TermsOfServiceProps) {
       <h2>3. Description des services</h2>
       <p>QUERNEL INTELLIGENCE propose :</p>
       <ul>
-        <li><strong>9 Agents IA spécialisés :</strong> Tom (Téléphonie), John (Marketing), Lou (SEO), Julia (Juridique), Elio (Commercial), Charly+ (Général), Manue (Comptabilité), Rony (RH), Chatbot (Service Client)</li>
+        <li><strong>3 Anges IA experts :</strong> Raphaël (Assistant Général), Gabriel (Expert Marketing), Michaël (Expert Commercial)</li>
+        <li><strong>Contexte partagé</strong> entre les agents pour une synergie optimale</li>
         <li><strong>Conversations illimitées</strong> selon votre plan</li>
-        <li><strong>Historique et exports</strong> de vos échanges</li>
+        <li><strong>Historique chiffré</strong> et exports de vos échanges</li>
         <li><strong>API d'intégration</strong> pour les plans Pro et supérieurs</li>
       </ul>
 
@@ -140,8 +141,7 @@ export function TermsOfService({ onNavigateBack }: TermsOfServiceProps) {
         garantir l'exactitude, l'exhaustivité ou l'actualité des réponses générées. En particulier :
       </p>
       <ul>
-        <li><strong>Agent Julia (Juridique) :</strong> ne remplace pas un avocat ou conseiller juridique professionnel</li>
-        <li><strong>Agent Manue (Comptabilité) :</strong> ne remplace pas un expert-comptable</li>
+        <li><strong>Raphaël, Gabriel et Michaël :</strong> fournissent des informations générales et des conseils, mais ne remplacent pas des professionnels qualifiés (avocats, experts-comptables, etc.)</li>
         <li><strong>Tous les agents :</strong> les réponses doivent être vérifiées avant toute décision importante</li>
       </ul>
 

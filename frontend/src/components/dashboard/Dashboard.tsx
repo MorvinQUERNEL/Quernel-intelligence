@@ -8,13 +8,8 @@ import {
   Bot,
   ArrowUpRight,
   ArrowDownRight,
-  Phone,
-  FileText,
-  Scale,
   Users,
   Sparkles,
-  Calculator,
-  Briefcase,
   Download,
   RefreshCw,
 } from "lucide-react"
@@ -134,17 +129,11 @@ function UsageBar({ label, used, total, color, icon: Icon }: UsageBarProps) {
   )
 }
 
-// Agent data with icons
+// Les 3 Anges - Agent data with icons
 const agents = [
-  { id: "tom", name: "Tom", role: "Téléphonie", icon: Phone, color: "from-teal-400 to-cyan-500", usage: 23 },
-  { id: "john", name: "John", role: "Marketing", icon: TrendingUp, color: "from-pink-500 to-rose-500", usage: 45 },
-  { id: "lou", name: "Lou", role: "SEO", icon: FileText, color: "from-violet-500 to-purple-600", usage: 18 },
-  { id: "julia", name: "Julia", role: "Juridique", icon: Scale, color: "from-amber-500 to-orange-500", usage: 31 },
-  { id: "elio", name: "Elio", role: "Commercial", icon: Users, color: "from-emerald-500 to-green-600", usage: 27 },
-  { id: "charly", name: "Charly+", role: "Général", icon: Sparkles, color: "from-blue-500 to-indigo-600", usage: 56 },
-  { id: "manue", name: "Manue", role: "Comptabilité", icon: Calculator, color: "from-slate-500 to-gray-600", usage: 12 },
-  { id: "rony", name: "Rony", role: "RH", icon: Briefcase, color: "from-red-500 to-rose-600", usage: 8 },
-  { id: "chatbot", name: "Chatbot", role: "Service Client", icon: MessageSquare, color: "from-cyan-500 to-blue-500", usage: 34 },
+  { id: "raphael", name: "Raphaël", role: "Général", icon: Sparkles, color: "from-violet-500 to-purple-600", usage: 56 },
+  { id: "gabriel", name: "Gabriel", role: "Marketing", icon: TrendingUp, color: "from-pink-500 to-rose-500", usage: 45 },
+  { id: "michael", name: "Michaël", role: "Commercial", icon: Users, color: "from-emerald-500 to-green-600", usage: 32 },
 ]
 
 interface ConversationData {

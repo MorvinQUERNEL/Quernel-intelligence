@@ -2,15 +2,9 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   Bot,
-  Phone,
   TrendingUp,
-  FileText,
-  Scale,
   Users,
   Sparkles,
-  Calculator,
-  Briefcase,
-  MessageSquare,
   Star,
   ArrowRight,
   Menu,
@@ -53,88 +47,34 @@ interface FAQItem {
   answer: string
 }
 
-// Data
+// Data - Les 3 Anges de QUERNEL INTELLIGENCE
 const agents: Agent[] = [
   {
-    id: "tom",
-    name: "Tom",
-    role: "Téléphonie & Relation Client",
-    description: "Gestion des appels, qualification des leads, prise de rendez-vous automatisée",
-    color: "from-teal-400 to-cyan-500",
-    gradient: "bg-gradient-to-br from-teal-400 to-cyan-500",
-    icon: <Phone className="w-6 h-6" />,
+    id: "raphael",
+    name: "Raphaël",
+    role: "Assistant Général",
+    description: "Ange guérisseur - Assistant polyvalent pour l'organisation, la rédaction et la productivité",
+    color: "from-violet-500 to-purple-600",
+    gradient: "bg-gradient-to-br from-violet-500 to-purple-600",
+    icon: <Sparkles className="w-6 h-6" />,
   },
   {
-    id: "john",
-    name: "John",
-    role: "Marketing Digital",
-    description: "Stratégies marketing, campagnes publicitaires, analyse des performances",
+    id: "gabriel",
+    name: "Gabriel",
+    role: "Expert Marketing",
+    description: "Ange messager - Stratégies marketing, SEO, contenu et communication digitale",
     color: "from-pink-500 to-rose-500",
     gradient: "bg-gradient-to-br from-pink-500 to-rose-500",
     icon: <TrendingUp className="w-6 h-6" />,
   },
   {
-    id: "lou",
-    name: "Lou",
-    role: "SEO & Rédaction Web",
-    description: "Optimisation SEO, création de contenu, stratégie éditoriale",
-    color: "from-violet-500 to-purple-600",
-    gradient: "bg-gradient-to-br from-violet-500 to-purple-600",
-    icon: <FileText className="w-6 h-6" />,
-  },
-  {
-    id: "julia",
-    name: "Julia",
-    role: "Conseil Juridique",
-    description: "Expertise en droit français, rédaction de contrats, conformité RGPD",
-    color: "from-amber-500 to-orange-500",
-    gradient: "bg-gradient-to-br from-amber-500 to-orange-500",
-    icon: <Scale className="w-6 h-6" />,
-  },
-  {
-    id: "elio",
-    name: "Elio",
-    role: "Commercial & Prospection",
-    description: "Stratégies de vente, scripts commerciaux, techniques de négociation",
+    id: "michael",
+    name: "Michaël",
+    role: "Expert Commercial",
+    description: "Ange protecteur - Vente, prospection, négociation et développement commercial",
     color: "from-emerald-500 to-green-600",
     gradient: "bg-gradient-to-br from-emerald-500 to-green-600",
     icon: <Users className="w-6 h-6" />,
-  },
-  {
-    id: "charly",
-    name: "Charly+",
-    role: "Assistant Général",
-    description: "Assistant polyvalent pour toutes vos questions et tâches quotidiennes",
-    color: "from-blue-500 to-indigo-600",
-    gradient: "bg-gradient-to-br from-blue-500 to-indigo-600",
-    icon: <Sparkles className="w-6 h-6" />,
-  },
-  {
-    id: "manue",
-    name: "Manue",
-    role: "Comptabilité & Finance",
-    description: "Gestion comptable, analyse financière, optimisation fiscale",
-    color: "from-slate-500 to-gray-600",
-    gradient: "bg-gradient-to-br from-slate-500 to-gray-600",
-    icon: <Calculator className="w-6 h-6" />,
-  },
-  {
-    id: "rony",
-    name: "Rony",
-    role: "RH & Recrutement",
-    description: "Gestion des talents, processus de recrutement, droit du travail",
-    color: "from-red-500 to-rose-600",
-    gradient: "bg-gradient-to-br from-red-500 to-rose-600",
-    icon: <Briefcase className="w-6 h-6" />,
-  },
-  {
-    id: "chatbot",
-    name: "Chatbot",
-    role: "Service Client",
-    description: "Support client 24/7, FAQ automatisée, gestion des réclamations",
-    color: "from-cyan-500 to-blue-500",
-    gradient: "bg-gradient-to-br from-cyan-500 to-blue-500",
-    icon: <MessageSquare className="w-6 h-6" />,
   },
 ]
 
@@ -143,7 +83,7 @@ const testimonials: Testimonial[] = [
     name: "Marie Dubois",
     role: "Directrice Marketing",
     company: "TechStart SAS",
-    content: "QUERNEL INTELLIGENCE a transformé notre approche marketing. John nous a permis de doubler notre ROI publicitaire en 3 mois. Un outil indispensable !",
+    content: "Gabriel a transformé notre approche marketing. Notre ROI publicitaire a doublé en 3 mois grâce à ses stratégies SEO et contenu. Un outil indispensable !",
     avatar: "MD",
     rating: 5,
   },
@@ -151,7 +91,7 @@ const testimonials: Testimonial[] = [
     name: "Pierre Martin",
     role: "CEO",
     company: "LegalTech Pro",
-    content: "Julia nous fait gagner un temps précieux sur la rédaction de contrats. La qualité du conseil juridique est impressionnante pour une IA.",
+    content: "Raphaël nous accompagne au quotidien. Son aide polyvalente nous fait gagner un temps précieux sur toutes nos tâches administratives.",
     avatar: "PM",
     rating: 5,
   },
@@ -159,7 +99,7 @@ const testimonials: Testimonial[] = [
     name: "Sophie Laurent",
     role: "Responsable Commercial",
     company: "GrowthLab",
-    content: "Elio a révolutionné notre processus de prospection. Nos commerciaux sont 3x plus efficaces grâce aux scripts personnalisés.",
+    content: "Michaël a révolutionné notre processus de prospection. Nos commerciaux sont 3x plus efficaces grâce aux scripts personnalisés.",
     avatar: "SL",
     rating: 5,
   },
@@ -167,7 +107,7 @@ const testimonials: Testimonial[] = [
     name: "Thomas Bernard",
     role: "DAF",
     company: "FinanceFirst",
-    content: "Manue est devenue notre assistante comptable virtuelle. Analyse financière précise et conseils fiscaux pertinents.",
+    content: "Les 3 anges travaillent en synergie : Raphaël organise, Gabriel communique, et Michaël conclut. Une équipe IA parfaite !",
     avatar: "TB",
     rating: 5,
   },
@@ -176,11 +116,11 @@ const testimonials: Testimonial[] = [
 const faqItems: FAQItem[] = [
   {
     question: "Qu'est-ce que QUERNEL INTELLIGENCE ?",
-    answer: "QUERNEL INTELLIGENCE est une plateforme SaaS française proposant 9 agents IA spécialisés pour accompagner les entreprises dans leurs tâches quotidiennes : marketing, juridique, comptabilité, RH, commercial, et plus encore.",
+    answer: "QUERNEL INTELLIGENCE est une plateforme SaaS française proposant 3 anges IA experts qui travaillent en synergie : Raphaël (assistant général), Gabriel (marketing) et Michaël (commercial).",
   },
   {
     question: "Mes données sont-elles sécurisées ?",
-    answer: "Absolument. Toutes vos données sont hébergées en France, conformément au RGPD. Nous utilisons un chiffrement de bout en bout et ne partageons jamais vos informations avec des tiers.",
+    answer: "Absolument. Toutes vos données sont hébergées en France, conformément au RGPD. Nous utilisons un chiffrement AES-256 de bout en bout et ne partageons jamais vos informations avec des tiers.",
   },
   {
     question: "Puis-je essayer gratuitement ?",
@@ -188,15 +128,15 @@ const faqItems: FAQItem[] = [
   },
   {
     question: "Combien coûte l'abonnement ?",
-    answer: "Notre offre Pro est à 129,99€/mois et inclut un accès illimité aux 9 agents IA, le support prioritaire, et des intégrations avancées.",
+    answer: "Notre offre Pro est à 129,99€/mois et inclut un accès illimité aux 3 anges IA, le contexte partagé entre agents, le support prioritaire, et des intégrations avancées.",
   },
   {
-    question: "Les agents peuvent-ils s'intégrer à mes outils existants ?",
-    answer: "Oui, nous proposons des intégrations avec Slack, Teams, Salesforce, HubSpot, et bien d'autres via notre API et nos webhooks.",
+    question: "Les anges se partagent-ils des informations ?",
+    answer: "Oui ! C'est notre force. Les 3 anges partagent un contexte utilisateur commun. Si vous parlez de votre entreprise à Raphaël, Gabriel et Michaël le sauront aussi.",
   },
   {
     question: "Quelle est la différence avec ChatGPT ?",
-    answer: "Nos agents sont spécialisés et pré-entraînés pour des tâches métier spécifiques. Ils connaissent le droit français, les pratiques comptables locales, et sont optimisés pour le contexte des entreprises françaises.",
+    answer: "Nos anges travaillent en synergie avec un contexte partagé. Ils sont spécialisés et optimisés pour les entreprises françaises. Ils se souviennent de vous et s'améliorent continuellement.",
   },
 ]
 
@@ -213,8 +153,8 @@ const features = [
   },
   {
     icon: <Globe className="w-6 h-6" />,
-    title: "9 Experts IA",
-    description: "Des agents spécialisés pour chaque besoin de votre entreprise",
+    title: "3 Anges IA",
+    description: "Des experts qui travaillent en synergie avec un contexte partagé",
   },
   {
     icon: <Clock className="w-6 h-6" />,
@@ -276,17 +216,11 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
     setIsDemoTyping(true)
     setDemoResponse("")
 
-    // System prompts for each agent
+    // System prompts for each angel
     const systemPrompts: Record<string, string> = {
-      tom: "Tu es Tom, expert en téléphonie et relation client. Tu aides avec la qualification de leads, la prise de rendez-vous et le service client. Réponds en français de manière professionnelle et chaleureuse. Sois concis (max 3 phrases).",
-      john: "Tu es John, expert marketing digital. Tu aides avec les stratégies marketing, les campagnes pub et l'analyse de performances. Réponds en français avec des conseils actionnables. Sois concis (max 3 phrases).",
-      lou: "Tu es Lou, experte SEO et rédaction web. Tu aides avec le référencement, les mots-clés et le contenu optimisé. Réponds en français avec des conseils SEO pratiques. Sois concis (max 3 phrases).",
-      julia: "Tu es Julia, conseillère juridique IA. Tu donnes des informations générales sur le droit français, RGPD et contrats. Réponds en français avec prudence. Sois concis (max 3 phrases).",
-      elio: "Tu es Elio, expert commercial. Tu aides avec les techniques de vente, la prospection et la négociation. Réponds en français avec énergie. Sois concis (max 3 phrases).",
-      charly: "Tu es Charly+, assistant IA polyvalent. Tu peux aider sur tous les sujets. Réponds en français de manière claire et utile. Sois concis (max 3 phrases).",
-      manue: "Tu es Manue, experte comptabilité et finance. Tu donnes des informations générales sur la compta française et la fiscalité. Réponds en français avec rigueur. Sois concis (max 3 phrases).",
-      rony: "Tu es Rony, expert RH et recrutement. Tu aides avec le recrutement, le droit du travail français et la gestion des talents. Réponds en français avec professionnalisme. Sois concis (max 3 phrases).",
-      chatbot: "Tu es le chatbot service client. Tu réponds aux questions fréquentes et gères les réclamations. Réponds en français de manière concise et empathique. Sois concis (max 3 phrases).",
+      raphael: "Tu es Raphaël, l'ange guérisseur de QUERNEL INTELLIGENCE. Tu es un assistant polyvalent qui aide sur l'organisation, la rédaction et la productivité. Réponds en français de manière claire et bienveillante. Sois concis (max 3 phrases).",
+      gabriel: "Tu es Gabriel, l'ange messager de QUERNEL INTELLIGENCE. Tu es l'expert marketing : stratégies, SEO, contenu, publicité. Réponds en français avec des conseils actionnables. Sois concis (max 3 phrases).",
+      michael: "Tu es Michaël, l'ange protecteur de QUERNEL INTELLIGENCE. Tu es l'expert commercial : vente, prospection, négociation. Réponds en français avec énergie et des conseils terrain. Sois concis (max 3 phrases).",
     }
 
     try {
@@ -336,8 +270,8 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
                 alt="QUERNEL INTELLIGENCE"
                 className="h-10 w-auto"
               />
-              <span className={`font-bold text-xl ${isDark ? "text-white" : "text-gray-900"}`}>
-                QUERNEL
+              <span className={`font-bold text-lg ${isDark ? "text-white" : "text-gray-900"}`}>
+                QUERNEL INTELLIGENCE
               </span>
             </div>
 
@@ -890,8 +824,8 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
                   alt="QUERNEL INTELLIGENCE"
                   className="h-10 w-auto"
                 />
-                <span className={`font-bold text-xl ${isDark ? "text-white" : "text-gray-900"}`}>
-                  QUERNEL
+                <span className={`font-bold text-lg ${isDark ? "text-white" : "text-gray-900"}`}>
+                  QUERNEL INTELLIGENCE
                 </span>
               </div>
               <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>

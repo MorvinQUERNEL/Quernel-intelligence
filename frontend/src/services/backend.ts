@@ -1,9 +1,31 @@
 // Backend API Symfony
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000"
 
+// Types pour l'historique IA
+export interface AIConversationMessage {
+  timestamp: string
+  user_id: string
+  agent_id: string
+  message: string
+  response: string
+}
+
+export interface AIHistoryByAgent {
+  [agentId: string]: AIConversationMessage[]
+}
+
+export interface AIUserStats {
+  total_messages?: number
+  conversations_by_agent?: { [agentId: string]: number }
+  total_conversations?: number
+  [key: string]: number | { [agentId: string]: number } | undefined
+}
+
 class BackendApi {
   private baseUrl: string
   private token: string | null = null
+  private userId: string | null = null
+  private aiToken: string | null = null
 
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl
@@ -15,6 +37,16 @@ class BackendApi {
 
   getToken(): string | null {
     return this.token
+  }
+
+  setUserId(userId: string | null) {
+    this.userId = userId
+    // Reset AI token when user changes
+    this.aiToken = null
+  }
+
+  getUserId(): string | null {
+    return this.userId
   }
 
   private async request<T>(
@@ -335,7 +367,7 @@ class BackendApi {
         },
         body: JSON.stringify({
           message,
-          agentId: agentId || "charly",
+          agentId: agentId || "raphael",
         }),
       })
 
@@ -380,8 +412,8 @@ class BackendApi {
         },
         body: JSON.stringify({
           message,
-          agentId: agentId || "charly",
-          userId: this.token ? "authenticated" : "anonymous",
+          agentId: agentId || "raphael",
+          userId: this.userId || "anonymous",
           timestamp: new Date().toISOString()
         }),
       })
@@ -474,6 +506,179 @@ class BackendApi {
     return this.request<{ message: string }>("/api/stripe/subscription/resume", {
       method: "POST",
     })
+  }
+
+  // === AI HISTORY (RunPod Flask Server v6) ===
+
+  private getAIWebhookBaseUrl(): string {
+    return import.meta.env.VITE_AI_WEBHOOK_URL?.replace("/webhook/chat", "") || "http://localhost:5680"
+  }
+
+  /**
+   * Get AI token for history API authentication
+   */
+  async getAIToken(): Promise<string | null> {
+    if (!this.userId) return null
+    if (this.aiToken) return this.aiToken
+
+    try {
+      const response = await fetch(`${this.getAIWebhookBaseUrl()}/api/auth/token`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: this.userId,
+          backendKey: "quernel-secret-key-2026-secure"
+        }),
+      })
+
+      if (!response.ok) return null
+
+      const data = await response.json()
+      this.aiToken = data.token
+      return this.aiToken
+    } catch {
+      return null
+    }
+  }
+
+  /**
+   * Get all AI conversation history for current user
+   */
+  async getAIHistory(): Promise<{
+    userId: string
+    conversations: AIHistoryByAgent
+    stats: AIUserStats
+  } | null> {
+    if (!this.userId) return null
+
+    const token = await this.getAIToken()
+    if (!token) return null
+
+    try {
+      const response = await fetch(`${this.getAIWebhookBaseUrl()}/api/history/${this.userId}`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      })
+
+      if (!response.ok) return null
+      return response.json()
+    } catch {
+      return null
+    }
+  }
+
+  /**
+   * Get AI conversation history for a specific agent
+   */
+  async getAIAgentHistory(agentId: string): Promise<{
+    userId: string
+    agentId: string
+    history: AIConversationMessage[]
+  } | null> {
+    if (!this.userId) return null
+
+    const token = await this.getAIToken()
+    if (!token) return null
+
+    try {
+      const response = await fetch(`${this.getAIWebhookBaseUrl()}/api/history/${this.userId}/${agentId}`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      })
+
+      if (!response.ok) return null
+      return response.json()
+    } catch {
+      return null
+    }
+  }
+
+  /**
+   * Delete all AI conversation history for current user
+   */
+  async deleteAllAIHistory(): Promise<{
+    success: boolean
+    message: string
+    deletedCount: number
+  } | null> {
+    if (!this.userId) return null
+
+    const token = await this.getAIToken()
+    if (!token) return null
+
+    try {
+      const response = await fetch(`${this.getAIWebhookBaseUrl()}/api/history/${this.userId}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      })
+
+      if (!response.ok) return null
+      return response.json()
+    } catch {
+      return null
+    }
+  }
+
+  /**
+   * Delete AI conversation history for a specific agent
+   */
+  async deleteAgentAIHistory(agentId: string): Promise<{
+    success: boolean
+    message: string
+    agentId: string
+    deletedCount: number
+  } | null> {
+    if (!this.userId) return null
+
+    const token = await this.getAIToken()
+    if (!token) return null
+
+    try {
+      const response = await fetch(`${this.getAIWebhookBaseUrl()}/api/history/${this.userId}/${agentId}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      })
+
+      if (!response.ok) return null
+      return response.json()
+    } catch {
+      return null
+    }
+  }
+
+  /**
+   * Get AI usage stats for current user
+   */
+  async getAIStats(): Promise<{
+    userId: string
+    stats: AIUserStats
+  } | null> {
+    if (!this.userId) return null
+
+    const token = await this.getAIToken()
+    if (!token) return null
+
+    try {
+      const response = await fetch(`${this.getAIWebhookBaseUrl()}/api/stats/${this.userId}`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      })
+
+      if (!response.ok) return null
+      return response.json()
+    } catch {
+      return null
+    }
   }
 }
 

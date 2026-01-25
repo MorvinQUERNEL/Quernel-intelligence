@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from "react"
-import { Plus, History, Sparkles, AlertCircle, Trash2 } from "lucide-react"
+import { Plus, History, Sparkles, AlertCircle, Trash2, Clock } from "lucide-react"
 import { ChatMessage, type Message } from "./ChatMessage"
 import { ChatInput } from "./ChatInput"
 import { AgentSelector } from "./AgentSelector"
+import { AIHistoryPanel } from "./AIHistoryPanel"
 import { Button } from "@/components/ui/Button"
 import { cn } from "@/lib/utils"
 import { backendApi } from "@/services/backend"
@@ -24,6 +25,7 @@ export function ChatInterface() {
   const [currentConversationId, setCurrentConversationId] = useState<number | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [showHistory, setShowHistory] = useState(false)
+  const [showAIHistory, setShowAIHistory] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isConnected, setIsConnected] = useState<boolean | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -43,11 +45,53 @@ export function ChatInterface() {
   useEffect(() => {
     if (isAuthenticated) {
       loadConversations()
+      loadAIHistory()
       setIsConnected(true)
     } else {
       setIsConnected(false)
     }
   }, [isAuthenticated])
+
+  // Load AI history from RunPod and restore last conversation
+  const loadAIHistory = async () => {
+    try {
+      const history = await backendApi.getAIHistory()
+      if (history && history.conversations) {
+        // Get current agent's history
+        const agentId = selectedAgent?.id || "raphael"
+        const agentHistory = history.conversations[agentId]
+        if (agentHistory && agentHistory.length > 0) {
+          // Convert to Message format and load last 10 messages
+          const restoredMessages: Message[] = []
+          agentHistory.slice(-10).forEach((conv) => {
+            restoredMessages.push({
+              id: `ai-user-${conv.timestamp}`,
+              role: "user",
+              content: conv.message,
+              timestamp: new Date(conv.timestamp),
+            })
+            restoredMessages.push({
+              id: `ai-assistant-${conv.timestamp}`,
+              role: "assistant",
+              content: conv.response,
+              timestamp: new Date(conv.timestamp),
+            })
+          })
+          setMessages(restoredMessages)
+        }
+      }
+    } catch (err) {
+      console.error("Error loading AI history:", err)
+    }
+  }
+
+  // Reload history when agent changes
+  useEffect(() => {
+    if (isAuthenticated && selectedAgent) {
+      loadAIHistory()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedAgent?.id])
 
   const loadConversations = async () => {
     try {
@@ -300,12 +344,24 @@ export function ChatInterface() {
               </span>
             </div>
           </div>
-          {!isAuthenticated && (
-            <span className="text-xs text-[var(--color-destructive)] flex items-center gap-1">
-              <AlertCircle className="w-3 h-3" />
-              Non connecte
-            </span>
-          )}
+          <div className="flex items-center gap-2">
+            {isAuthenticated && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowAIHistory(true)}
+                title="Historique IA"
+              >
+                <Clock className="h-5 w-5" />
+              </Button>
+            )}
+            {!isAuthenticated && (
+              <span className="text-xs text-[var(--color-destructive)] flex items-center gap-1">
+                <AlertCircle className="w-3 h-3" />
+                Non connecte
+              </span>
+            )}
+          </div>
         </header>
 
         {/* Error Banner */}
@@ -404,6 +460,12 @@ export function ChatInterface() {
           disabled={!isAuthenticated}
         />
       </div>
+
+      {/* AI History Panel */}
+      <AIHistoryPanel
+        isOpen={showAIHistory}
+        onClose={() => setShowAIHistory(false)}
+      />
     </div>
   )
 }
