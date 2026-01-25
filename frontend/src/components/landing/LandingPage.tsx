@@ -264,15 +264,12 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center">
               <img
-                src="/logo-qi.png"
+                src="/logo-quernel-intelligence.png"
                 alt="QUERNEL INTELLIGENCE"
-                className="h-10 w-auto"
+                className="h-10 sm:h-12 w-auto"
               />
-              <span className={`font-bold text-lg ${isDark ? "text-white" : "text-gray-900"}`}>
-                QUERNEL INTELLIGENCE
-              </span>
             </div>
 
             {/* Desktop Navigation */}
@@ -371,19 +368,6 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
                 <span className={`text-sm font-medium ${isDark ? "text-violet-300" : "text-violet-600"}`}>
                   Propulsé par l'IA française
                 </span>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: 0.25, duration: 0.6 }}
-                className="mb-8"
-              >
-                <img
-                  src="/logo-quernel-intelligence.png"
-                  alt="QUERNEL INTELLIGENCE"
-                  className="h-32 sm:h-40 lg:h-48 xl:h-56 w-auto max-w-full drop-shadow-2xl"
-                />
               </motion.div>
 
               <motion.h1
@@ -817,15 +801,12 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             {/* Brand */}
             <div>
-              <div className="flex items-center gap-2 mb-4">
+              <div className="mb-4">
                 <img
-                  src="/logo-qi.png"
+                  src="/logo-quernel-intelligence.png"
                   alt="QUERNEL INTELLIGENCE"
                   className="h-10 w-auto"
                 />
-                <span className={`font-bold text-lg ${isDark ? "text-white" : "text-gray-900"}`}>
-                  QUERNEL INTELLIGENCE
-                </span>
               </div>
               <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>
                 L'intelligence artificielle au service des entreprises françaises.
