@@ -179,6 +179,8 @@ jobs:
             composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --ignore-platform-reqs && \
             php bin/console cache:clear --env=prod --no-warmup && \
             php bin/console cache:warmup --env=prod && \
+            php bin/console doctrine:migrations:migrate --no-interaction && \
+            php bin/console app:create-test-users && \
             chmod -R 755 var/'
 
       - name: Deployment Summary
