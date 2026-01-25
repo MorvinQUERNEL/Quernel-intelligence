@@ -5,6 +5,7 @@ import { Dashboard } from "@/components/dashboard/Dashboard"
 import { AdminDashboard } from "@/components/admin/AdminDashboard"
 import { LoginPage } from "@/components/auth/LoginPage"
 import { RegisterPage } from "@/components/auth/RegisterPage"
+import { BetaAccessGate } from "@/components/auth/BetaAccessGate"
 import { LandingPage } from "@/components/landing/LandingPage"
 import { PricingPage } from "@/components/pricing/PricingPage"
 import { BillingPage } from "@/components/billing/BillingPage"
@@ -19,7 +20,7 @@ import { useAuthStore } from "@/stores/authStore"
 
 type AppView = "landing" | "login" | "register" | "pricing" | "privacy" | "terms" | "legal" | "cookies" | "app"
 
-function App() {
+function AppContent() {
   const [currentPath, setCurrentPath] = useState("/chat")
   const [hashView, setHashView] = useState<string | null>(null)
 
@@ -292,6 +293,14 @@ function App() {
       <CookiePreferences isDark={false} />
       <ToastContainer />
     </>
+  )
+}
+
+function App() {
+  return (
+    <BetaAccessGate>
+      <AppContent />
+    </BetaAccessGate>
   )
 }
 
