@@ -374,15 +374,15 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25 }}
-                className="mb-6"
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 0.25, duration: 0.6 }}
+                className="mb-8"
               >
                 <img
                   src="/logo-quernel-intelligence.png"
                   alt="QUERNEL INTELLIGENCE"
-                  className="h-20 sm:h-24 lg:h-28 w-auto"
+                  className="h-32 sm:h-40 lg:h-48 xl:h-56 w-auto max-w-full drop-shadow-2xl"
                 />
               </motion.div>
 

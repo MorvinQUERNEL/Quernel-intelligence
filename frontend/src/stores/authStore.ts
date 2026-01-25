@@ -1,6 +1,7 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { backendApi } from "../services/backend"
+import { toast } from "./toastStore"
 
 export interface User {
   id: number
@@ -69,8 +70,12 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: true,
             isLoading: false,
           })
+
+          toast.success("Connexion reussie", `Bienvenue ${user.firstName} !`)
         } catch (error) {
           set({ isLoading: false })
+          const message = error instanceof Error ? error.message : "Email ou mot de passe incorrect"
+          toast.error("Echec de connexion", message)
           throw error
         }
       },
@@ -97,8 +102,12 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: true,
             isLoading: false,
           })
+
+          toast.success("Compte cree", `Bienvenue ${user.firstName} ! Votre essai gratuit de 7 jours commence maintenant.`)
         } catch (error) {
           set({ isLoading: false })
+          const message = error instanceof Error ? error.message : "Erreur lors de l'inscription"
+          toast.error("Echec de l'inscription", message)
           throw error
         }
       },
@@ -121,8 +130,11 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: true,
             isLoading: false,
           })
+
+          toast.success("Connexion reussie", `Bienvenue ${user.firstName} !`)
         } catch (error) {
           set({ isLoading: false })
+          toast.error("Echec de connexion Google", "Une erreur est survenue lors de la connexion avec Google")
           throw error
         }
       },
@@ -145,8 +157,11 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: true,
             isLoading: false,
           })
+
+          toast.success("Connexion reussie", `Bienvenue ${user.firstName} !`)
         } catch (error) {
           set({ isLoading: false })
+          toast.error("Echec de connexion Apple", "Une erreur est survenue lors de la connexion avec Apple")
           throw error
         }
       },
@@ -159,6 +174,7 @@ export const useAuthStore = create<AuthState>()(
           token: null,
           isAuthenticated: false,
         })
+        toast.info("Deconnexion", "Vous avez ete deconnecte avec succes")
       },
 
       updateUser: (userData) => {
@@ -172,6 +188,7 @@ export const useAuthStore = create<AuthState>()(
 
       checkAuth: async () => {
         const token = get().token
+        const wasAuthenticated = get().isAuthenticated
 
         if (!token) {
           set({ isAuthenticated: false, user: null })
@@ -196,6 +213,11 @@ export const useAuthStore = create<AuthState>()(
           backendApi.setToken(null)
           backendApi.setUserId(null)
           set({ isAuthenticated: false, user: null, token: null })
+
+          // Only show session expired toast if user was previously authenticated
+          if (wasAuthenticated) {
+            toast.warning("Session expiree", "Veuillez vous reconnecter")
+          }
         }
       },
     }),

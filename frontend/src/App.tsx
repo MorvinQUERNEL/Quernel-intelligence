@@ -14,6 +14,7 @@ import { LegalMentions } from "@/components/legal/LegalMentions"
 import { CookiePolicy } from "@/components/legal/CookiePolicy"
 import { CookieConsent } from "@/components/cookies/CookieConsent"
 import { CookiePreferences } from "@/components/cookies/CookiePreferences"
+import { ToastContainer } from "@/components/ui/Toast"
 import { useAuthStore } from "@/stores/authStore"
 
 type AppView = "landing" | "login" | "register" | "pricing" | "privacy" | "terms" | "legal" | "cookies" | "app"
@@ -133,6 +134,7 @@ function App() {
         <PrivacyPolicy onNavigateBack={handleNavigateToLanding} />
         <CookieConsent isDark={isDark} />
         <CookiePreferences isDark={isDark} />
+        <ToastContainer />
       </>
     )
   }
@@ -144,6 +146,7 @@ function App() {
         <TermsOfService onNavigateBack={handleNavigateToLanding} />
         <CookieConsent isDark={isDark} />
         <CookiePreferences isDark={isDark} />
+        <ToastContainer />
       </>
     )
   }
@@ -155,6 +158,7 @@ function App() {
         <LegalMentions onNavigateBack={handleNavigateToLanding} />
         <CookieConsent isDark={isDark} />
         <CookiePreferences isDark={isDark} />
+        <ToastContainer />
       </>
     )
   }
@@ -166,6 +170,7 @@ function App() {
         <CookiePolicy onNavigateBack={handleNavigateToLanding} />
         <CookieConsent isDark={isDark} />
         <CookiePreferences isDark={isDark} />
+        <ToastContainer />
       </>
     )
   }
@@ -180,6 +185,7 @@ function App() {
         />
         <CookieConsent isDark={isDark} />
         <CookiePreferences isDark={isDark} />
+        <ToastContainer />
       </>
     )
   }
@@ -194,6 +200,7 @@ function App() {
         />
         <CookieConsent isDark={isDark} />
         <CookiePreferences isDark={isDark} />
+        <ToastContainer />
       </>
     )
   }
@@ -209,6 +216,7 @@ function App() {
         />
         <CookieConsent isDark={isDark} />
         <CookiePreferences isDark={isDark} />
+        <ToastContainer />
       </>
     )
   }
@@ -224,6 +232,7 @@ function App() {
         />
         <CookieConsent isDark={isDark} />
         <CookiePreferences isDark={isDark} />
+        <ToastContainer />
       </>
     )
   }
@@ -281,6 +290,7 @@ function App() {
       </Layout>
       <CookieConsent isDark={false} />
       <CookiePreferences isDark={false} />
+      <ToastContainer />
     </>
   )
 }
