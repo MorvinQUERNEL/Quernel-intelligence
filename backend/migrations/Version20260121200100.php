@@ -19,11 +19,11 @@ final class Version20260121200100 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // Création de la table subscription (syntaxe MySQL)
-        $this->addSql('CREATE TABLE subscription (
-            id BINARY(16) NOT NULL COMMENT \'(DC2Type:uuid)\',
-            user_id BINARY(16) NOT NULL COMMENT \'(DC2Type:uuid)\',
-            plan_id BINARY(16) NOT NULL COMMENT \'(DC2Type:uuid)\',
+        // Création de la table subscription (syntaxe MySQL avec CHAR(36) pour UUID)
+        $this->addSql('CREATE TABLE IF NOT EXISTS subscription (
+            id CHAR(36) NOT NULL,
+            user_id CHAR(36) NOT NULL,
+            plan_id CHAR(36) NOT NULL,
             stripe_subscription_id VARCHAR(255) NOT NULL,
             stripe_price_id VARCHAR(255) DEFAULT NULL,
             status VARCHAR(50) NOT NULL,
@@ -43,14 +43,16 @@ final class Version20260121200100 extends AbstractMigration
             UNIQUE INDEX UNIQ_SUBSCRIPTION_STRIPE (stripe_subscription_id),
             INDEX IDX_SUBSCRIPTION_USER (user_id),
             INDEX IDX_SUBSCRIPTION_PLAN (plan_id),
-            INDEX IDX_SUBSCRIPTION_STATUS (status),
-            CONSTRAINT FK_SUBSCRIPTION_USER FOREIGN KEY (user_id) REFERENCES `user` (id) ON DELETE CASCADE,
-            CONSTRAINT FK_SUBSCRIPTION_PLAN FOREIGN KEY (plan_id) REFERENCES plan (id)
-        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+            INDEX IDX_SUBSCRIPTION_STATUS (status)
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+
+        // Add foreign keys separately (ignore if they exist)
+        $this->addSql('ALTER TABLE subscription ADD CONSTRAINT FK_SUBSCRIPTION_USER FOREIGN KEY IF NOT EXISTS (user_id) REFERENCES user (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE subscription ADD CONSTRAINT FK_SUBSCRIPTION_PLAN FOREIGN KEY IF NOT EXISTS (plan_id) REFERENCES plan (id)');
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('DROP TABLE subscription');
+        $this->addSql('DROP TABLE IF EXISTS subscription');
     }
 }

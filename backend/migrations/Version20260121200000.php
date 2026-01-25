@@ -14,30 +14,25 @@ final class Version20260121200000 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Ajoute les colonnes google_id, apple_id et auth_provider à la table user pour OAuth';
+        return 'Ajoute les colonnes google_id et apple_id à la table user pour OAuth';
     }
 
     public function up(Schema $schema): void
     {
-        // Ajout des colonnes OAuth (syntaxe MySQL)
-        $this->addSql('ALTER TABLE `user` ADD google_id VARCHAR(255) DEFAULT NULL');
-        $this->addSql('ALTER TABLE `user` ADD apple_id VARCHAR(255) DEFAULT NULL');
-        $this->addSql('ALTER TABLE `user` ADD auth_provider VARCHAR(50) DEFAULT NULL');
+        // Check and add columns if they don't exist
+        $this->addSql('ALTER TABLE user ADD COLUMN IF NOT EXISTS google_id VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE user ADD COLUMN IF NOT EXISTS apple_id VARCHAR(255) DEFAULT NULL');
 
-        // Index pour recherche rapide par provider ID
-        $this->addSql('CREATE INDEX IDX_USER_GOOGLE ON `user` (google_id)');
-        $this->addSql('CREATE INDEX IDX_USER_APPLE ON `user` (apple_id)');
+        // Index pour recherche rapide par provider ID (ignore if exists)
+        $this->addSql('CREATE INDEX IF NOT EXISTS IDX_USER_GOOGLE ON user (google_id)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS IDX_USER_APPLE ON user (apple_id)');
     }
 
     public function down(Schema $schema): void
     {
-        // Suppression des index
-        $this->addSql('DROP INDEX IDX_USER_GOOGLE ON `user`');
-        $this->addSql('DROP INDEX IDX_USER_APPLE ON `user`');
-
-        // Suppression des colonnes
-        $this->addSql('ALTER TABLE `user` DROP COLUMN google_id');
-        $this->addSql('ALTER TABLE `user` DROP COLUMN apple_id');
-        $this->addSql('ALTER TABLE `user` DROP COLUMN auth_provider');
+        $this->addSql('DROP INDEX IF EXISTS IDX_USER_GOOGLE ON user');
+        $this->addSql('DROP INDEX IF EXISTS IDX_USER_APPLE ON user');
+        $this->addSql('ALTER TABLE user DROP COLUMN IF EXISTS google_id');
+        $this->addSql('ALTER TABLE user DROP COLUMN IF EXISTS apple_id');
     }
 }
