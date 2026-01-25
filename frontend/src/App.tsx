@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react"
 import { Layout } from "@/components/layout/Layout"
 import { ChatInterface } from "@/components/chat/ChatInterface"
 import { Dashboard } from "@/components/dashboard/Dashboard"
+import { AdminDashboard } from "@/components/admin/AdminDashboard"
 import { LoginPage } from "@/components/auth/LoginPage"
 import { RegisterPage } from "@/components/auth/RegisterPage"
 import { LandingPage } from "@/components/landing/LandingPage"
@@ -227,6 +228,10 @@ function App() {
     )
   }
 
+  // Check if user is admin
+  const { user } = useAuthStore()
+  const isAdmin = user?.roles?.includes("ROLE_ADMIN") || false
+
   // Render main app page based on current path
   const renderPage = () => {
     switch (currentPath) {
@@ -236,6 +241,23 @@ function App() {
         return <Dashboard />
       case "/billing":
         return <BillingPage />
+      case "/admin":
+        // Only allow admin access
+        if (isAdmin) {
+          return <AdminDashboard onNavigateToChat={() => setCurrentPath("/chat")} />
+        }
+        return (
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center">
+              <h2 className="text-xl font-semibold text-[var(--color-foreground)] mb-2">
+                Acces refuse
+              </h2>
+              <p className="text-[var(--color-muted-foreground)]">
+                Vous n'avez pas les droits pour acceder a cette page.
+              </p>
+            </div>
+          </div>
+        )
       default:
         return (
           <div className="flex items-center justify-center h-full">

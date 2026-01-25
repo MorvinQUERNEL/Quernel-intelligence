@@ -12,6 +12,7 @@ import {
   LogOut,
   Moon,
   Sun,
+  Shield,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/Button"
@@ -51,6 +52,7 @@ export function Sidebar({ currentPath, onNavigate }: SidebarProps) {
     ? `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`
     : "??"
   const planLabel = user?.plan?.name || "Free"
+  const isAdmin = user?.roles?.includes("ROLE_ADMIN") || false
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode)
@@ -125,6 +127,18 @@ export function Sidebar({ currentPath, onNavigate }: SidebarProps) {
         {mainNavItems.map((item) => (
           <NavLink key={item.href} item={item} />
         ))}
+
+        {/* Admin Link - Only visible for admins */}
+        {isAdmin && (
+          <NavLink
+            item={{
+              icon: Shield,
+              label: "Administration",
+              href: "/admin",
+              badge: "Admin",
+            }}
+          />
+        )}
       </nav>
 
       {/* Bottom Navigation */}

@@ -680,6 +680,118 @@ class BackendApi {
       return null
     }
   }
+
+  // === ADMIN ===
+
+  async getAdminStats() {
+    return this.request<{
+      totalUsers: number
+      activeUsers: number
+      proUsers: number
+      newUsersThisMonth: number
+      usersByPlan: Array<{ plan: string; planName: string; count: number }>
+      recentSignups: Array<{
+        id: string
+        email: string
+        fullName: string
+        plan: string
+        createdAt: string
+      }>
+      revenue: { mrr: number; currency: string }
+    }>("/api/admin/stats")
+  }
+
+  async getAdminUsers(params?: {
+    page?: number
+    limit?: number
+    search?: string
+    plan?: string
+    sortBy?: string
+    sortOrder?: string
+  }) {
+    const searchParams = new URLSearchParams()
+    if (params?.page) searchParams.set("page", params.page.toString())
+    if (params?.limit) searchParams.set("limit", params.limit.toString())
+    if (params?.search) searchParams.set("search", params.search)
+    if (params?.plan) searchParams.set("plan", params.plan)
+    if (params?.sortBy) searchParams.set("sortBy", params.sortBy)
+    if (params?.sortOrder) searchParams.set("sortOrder", params.sortOrder)
+
+    const query = searchParams.toString()
+    return this.request<{
+      users: Array<{
+        id: string
+        email: string
+        firstName: string
+        lastName: string
+        fullName: string
+        avatarUrl: string | null
+        roles: string[]
+        isActive: boolean
+        plan: { slug: string; name: string } | null
+        emailVerified: boolean
+        authProvider: string | null
+        createdAt: string
+        lastLoginAt: string | null
+      }>
+      pagination: {
+        page: number
+        limit: number
+        total: number
+        totalPages: number
+      }
+    }>(`/api/admin/users${query ? `?${query}` : ""}`)
+  }
+
+  async getAdminUserDetail(userId: string) {
+    return this.request<{
+      id: string
+      email: string
+      firstName: string
+      lastName: string
+      fullName: string
+      avatarUrl: string | null
+      roles: string[]
+      isActive: boolean
+      plan: { slug: string; name: string } | null
+      emailVerified: boolean
+      authProvider: string | null
+      createdAt: string
+      lastLoginAt: string | null
+      stripeCustomerId: string | null
+      planStartedAt: string | null
+      planExpiresAt: string | null
+      updatedAt: string
+      conversationsCount: number
+      agentsCount: number
+    }>(`/api/admin/users/${userId}`)
+  }
+
+  async updateAdminUser(
+    userId: string,
+    data: { isActive?: boolean; plan?: string; roles?: string[] }
+  ) {
+    return this.request<{
+      success: boolean
+      user: {
+        id: string
+        email: string
+        isActive: boolean
+        plan: { slug: string; name: string } | null
+        roles: string[]
+      }
+    }>(`/api/admin/users/${userId}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    })
+  }
+
+  async deleteAdminUser(userId: string) {
+    return this.request<{ success: boolean; message: string }>(
+      `/api/admin/users/${userId}`,
+      { method: "DELETE" }
+    )
+  }
 }
 
 export const backendApi = new BackendApi(BACKEND_URL)
