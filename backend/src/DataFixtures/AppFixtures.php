@@ -26,7 +26,7 @@ class AppFixtures extends Fixture
         // Create Test User
         $testUser = $this->createTestUser($manager, $plans['free']);
 
-        // Create Default Agents
+        // Create Default Agents (Les 3 Anges)
         $this->createDefaultAgents($manager, $admin);
 
         $manager->flush();
@@ -34,15 +34,16 @@ class AppFixtures extends Fixture
 
     private function createPlans(ObjectManager $manager): array
     {
+        // Architecture v7: 2 plans - Essai gratuit + Pro a 50eur/mois
         $plansData = [
             'free' => [
-                'name' => 'Gratuit',
+                'name' => 'Essai Gratuit',
                 'slug' => 'free',
                 'priceMonthly' => '0',
                 'priceYearly' => '0',
-                'monthlyTokens' => 50000,
-                'maxAgents' => 1,
-                'maxDocuments' => 5,
+                'monthlyTokens' => 100000,
+                'maxAgents' => 3,
+                'maxDocuments' => 10,
                 'maxTeamMembers' => 1,
                 'hasApiAccess' => false,
                 'hasWorkflows' => false,
@@ -51,38 +52,12 @@ class AppFixtures extends Fixture
             'pro' => [
                 'name' => 'Pro',
                 'slug' => 'pro',
-                'priceMonthly' => '29',
-                'priceYearly' => '290',
-                'monthlyTokens' => 500000,
-                'maxAgents' => 5,
-                'maxDocuments' => 50,
-                'maxTeamMembers' => 5,
-                'hasApiAccess' => true,
-                'hasWorkflows' => true,
-                'hasPrioritySupport' => false,
-            ],
-            'business' => [
-                'name' => 'Business',
-                'slug' => 'business',
-                'priceMonthly' => '99',
-                'priceYearly' => '990',
+                'priceMonthly' => '50',
+                'priceYearly' => '480',
                 'monthlyTokens' => 2000000,
-                'maxAgents' => 20,
-                'maxDocuments' => 200,
-                'maxTeamMembers' => 20,
-                'hasApiAccess' => true,
-                'hasWorkflows' => true,
-                'hasPrioritySupport' => true,
-            ],
-            'enterprise' => [
-                'name' => 'Enterprise',
-                'slug' => 'enterprise',
-                'priceMonthly' => null,
-                'priceYearly' => null,
-                'monthlyTokens' => 10000000,
-                'maxAgents' => 100,
-                'maxDocuments' => 1000,
-                'maxTeamMembers' => 100,
+                'maxAgents' => 3,
+                'maxDocuments' => 100,
+                'maxTeamMembers' => 5,
                 'hasApiAccess' => true,
                 'hasWorkflows' => true,
                 'hasPrioritySupport' => true,
@@ -152,26 +127,27 @@ class AppFixtures extends Fixture
 
     private function createDefaultAgents(ObjectManager $manager, User $owner): void
     {
+        // Les 3 Anges de QUERNEL INTELLIGENCE v7
         $agentsData = [
             [
-                'name' => 'Assistant General',
-                'description' => 'Un assistant polyvalent pour repondre a toutes vos questions.',
-                'systemPrompt' => 'Tu es un assistant IA professionnel et bienveillant. Tu aides les utilisateurs avec leurs questions de maniere claire et precise. Tu reponds toujours en francais sauf si on te demande explicitement une autre langue.',
-                'model' => 'Qwen/Qwen2.5-32B-Instruct-AWQ',
+                'name' => 'Raphael',
+                'description' => 'Ange guerisseur - Assistant polyvalent pour l\'organisation, la redaction et la productivite.',
+                'systemPrompt' => 'Tu es Raphael, l\'ange guerisseur de QUERNEL INTELLIGENCE. Tu es un assistant polyvalent qui aide sur tous les sujets : organisation, redaction, productivite, brainstorming. Tu travailles en synergie avec Gabriel (Marketing) et Michael (Commercial). Tu reponds en francais de maniere claire et bienveillante.',
+                'model' => 'hermes-3-llama-8b',
                 'isPublic' => true,
             ],
             [
-                'name' => 'Expert Code',
-                'description' => 'Specialise dans le developpement logiciel et le debugging.',
-                'systemPrompt' => 'Tu es un expert en developpement logiciel. Tu aides les utilisateurs a ecrire, debugger et optimiser leur code. Tu expliques les concepts techniques de maniere accessible. Tu fournis des exemples de code bien commentes.',
-                'model' => 'Qwen/Qwen2.5-32B-Instruct-AWQ',
+                'name' => 'Gabriel',
+                'description' => 'Ange messager - Expert en strategies marketing, SEO, contenu et communication digitale.',
+                'systemPrompt' => 'Tu es Gabriel, l\'ange messager de QUERNEL INTELLIGENCE. Tu es l\'expert marketing et communication qui aide les entreprises. Specialites : SEO, contenu, publicite, analyse de performances. Tu travailles en synergie avec Raphael (General) et Michael (Commercial). Tu reponds en francais avec des conseils actionnables et des exemples concrets.',
+                'model' => 'hermes-3-llama-8b',
                 'isPublic' => true,
             ],
             [
-                'name' => 'Redacteur Business',
-                'description' => 'Aide a la redaction de documents professionnels.',
-                'systemPrompt' => 'Tu es un expert en communication d\'entreprise. Tu aides a rediger des emails professionnels, des rapports, des presentations et autres documents business. Tu adoptes un ton professionnel et adapte au contexte francais.',
-                'model' => 'Qwen/Qwen2.5-32B-Instruct-AWQ',
+                'name' => 'Michael',
+                'description' => 'Ange protecteur - Expert en vente, prospection, negociation et developpement commercial.',
+                'systemPrompt' => 'Tu es Michael, l\'ange protecteur de QUERNEL INTELLIGENCE. Tu es l\'expert commercial et vente qui aide les entreprises. Specialites : prospection, negociation, closing, pipeline. Tu travailles en synergie avec Raphael (General) et Gabriel (Marketing). Tu reponds en francais avec energie et des conseils terrain concrets.',
+                'model' => 'hermes-3-llama-8b',
                 'isPublic' => true,
             ],
         ];

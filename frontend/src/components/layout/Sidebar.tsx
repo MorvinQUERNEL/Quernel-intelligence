@@ -99,10 +99,10 @@ export function Sidebar({ currentPath, onNavigate }: SidebarProps) {
         {!collapsed && (
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center">
-              <span className="text-white font-bold text-sm">Q</span>
+              <span className="text-white font-bold text-sm">QI</span>
             </div>
-            <span className="font-semibold text-[var(--color-foreground)]">
-              QUERNEL
+            <span className="font-semibold text-[var(--color-foreground)] text-sm">
+              QUERNEL INTELLIGENCE
             </span>
           </div>
         )}

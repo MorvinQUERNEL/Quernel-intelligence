@@ -55,13 +55,7 @@ class StripeController extends AbstractController
                 return $this->json(['error' => 'Cannot checkout for free plan'], Response::HTTP_BAD_REQUEST);
             }
 
-            if ($plan->getSlug() === 'enterprise') {
-                return $this->json([
-                    'error' => 'Enterprise plan requires contacting sales',
-                    'contact' => 'contact@quernel-intelligence.com'
-                ], Response::HTTP_BAD_REQUEST);
-            }
-
+            // Only 'pro' plan is available for checkout (Architecture v7)
             $session = $this->stripeService->createCheckoutSession($user, $plan, $billingInterval);
 
             return $this->json([

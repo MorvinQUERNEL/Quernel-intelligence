@@ -82,9 +82,9 @@ export function LoginPage({ onLogin, onNavigateToRegister, onNavigateToLanding }
               className="flex items-center gap-3 hover:opacity-80 transition-opacity"
             >
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center">
-                <span className="text-white font-bold text-xl">Q</span>
+                <span className="text-white font-bold text-lg">QI</span>
               </div>
-              <span className="font-semibold text-xl text-[var(--color-foreground)]">QUERNEL</span>
+              <span className="font-semibold text-lg text-[var(--color-foreground)]">QUERNEL INTELLIGENCE</span>
             </button>
           </div>
 

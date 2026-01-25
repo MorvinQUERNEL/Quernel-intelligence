@@ -44,10 +44,10 @@ export function LegalLayout({ title, lastUpdated, children, onNavigateBack }: Le
 
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
-                <span className="text-white font-bold text-sm">Q</span>
+                <span className="text-white font-bold text-sm">QI</span>
               </div>
-              <span className={cn("font-bold", isDark ? "text-white" : "text-gray-900")}>
-                QUERNEL
+              <span className={cn("font-bold text-sm", isDark ? "text-white" : "text-gray-900")}>
+                QUERNEL INTELLIGENCE
               </span>
             </div>
 

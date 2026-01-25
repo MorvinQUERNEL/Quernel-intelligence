@@ -290,9 +290,9 @@ export function Dashboard() {
                   icon={MessageSquare}
                 />
                 <UsageBar
-                  label="Agents utilisés"
-                  used={5}
-                  total={9}
+                  label="Anges utilises"
+                  used={3}
+                  total={3}
                   color="oklch(0.6 0.18 290)"
                   icon={Bot}
                 />
@@ -303,10 +303,10 @@ export function Dashboard() {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="font-medium text-[var(--color-foreground)]">
-                            Passez au Pro pour 29€/mois
+                            Passez au Pro pour 50eur/mois
                           </p>
                           <p className="text-sm text-[var(--color-muted-foreground)]">
-                            5 agents, 500K tokens, support prioritaire
+                            3 Anges IA, 2M tokens, support prioritaire
                           </p>
                         </div>
                         <Button

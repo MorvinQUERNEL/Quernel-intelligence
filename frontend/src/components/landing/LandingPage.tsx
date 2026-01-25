@@ -128,7 +128,7 @@ const faqItems: FAQItem[] = [
   },
   {
     question: "Combien coûte l'abonnement ?",
-    answer: "Notre offre Pro est à 129,99€/mois et inclut un accès illimité aux 3 anges IA, le contexte partagé entre agents, le support prioritaire, et des intégrations avancées.",
+    answer: "Notre offre Pro est a 50eur/mois avec 7 jours d'essai gratuit. Elle inclut un acces illimite aux 3 Anges IA, le contexte partage entre agents, le support prioritaire, et 2M de tokens/mois.",
   },
   {
     question: "Les anges se partagent-ils des informations ?",
@@ -393,7 +393,7 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
                 className={`text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6 ${isDark ? "text-white" : "text-gray-900"}`}
               >
                 <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  9 Agents IA
+                  3 Anges IA
                 </span>
                 <br />
                 au service de votre entreprise
@@ -405,8 +405,8 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
                 transition={{ delay: 0.4 }}
                 className={`text-lg sm:text-xl mb-8 ${isDark ? "text-gray-400" : "text-gray-600"}`}
               >
-                Marketing, juridique, comptabilité, RH... Nos agents IA spécialisés travaillent pour vous 24/7.
-                <span className="font-semibold"> 100% hébergé en France.</span>
+                Marketing, commercial, productivite... Nos 3 Anges IA travaillent en synergie pour vous 24/7.
+                <span className="font-semibold"> 100% heberge en France. 50eur/mois apres 7 jours d'essai.</span>
               </motion.p>
 
               <motion.div
@@ -480,7 +480,7 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
                 {/* Agent selector */}
                 <div className={`p-3 border-b ${isDark ? "border-white/10" : "border-gray-200"} overflow-x-auto`}>
                   <div className="flex gap-2">
-                    {agents.slice(0, 5).map((agent) => (
+                    {agents.map((agent) => (
                       <button
                         key={agent.id}
                         onClick={() => {
@@ -498,7 +498,6 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
                         {agent.name}
                       </button>
                     ))}
-                    <span className={`px-3 py-1.5 text-xs ${isDark ? "text-gray-500" : "text-gray-400"}`}>+4</span>
                   </div>
                 </div>
 
@@ -571,10 +570,10 @@ export function LandingPage({ onNavigateToLogin, onNavigateToRegister }: Landing
             className="text-center mb-16"
           >
             <h2 className={`text-3xl sm:text-4xl font-bold mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
-              Découvrez nos <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">9 Agents IA</span>
+              Decouvrez nos <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">3 Anges IA</span>
             </h2>
             <p className={`text-lg max-w-2xl mx-auto ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-              Chaque agent est spécialisé dans un domaine métier pour vous offrir une expertise pointue et des conseils adaptés.
+              Raphael, Gabriel et Michael travaillent en synergie avec un contexte partage pour vous offrir une experience unique.
             </p>
           </motion.div>
 
