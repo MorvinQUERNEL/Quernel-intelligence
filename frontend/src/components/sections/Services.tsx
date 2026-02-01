@@ -92,7 +92,7 @@ interface ServiceCardProps {
 
 const ServiceCard = ({ service, index }: ServiceCardProps) => (
   <motion.div
-    className="group flex items-center gap-4 p-4 rounded-lg border border-border bg-bg-secondary/50 hover:border-border-hover hover:bg-bg-tertiary/50 transition-all duration-200 cursor-pointer"
+    className="group flex items-center gap-5 p-5 rounded-xl border border-border bg-bg-secondary/50 hover:border-border-hover hover:bg-bg-tertiary/50 transition-all duration-200 cursor-pointer"
     initial={{ opacity: 0, x: -10 }}
     whileInView={{ opacity: 1, x: 0 }}
     viewport={{ once: true }}
@@ -103,8 +103,8 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => (
       {service.icon}
     </div>
     <div className="flex-grow min-w-0">
-      <h4 className="text-text-primary font-medium text-sm mb-0.5">{service.title}</h4>
-      <p className="text-text-muted text-xs truncate">{service.description}</p>
+      <h4 className="text-text-primary font-medium text-sm mb-1">{service.title}</h4>
+      <p className="text-text-muted text-sm truncate">{service.description}</p>
     </div>
     <svg
       className="w-4 h-4 text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all duration-200 flex-shrink-0"
@@ -177,7 +177,7 @@ export function Services() {
               </p>
             </motion.div>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {webServices.map((service, index) => (
                 <ServiceCard key={service.title} service={service} index={index} />
               ))}
@@ -202,7 +202,7 @@ export function Services() {
               </p>
             </motion.div>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {iaServices.map((service, index) => (
                 <ServiceCard key={service.title} service={service} index={index} />
               ))}

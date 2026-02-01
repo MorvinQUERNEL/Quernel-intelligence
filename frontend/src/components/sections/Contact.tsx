@@ -149,7 +149,7 @@ export function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <div className="bg-bg-tertiary border border-border rounded-xl p-6 md:p-8">
+            <div className="bg-bg-tertiary border border-border rounded-xl p-6 md:p-10">
               <AnimatePresence mode="wait">
                 {status === 'success' ? (
                   <motion.div
@@ -175,12 +175,12 @@ export function Contact() {
                   <motion.form
                     key="form"
                     onSubmit={handleSubmit}
-                    className="space-y-5"
+                    className="space-y-6"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                   >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <Input
                         label="Nom complet"
                         name="name"
@@ -200,7 +200,7 @@ export function Contact() {
                       />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <Input
                         label="Téléphone"
                         type="tel"

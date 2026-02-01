@@ -103,8 +103,8 @@ const iaPlans: Plan[] = [
 
 function PricingCard({ plan }: { plan: Plan }) {
   return (
-    <Card variant={plan.popular ? 'featured' : 'default'} className="p-6 h-full flex flex-col">
-      <div className="text-center mb-6">
+    <Card variant={plan.popular ? 'featured' : 'default'} className="p-6 md:p-8 h-full flex flex-col">
+      <div className="text-center mb-8">
         <h3 className="text-lg font-semibold text-text-primary mb-1">{plan.name}</h3>
         <p className="text-text-muted text-sm mb-4">{plan.description}</p>
         <div className="flex items-baseline justify-center gap-1">
@@ -113,7 +113,7 @@ function PricingCard({ plan }: { plan: Plan }) {
         </div>
       </div>
 
-      <ul className="space-y-3 mb-6 flex-grow">
+      <ul className="space-y-4 mb-8 flex-grow">
         {plan.features.map((feature, idx) => (
           <li key={idx} className="flex items-start gap-3 text-sm text-text-secondary">
             <svg

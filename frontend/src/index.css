@@ -127,9 +127,21 @@ p {
   padding: 0 1.5rem;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 640px) {
   .container {
     padding: 0 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 3rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    padding: 0 4rem;
   }
 }
 
