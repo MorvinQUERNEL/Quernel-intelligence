@@ -97,33 +97,40 @@ jobs:
 
             echo "=== Deploying to Hostinger ==="
 
+            # Use absolute path
+            FULL_PATH="$HOME/$DEPLOY_PATH"
+            echo "Deploy path: $FULL_PATH"
+
             # Create target directories if they don't exist
-            mkdir -p "$DEPLOY_PATH/frontend"
-            mkdir -p "$DEPLOY_PATH/backend"
+            mkdir -p "$FULL_PATH/frontend"
+            mkdir -p "$FULL_PATH/backend"
 
             # Extract archive
             echo "=== Extracting deployment archive ==="
-            cd "$DEPLOY_PATH"
-            tar -xzvf /tmp/deploy.tar.gz
+            cd "$FULL_PATH"
+            tar -xzvf /tmp/deploy.tar.gz --overwrite
 
             # Clean up archive
             rm -f /tmp/deploy.tar.gz
 
             # Install backend dependencies
             echo "=== Installing Backend Dependencies ==="
-            cd "$DEPLOY_PATH/backend"
-            if command -v composer &> /dev/null; then
-              composer install --no-dev --optimize-autoloader
-              php bin/console cache:clear --env=prod || true
+            if [ -d "$FULL_PATH/backend" ]; then
+              cd "$FULL_PATH/backend"
+              if command -v composer &> /dev/null; then
+                composer install --no-dev --optimize-autoloader || echo "Composer install failed"
+                php bin/console cache:clear --env=prod || echo "Cache clear failed"
+              else
+                echo "Composer not found, skipping backend setup"
+              fi
             else
-              echo "Composer not found, skipping backend setup"
+              echo "Backend directory not found, skipping"
             fi
 
             # Set permissions
             echo "=== Setting permissions ==="
-            chmod -R 755 "$DEPLOY_PATH/frontend/dist" 2>/dev/null || true
-            chmod -R 755 "$DEPLOY_PATH/backend/var" 2>/dev/null || true
+            chmod -R 755 "$FULL_PATH/frontend/dist" 2>/dev/null || true
+            chmod -R 755 "$FULL_PATH/backend/var" 2>/dev/null || true
 
             echo "=== Deployment Complete ==="
-            echo "Frontend deployed to: $DEPLOY_PATH/frontend/dist"
-            echo "Backend deployed to: $DEPLOY_PATH/backend"
+            echo "Frontend deployed to: $FULL_PATH/frontend/dist"
