@@ -71,15 +71,14 @@ jobs:
         working-directory: backend
         run: composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
-      - name: Upload backend build
+      - name: Create backend archive
+        run: tar -czf backend.tar.gz -C backend .
+
+      - name: Upload backend archive
         uses: actions/upload-artifact@v4
         with:
-          name: backend-build
-          path: |
-            backend
-            !backend/var
-            !backend/.env.local
-            !backend/config/jwt/*.pem
+          name: backend-archive
+          path: backend.tar.gz
           retention-days: 1
 
   deploy:
@@ -101,51 +100,65 @@ jobs:
           name: frontend-build
           path: frontend-dist
 
-      - name: Download backend build
+      - name: Download backend archive
         uses: actions/download-artifact@v4
         with:
-          name: backend-build
-          path: backend
+          name: backend-archive
+          path: .
+
+      - name: Create frontend archive
+        run: tar -czf frontend.tar.gz -C frontend-dist .
 
       - name: Install sshpass
         run: sudo apt-get install -y sshpass
 
-      - name: Deploy Frontend
+      - name: Upload archives to server
         run: |
-          sshpass -p "$HOSTINGER_PASSWORD" scp -o StrictHostKeyChecking=no -P "$HOSTINGER_PORT" -r frontend-dist/* "$HOSTINGER_USERNAME@$HOSTINGER_HOST:domains/quernel-intelligence.com/public_html/"
+          sshpass -p "$HOSTINGER_PASSWORD" scp -o StrictHostKeyChecking=no -P "$HOSTINGER_PORT" \
+            frontend.tar.gz backend.tar.gz \
+            "$HOSTINGER_USERNAME@$HOSTINGER_HOST:domains/quernel-intelligence.com/"
 
-      - name: Deploy Backend
+      - name: Deploy and Configure
         run: |
-          sshpass -p "$HOSTINGER_PASSWORD" scp -o StrictHostKeyChecking=no -P "$HOSTINGER_PORT" -r backend/* "$HOSTINGER_USERNAME@$HOSTINGER_HOST:domains/quernel-intelligence.com/backend/"
+          sshpass -p "$HOSTINGER_PASSWORD" ssh -o StrictHostKeyChecking=no -p "$HOSTINGER_PORT" "$HOSTINGER_USERNAME@$HOSTINGER_HOST" << ENDSSH
+          cd domains/quernel-intelligence.com
 
-      - name: Configure Backend and Finalize
-        run: |
-          sshpass -p "$HOSTINGER_PASSWORD" ssh -o StrictHostKeyChecking=no -p "$HOSTINGER_PORT" "$HOSTINGER_USERNAME@$HOSTINGER_HOST" << 'ENDSSH'
-          cd domains/quernel-intelligence.com/backend
+          # Extract frontend
+          rm -rf public_html/*
+          tar -xzf frontend.tar.gz -C public_html/
+          rm frontend.tar.gz
+
+          # Extract backend
+          rm -rf backend
+          mkdir -p backend
+          tar -xzf backend.tar.gz -C backend/
+          rm backend.tar.gz
+
+          cd backend
 
           # Create .env.local with production settings
-          cat > .env.local << ENVEOF
+          cat > .env.local << 'ENVEOF'
           APP_ENV=prod
           APP_SECRET=${APP_SECRET}
           DATABASE_URL="${DATABASE_URL}"
           JWT_PASSPHRASE=${JWT_PASSPHRASE}
-          CORS_ALLOW_ORIGIN='^https?://(quernel-intelligence\.com|www\.quernel-intelligence\.com)$'
+          CORS_ALLOW_ORIGIN='^https?://(quernel-intelligence\.com|www\.quernel-intelligence\.com)\$'
           ENVEOF
 
           # Generate JWT keys if not exist
           mkdir -p config/jwt
           if [ ! -f config/jwt/private.pem ]; then
-            openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096 -pass pass:${JWT_PASSPHRASE}
-            openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout -passin pass:${JWT_PASSPHRASE}
-            chmod 600 config/jwt/private.pem
+            openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096 -pass pass:${JWT_PASSPHRASE} 2>/dev/null || true
+            openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout -passin pass:${JWT_PASSPHRASE} 2>/dev/null || true
+            chmod 600 config/jwt/private.pem 2>/dev/null || true
           fi
 
           # Clear and warm up cache
-          php bin/console cache:clear --env=prod --no-debug || true
-          php bin/console cache:warmup --env=prod --no-debug || true
+          php bin/console cache:clear --env=prod --no-debug 2>/dev/null || true
+          php bin/console cache:warmup --env=prod --no-debug 2>/dev/null || true
 
           # Run migrations
-          php bin/console doctrine:migrations:migrate --no-interaction --env=prod || true
+          php bin/console doctrine:migrations:migrate --no-interaction --env=prod 2>/dev/null || true
 
           # Setup public_html
           cd ../public_html
@@ -161,11 +174,11 @@ jobs:
 
           # Redirect to HTTPS
           RewriteCond %{HTTPS} off
-          RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+          RewriteRule ^(.*)\$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
           # API requests go to backend
           RewriteCond %{REQUEST_URI} ^/api
-          RewriteRule ^api/(.*)$ api/index.php [L,QSA]
+          RewriteRule ^api/(.*)\$ api/index.php [L,QSA]
 
           # SPA fallback - if file doesn't exist, serve index.html
           RewriteCond %{REQUEST_FILENAME} !-f
