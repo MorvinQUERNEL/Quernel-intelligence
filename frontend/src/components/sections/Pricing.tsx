@@ -1,32 +1,42 @@
-import { motion } from 'framer-motion';
-import { GlassCard } from '../ui/GlassCard';
-import { GlowButton } from '../ui/GlowButton';
-import { SectionTitle } from '../ui/SectionTitle';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { SectionHeading } from '../ui/SectionHeading';
+import { Button } from '../ui/Button';
+import { Badge } from '../ui/Badge';
+import { Card } from '../ui/Card';
 
-const webPlans = [
+interface Plan {
+  name: string;
+  price: string;
+  description: string;
+  features: string[];
+  popular: boolean;
+}
+
+const webPlans: Plan[] = [
   {
     name: 'Essentiel',
     price: '499',
-    description: 'Parfait pour démarrer votre présence en ligne',
+    description: 'Parfait pour démarrer',
     features: [
       'Site vitrine 5 pages',
       'Design responsive',
       'Formulaire de contact',
-      'Optimisation SEO de base',
-      'Hébergement 1 an inclus',
+      'SEO de base',
+      'Hébergement 1 an',
     ],
     popular: false,
   },
   {
     name: 'Business',
     price: '999',
-    description: 'La solution complète pour les entreprises',
+    description: 'La solution complète',
     features: [
-      'Site vitrine 10 pages',
+      'Pages illimitées',
       'Design premium sur mesure',
       'Blog intégré',
       'SEO avancé + analytics',
-      'Hébergement 1 an + maintenance',
+      'Hébergement + maintenance',
       'Formation utilisateur',
     ],
     popular: true,
@@ -34,42 +44,42 @@ const webPlans = [
   {
     name: 'Premium',
     price: '1999',
-    description: 'E-commerce et applications complexes',
+    description: 'E-commerce & apps',
     features: [
+      'Tout Business +',
       'E-commerce complet',
-      'Paiement Stripe/PayPal',
+      'Paiement sécurisé',
       'Gestion des stocks',
-      'Dashboard admin',
-      'Intégrations tierces',
-      'Support prioritaire 6 mois',
+      'API personnalisée',
+      'Support prioritaire',
     ],
     popular: false,
   },
 ];
 
-const iaPlans = [
+const iaPlans: Plan[] = [
   {
     name: 'Agent IA',
     price: '499',
-    description: 'Chatbot intelligent pour votre site',
+    description: 'Chatbot intelligent',
     features: [
       'Chatbot IA sur mesure',
       'Intégration site web',
       'FAQ automatisée',
-      'Qualification de leads',
-      '1000 conversations/mois',
+      'Qualification leads',
+      '1000 conv./mois',
     ],
     popular: false,
   },
   {
     name: 'Automation Pro',
     price: '999',
-    description: 'Automatisez vos processus business',
+    description: 'Processus automatisés',
     features: [
       'Workflows automatisés',
       'Intégration CRM/ERP',
       'Emails automatiques',
-      'Rapports générés par IA',
+      'Rapports IA',
       'API personnalisée',
       'Support dédié',
     ],
@@ -78,57 +88,36 @@ const iaPlans = [
   {
     name: 'Trading Bot',
     price: '1499',
-    description: 'Bot de trading personnalisé',
+    description: 'Bot personnalisé',
     features: [
-      'Bot trading crypto/forex',
+      'Bot crypto/forex',
       'Stratégie sur mesure',
       'Backtesting inclus',
       'Gestion des risques',
       'Dashboard temps réel',
-      'Alertes Telegram/Discord',
+      'Alertes Telegram',
     ],
     popular: false,
   },
 ];
 
-function PricingCard({ plan, type }: { plan: typeof webPlans[0]; type: 'web' | 'ia' }) {
-  const glowColor = type === 'web' ? 'cyan' : 'violet';
-  const accentColor = type === 'web' ? '#00F0FF' : '#7C3AED';
-
+function PricingCard({ plan }: { plan: Plan }) {
   return (
-    <GlassCard
-      className={`p-6 h-full relative ${plan.popular ? 'border-2' : ''}`}
-      style={plan.popular ? { borderColor: accentColor } : {}}
-      glowColor={glowColor}
-    >
-      {plan.popular && (
-        <div
-          className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold"
-          style={{ backgroundColor: accentColor, color: '#0A0E1A' }}
-        >
-          POPULAIRE
-        </div>
-      )}
-
+    <Card variant={plan.popular ? 'featured' : 'default'} className="p-6 h-full flex flex-col">
       <div className="text-center mb-6">
-        <h3 className="text-xl font-bold text-[#F8FAFC] font-[var(--font-orbitron)] mb-2">
-          {plan.name}
-        </h3>
-        <p className="text-[#94A3B8] text-sm mb-4">{plan.description}</p>
+        <h3 className="text-lg font-semibold text-text-primary mb-1">{plan.name}</h3>
+        <p className="text-text-muted text-sm mb-4">{plan.description}</p>
         <div className="flex items-baseline justify-center gap-1">
-          <span className="text-4xl font-bold font-[var(--font-mono)]" style={{ color: accentColor }}>
-            {plan.price}
-          </span>
-          <span className="text-[#94A3B8]">€</span>
+          <span className="text-4xl font-bold font-mono text-text-primary">{plan.price}</span>
+          <span className="text-text-muted">€</span>
         </div>
       </div>
 
-      <ul className="space-y-3 mb-6">
+      <ul className="space-y-3 mb-6 flex-grow">
         {plan.features.map((feature, idx) => (
-          <li key={idx} className="flex items-start gap-3 text-sm text-[#94A3B8]">
+          <li key={idx} className="flex items-start gap-3 text-sm text-text-secondary">
             <svg
-              className="w-5 h-5 shrink-0 mt-0.5"
-              style={{ color: accentColor }}
+              className="w-4 h-4 text-accent shrink-0 mt-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -140,94 +129,115 @@ function PricingCard({ plan, type }: { plan: typeof webPlans[0]; type: 'web' | '
         ))}
       </ul>
 
-      <GlowButton
-        className="w-full"
+      <Button
         variant={plan.popular ? 'primary' : 'secondary'}
+        className="w-full"
         onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
       >
-        Choisir ce plan
-      </GlowButton>
-    </GlassCard>
+        Choisir
+      </Button>
+    </Card>
   );
 }
 
+type Tab = 'web' | 'ia';
+
 export function Pricing() {
+  const [activeTab, setActiveTab] = useState<Tab>('web');
+  const plans = activeTab === 'web' ? webPlans : iaPlans;
+
   return (
-    <section id="pricing" className="relative overflow-hidden bg-[#111827]/30">
-      <div className="container-custom">
-        <SectionTitle
-          title="Tarification"
-          subtitle="Des offres adaptées à tous les budgets et besoins"
+    <section id="pricing" className="relative overflow-hidden bg-bg-secondary/30">
+      <div className="container">
+        <SectionHeading
+          badge="Tarifs"
+          title="Des prix clairs. Zéro surprise."
+          subtitle="Choisissez la formule adaptée à votre projet."
         />
 
-        {/* Web Plans */}
-        <motion.div
-          className="mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <h3 className="text-2xl font-bold text-[#F8FAFC] mb-8 text-center font-[var(--font-orbitron)]">
-            <span className="text-[#00F0FF]">Création</span> Web
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {webPlans.map((plan, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <PricingCard plan={plan} type="web" />
-              </motion.div>
-            ))}
+        {/* Tab switcher */}
+        <div className="flex justify-center mb-12">
+          <div className="inline-flex items-center bg-bg-secondary border border-border rounded-lg p-1">
+            <button
+              onClick={() => setActiveTab('web')}
+              className={`px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                activeTab === 'web'
+                  ? 'bg-accent text-white'
+                  : 'text-text-secondary hover:text-text-primary'
+              }`}
+            >
+              Création Web
+            </button>
+            <button
+              onClick={() => setActiveTab('ia')}
+              className={`px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                activeTab === 'ia'
+                  ? 'bg-accent text-white'
+                  : 'text-text-secondary hover:text-text-primary'
+              }`}
+            >
+              Solutions IA
+            </button>
           </div>
-        </motion.div>
+        </div>
 
-        {/* IA Plans */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <h3 className="text-2xl font-bold text-[#F8FAFC] mb-8 text-center font-[var(--font-orbitron)]">
-            <span className="text-[#7C3AED]">Solutions</span> IA
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {iaPlans.map((plan, index) => (
+        {/* Plans grid */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto"
+          >
+            {plans.map((plan, index) => (
               <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                key={plan.name}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
               >
-                <PricingCard plan={plan} type="ia" />
+                <PricingCard plan={plan} />
               </motion.div>
             ))}
-          </div>
-        </motion.div>
+          </motion.div>
+        </AnimatePresence>
 
         {/* Combo offer */}
         <motion.div
-          className="mt-12 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          className="mt-16 max-w-3xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <GlassCard className="inline-block px-8 py-6 max-w-2xl" glowColor="emerald">
-            <p className="text-[#10B981] font-semibold mb-2">Pack Combiné Web + IA</p>
-            <p className="text-[#94A3B8] text-sm mb-4">
-              Combinez un site web et une solution IA pour bénéficier d'une remise de <span className="text-[#F8FAFC] font-bold">15%</span> sur le total.
-            </p>
-            <GlowButton
-              variant="outline"
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              Demander un devis personnalisé
-            </GlowButton>
-          </GlassCard>
+          <div className="bg-bg-tertiary border border-border rounded-xl p-6 md:p-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-accent-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg className="w-6 h-6 text-accent-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h4 className="font-semibold text-text-primary">Pack Combiné Web + IA</h4>
+                    <Badge variant="accent">-15%</Badge>
+                  </div>
+                  <p className="text-text-secondary text-sm">
+                    Combinez site web et solution IA pour une transformation digitale complète.
+                  </p>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                className="flex-shrink-0"
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                Demander un devis
+              </Button>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

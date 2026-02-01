@@ -1,78 +1,75 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SectionTitle } from '../ui/SectionTitle';
+import { SectionHeading } from '../ui/SectionHeading';
 
-const webFaqs = [
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+const faqs: FAQItem[] = [
   {
-    question: 'Combien de temps pour créer un site web ?',
-    answer: 'Un site vitrine prend généralement 2 à 4 semaines. Un site e-commerce ou une application web complexe peut nécessiter 4 à 8 semaines selon les fonctionnalités.',
+    question: 'Combien coûte un site web ?',
+    answer: 'Nos tarifs commencent à 499€ pour un site vitrine essentiel. Le prix varie selon la complexité : nombre de pages, fonctionnalités (e-commerce, blog, réservation), et intégrations spécifiques. Nous proposons toujours un devis détaillé gratuit.',
   },
   {
-    question: 'Le site sera-t-il optimisé pour mobile ?',
-    answer: 'Absolument ! Tous nos sites sont développés en "mobile-first". Ils s\'adaptent parfaitement à tous les écrans : smartphones, tablettes et ordinateurs.',
-  },
-  {
-    question: 'Proposez-vous l\'hébergement et la maintenance ?',
-    answer: 'Oui, nous proposons des formules d\'hébergement haute performance et de maintenance incluant les mises à jour, sauvegardes et support technique.',
+    question: 'Quel délai pour créer un site ?',
+    answer: 'Un site vitrine prend généralement 2 à 4 semaines. Un site e-commerce ou une application web complexe nécessite 4 à 8 semaines. Ce délai inclut le design, le développement, les révisions et la mise en ligne.',
   },
   {
     question: 'Puis-je modifier mon site moi-même ?',
-    answer: 'Oui, nous intégrons un système de gestion de contenu (CMS) intuitif et nous vous formons à son utilisation pour que vous puissiez mettre à jour vos contenus en autonomie.',
+    answer: 'Oui, nous intégrons un système de gestion de contenu (CMS) intuitif et nous vous formons à son utilisation. Vous pouvez modifier textes, images et produits en toute autonomie.',
+  },
+  {
+    question: "L'hébergement est-il inclus ?",
+    answer: "Oui, la première année d'hébergement est incluse dans nos offres. Ensuite, nous proposons des forfaits maintenance et hébergement à partir de 15€/mois incluant sauvegardes, mises à jour et support.",
+  },
+  {
+    question: "Qu'est-ce qu'un agent IA exactement ?",
+    answer: "Un agent IA est un assistant virtuel intelligent intégré à votre site. Il comprend les questions de vos visiteurs grâce au traitement du langage naturel et y répond 24/7. Il peut qualifier des leads, répondre aux FAQ, prendre des rendez-vous.",
+  },
+  {
+    question: 'Un bot de trading est-il risqué ?',
+    answer: "Tout trading comporte des risques. Nos bots sont développés avec des systèmes de gestion des risques (stop-loss, position sizing). Nous effectuons un backtesting rigoureux et vous accompagnons dans la configuration. Le capital investi reste le vôtre.",
+  },
+  {
+    question: "Comment l'IA peut aider mon e-commerce ?",
+    answer: "L'IA optimise votre e-commerce avec des recommandations personnalisées (+15-30% de panier moyen), des relances panier abandonnées automatiques, la segmentation client, et un chatbot pour le support. ROI mesurable dès le premier mois.",
+  },
+  {
+    question: 'Combien de temps pour mettre en place un agent IA ?',
+    answer: "Un agent IA basique est opérationnel en 1 à 2 semaines. Ce délai inclut l'entraînement sur votre base de connaissances, les tests et l'intégration à votre site ou messagerie.",
   },
 ];
 
-const iaFaqs = [
-  {
-    question: 'Comment fonctionne un agent IA ?',
-    answer: 'Un agent IA utilise l\'intelligence artificielle pour comprendre les questions de vos visiteurs et y répondre automatiquement. Il apprend de votre base de connaissances et s\'améliore avec le temps.',
-  },
-  {
-    question: 'Le bot de trading est-il rentable ?',
-    answer: 'Les performances dépendent de la stratégie et des conditions de marché. Nous développons des bots selon vos critères avec backtesting préalable, mais le trading comporte toujours des risques.',
-  },
-  {
-    question: 'Quelles intégrations sont possibles ?',
-    answer: 'Nous pouvons intégrer nos solutions IA avec la plupart des outils : CRM (Salesforce, Hubspot), e-commerce (Shopify, WooCommerce), messageries (WhatsApp, Telegram), et vos APIs existantes.',
-  },
-  {
-    question: 'Les données sont-elles sécurisées ?',
-    answer: 'La sécurité est notre priorité. Vos données sont chiffrées, stockées en Europe (RGPD compliant) et nous ne les partageons jamais avec des tiers.',
-  },
-];
-
-function FAQItem({ faq, isOpen, onClick, color }: {
-  faq: { question: string; answer: string };
+function AccordionItem({ faq, isOpen, onClick }: {
+  faq: FAQItem;
   isOpen: boolean;
   onClick: () => void;
-  color: string;
 }) {
   return (
-    <motion.div
-      className="border-b border-white/10 last:border-0"
-      initial={false}
-    >
+    <div className="border-b border-border last:border-0">
       <button
         onClick={onClick}
         className="w-full py-5 flex items-center justify-between text-left group"
       >
-        <span className="text-[#F8FAFC] font-medium pr-4 group-hover:text-[#00F0FF] transition-colors">
+        <span className={`text-sm font-medium pr-4 transition-colors duration-200 ${
+          isOpen ? 'text-accent' : 'text-text-primary group-hover:text-accent'
+        }`}>
           {faq.question}
         </span>
-        <motion.div
-          animate={{ rotate: isOpen ? 45 : 0 }}
+        <motion.svg
+          className={`w-5 h-5 flex-shrink-0 transition-colors duration-200 ${
+            isOpen ? 'text-accent' : 'text-text-muted'
+          }`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
-          className="shrink-0"
         >
-          <svg
-            className="w-6 h-6"
-            style={{ color: isOpen ? color : '#94A3B8' }}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v12M6 12h12" />
-          </svg>
-        </motion.div>
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </motion.svg>
       </button>
       <AnimatePresence>
         {isOpen && (
@@ -80,87 +77,64 @@ function FAQItem({ faq, isOpen, onClick, color }: {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <p className="pb-5 text-[#94A3B8] leading-relaxed">
+            <p className="pb-5 text-text-secondary text-sm leading-relaxed">
               {faq.answer}
             </p>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </div>
   );
 }
 
 export function FAQ() {
-  const [openWebIndex, setOpenWebIndex] = useState<number | null>(0);
-  const [openIaIndex, setOpenIaIndex] = useState<number | null>(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  // Split FAQs into two columns
+  const midPoint = Math.ceil(faqs.length / 2);
+  const leftColumn = faqs.slice(0, midPoint);
+  const rightColumn = faqs.slice(midPoint);
 
   return (
-    <section id="faq" className="relative overflow-hidden bg-[#111827]/30">
-      <div className="container-custom">
-        <SectionTitle
-          title="Questions Fréquentes"
-          subtitle="Tout ce que vous devez savoir avant de démarrer"
+    <section id="faq" className="relative overflow-hidden">
+      <div className="container">
+        <SectionHeading
+          badge="FAQ"
+          title="Questions fréquentes"
+          subtitle="Tout ce que vous devez savoir avant de démarrer."
+          centered={false}
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-          {/* Web FAQs */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="bg-[#1A1F35]/50 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-white/10">
-              <h3 className="text-xl font-bold mb-6 font-[var(--font-orbitron)] flex items-center gap-3">
-                <span className="w-10 h-10 rounded-lg bg-[#00F0FF]/20 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-[#00F0FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </span>
-                <span className="text-[#00F0FF]">Création Web</span>
-              </h3>
-              {webFaqs.map((faq, index) => (
-                <FAQItem
-                  key={index}
-                  faq={faq}
-                  isOpen={openWebIndex === index}
-                  onClick={() => setOpenWebIndex(openWebIndex === index ? null : index)}
-                  color="#00F0FF"
-                />
-              ))}
-            </div>
-          </motion.div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-0">
+          {/* Left column */}
+          <div>
+            {leftColumn.map((faq, index) => (
+              <AccordionItem
+                key={index}
+                faq={faq}
+                isOpen={openIndex === index}
+                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+              />
+            ))}
+          </div>
 
-          {/* IA FAQs */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="bg-[#1A1F35]/50 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-white/10">
-              <h3 className="text-xl font-bold mb-6 font-[var(--font-orbitron)] flex items-center gap-3">
-                <span className="w-10 h-10 rounded-lg bg-[#7C3AED]/20 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-[#7C3AED]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>
-                </span>
-                <span className="text-[#7C3AED]">Solutions IA</span>
-              </h3>
-              {iaFaqs.map((faq, index) => (
-                <FAQItem
-                  key={index}
+          {/* Right column */}
+          <div>
+            {rightColumn.map((faq, index) => {
+              const actualIndex = index + midPoint;
+              return (
+                <AccordionItem
+                  key={actualIndex}
                   faq={faq}
-                  isOpen={openIaIndex === index}
-                  onClick={() => setOpenIaIndex(openIaIndex === index ? null : index)}
-                  color="#7C3AED"
+                  isOpen={openIndex === actualIndex}
+                  onClick={() => setOpenIndex(openIndex === actualIndex ? null : actualIndex)}
                 />
-              ))}
-            </div>
-          </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

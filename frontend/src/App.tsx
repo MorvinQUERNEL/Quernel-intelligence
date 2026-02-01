@@ -1,37 +1,30 @@
-import { ParticleGrid } from './components/effects/ParticleGrid';
-import { GlowCursor } from './components/effects/GlowCursor';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { Hero } from './components/sections/Hero';
-import { ServicesWeb } from './components/sections/ServicesWeb';
-import { ServicesIA } from './components/sections/ServicesIA';
-import { Stats } from './components/sections/Stats';
-import { HowItWorks } from './components/sections/HowItWorks';
-import { UseCases } from './components/sections/UseCases';
+import { Services } from './components/sections/Services';
 import { Pricing } from './components/sections/Pricing';
-import { Testimonials } from './components/sections/Testimonials';
 import { FAQ } from './components/sections/FAQ';
 import { Contact } from './components/sections/Contact';
 
 function App() {
   return (
-    <div className="relative min-h-screen bg-bg-primary">
-      {/* Background Effects */}
-      <ParticleGrid />
-      <GlowCursor />
+    <div className="relative min-h-screen bg-bg-primary text-text-primary">
+      {/* Grain texture overlay */}
+      <div className="grain-overlay" />
+
+      {/* Subtle background gradients */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="bg-gradient-blob-1" />
+        <div className="bg-gradient-blob-2" />
+      </div>
 
       {/* Layout */}
       <Header />
 
-      <main>
+      <main className="relative z-10">
         <Hero />
-        <ServicesWeb />
-        <ServicesIA />
-        <Stats />
-        <HowItWorks />
-        <UseCases />
+        <Services />
         <Pricing />
-        <Testimonials />
         <FAQ />
         <Contact />
       </main>

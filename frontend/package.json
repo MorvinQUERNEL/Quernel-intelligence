@@ -10,9 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fontsource/orbitron": "^5.2.8",
-    "@fontsource/plus-jakarta-sans": "^5.2.8",
-    "@fontsource/space-mono": "^5.2.9",
     "@tailwindcss/vite": "^4.1.18",
     "framer-motion": "^12.29.2",
     "react": "^19.2.0",
