@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 interface FAQItem {
   question: string;
@@ -173,13 +174,13 @@ export function FAQ() {
               Notre équipe vous répond sous 24h.
             </p>
           </div>
-          <a
-            href="#contact"
+          <Link
+            to="/contact"
             className="inline-flex items-center gap-4 font-mono text-sm text-accent hover:text-accent-hover transition-colors"
           >
             <span>NOUS CONTACTER</span>
             <span className="w-8 h-px bg-current" />
-          </a>
+          </Link>
         </motion.div>
       </div>
 

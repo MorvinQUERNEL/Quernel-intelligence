@@ -1,21 +1,28 @@
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-const footerLinks = {
+interface FooterLink {
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+const footerLinks: Record<string, FooterLink[]> = {
   'CRÉATION WEB': [
-    { label: 'Sites vitrines', href: '#services' },
-    { label: 'E-Commerce', href: '#services' },
-    { label: 'Applications Web', href: '#services' },
-    { label: 'Refonte', href: '#services' },
+    { label: 'Sites vitrines', href: '/services' },
+    { label: 'E-Commerce', href: '/services' },
+    { label: 'Applications Web', href: '/services' },
+    { label: 'Refonte', href: '/services' },
   ],
   'SOLUTIONS IA': [
-    { label: 'Agents IA', href: '#services' },
-    { label: 'Bots de Trading', href: '#services' },
-    { label: 'Automatisation', href: '#services' },
-    { label: 'IA E-Commerce', href: '#services' },
+    { label: 'Agents IA', href: '/services' },
+    { label: 'Bots de Trading', href: '/services' },
+    { label: 'Automatisation', href: '/services' },
+    { label: 'IA E-Commerce', href: '/services' },
   ],
   'CONTACT': [
-    { label: 'contact@quernel-intelligence.com', href: 'mailto:contact@quernel-intelligence.com' },
-    { label: 'Vigneux-sur-Seine (91)', href: '#' },
+    { label: 'contact@quernel-intelligence.com', href: 'mailto:contact@quernel-intelligence.com', external: true },
+    { label: 'Vigneux-sur-Seine (91)', href: '/contact' },
   ],
 };
 
@@ -33,10 +40,10 @@ export function Footer() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <a href="#" className="inline-block mb-6">
+              <Link to="/" className="inline-block mb-6">
                 <span className="font-display text-2xl text-text-primary">QUERNEL</span>
                 <span className="font-display text-2xl text-accent ml-2">INTELLIGENCE</span>
-              </a>
+              </Link>
               <p className="text-text-muted mb-6 max-w-xs">
                 Votre partenaire digital intelligent. Création web et solutions IA.
               </p>
@@ -64,12 +71,21 @@ export function Footer() {
               <ul className="space-y-4">
                 {links.map((link) => (
                   <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-text-secondary hover:text-accent transition-colors text-sm"
-                    >
-                      {link.label}
-                    </a>
+                    {link.external ? (
+                      <a
+                        href={link.href}
+                        className="text-text-secondary hover:text-accent transition-colors text-sm"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        to={link.href}
+                        className="text-text-secondary hover:text-accent transition-colors text-sm"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -90,13 +106,13 @@ export function Footer() {
             <p className="text-text-secondary text-sm mb-6">
               Discutons de votre projet et transformons vos idées en réalité digitale.
             </p>
-            <a
-              href="#contact"
+            <Link
+              to="/contact"
               className="inline-flex items-center gap-3 px-6 py-3 bg-accent text-bg-primary font-mono text-xs tracking-wider hover:bg-accent-hover transition-colors"
             >
               <span>NOUS CONTACTER</span>
               <span>→</span>
-            </a>
+            </Link>
           </motion.div>
         </div>
       </div>
@@ -109,19 +125,19 @@ export function Footer() {
               © 2026 Quernel Intelligence — SIRET 995 184 876 00010
             </p>
             <div className="flex items-center gap-6">
-              <a
-                href="#"
+              <Link
+                to="/mentions-legales"
                 className="font-mono text-xs text-text-muted hover:text-accent transition-colors"
               >
                 Mentions légales
-              </a>
+              </Link>
               <span className="text-text-muted">·</span>
-              <a
-                href="#"
+              <Link
+                to="/confidentialite"
                 className="font-mono text-xs text-text-muted hover:text-accent transition-colors"
               >
                 Politique de confidentialité
-              </a>
+              </Link>
             </div>
           </div>
         </div>

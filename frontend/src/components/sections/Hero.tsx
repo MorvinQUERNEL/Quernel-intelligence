@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function Hero() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -125,7 +127,7 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.8 }}
             >
               <button
-                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => navigate('/contact')}
                 className="group relative px-8 py-4 bg-accent text-bg-primary font-semibold text-sm tracking-wide overflow-hidden transition-all duration-300 hover:pr-12"
               >
                 <span className="relative z-10">DÉMARRER UN PROJET</span>
@@ -137,7 +139,7 @@ export function Hero() {
               </button>
 
               <button
-                onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => navigate('/services')}
                 className="group flex items-center gap-3 text-text-secondary hover:text-accent transition-colors"
               >
                 <span className="font-mono text-sm">EXPLORER</span>

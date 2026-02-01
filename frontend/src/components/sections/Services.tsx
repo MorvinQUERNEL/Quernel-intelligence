@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface Service {
   id: string;
@@ -158,6 +159,7 @@ function ServiceVisual({ type }: { type: Service['visual'] }) {
 
 export function Services() {
   const [activeService, setActiveService] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   return (
     <section id="services" className="relative bg-bg-primary overflow-hidden">
@@ -276,7 +278,7 @@ export function Services() {
                         {service.description} Chaque projet est unique, chaque solution est sur mesure.
                       </p>
                       <button
-                        onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                        onClick={() => navigate('/contact')}
                         className="font-mono text-sm text-accent hover:text-accent-hover transition-colors flex items-center gap-3"
                       >
                         <span>EN SAVOIR PLUS</span>

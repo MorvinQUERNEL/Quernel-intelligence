@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
-  { href: '#services', label: 'Services' },
-  { href: '#pricing', label: 'Tarifs' },
-  { href: '#faq', label: 'FAQ' },
-  { href: '#contact', label: 'Contact' },
+  { href: '/services', label: 'Services' },
+  { href: '/tarifs', label: 'Tarifs' },
+  { href: '/faq', label: 'FAQ' },
+  { href: '/contact', label: 'Contact' },
 ];
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,6 +21,11 @@ export function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
 
   return (
     <>
@@ -33,37 +40,42 @@ export function Navbar() {
       >
         <nav className="container flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group">
+          <Link to="/" className="flex items-center gap-2 group">
             <span className="font-display text-xl text-text-primary group-hover:text-accent transition-colors">
               QUERNEL
             </span>
             <span className="font-display text-xl text-accent">
               INTELLIGENCE
             </span>
-          </a>
+          </Link>
 
           {/* Desktop nav */}
           <div className="hidden lg:flex items-center gap-12">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
-                href={link.href}
-                className="font-mono text-xs tracking-wider text-text-muted hover:text-accent transition-colors"
+                to={link.href}
+                className={`
+                  font-mono text-xs tracking-wider transition-colors
+                  ${location.pathname === link.href
+                    ? 'text-accent'
+                    : 'text-text-muted hover:text-accent'}
+                `}
               >
                 {link.label.toUpperCase()}
-              </a>
+              </Link>
             ))}
           </div>
 
           {/* CTA */}
           <div className="hidden lg:block">
-            <a
-              href="#contact"
+            <Link
+              to="/contact"
               className="group inline-flex items-center gap-3 px-6 py-3 border border-accent text-accent font-mono text-xs tracking-wider hover:bg-accent hover:text-bg-primary transition-all duration-300"
             >
               <span>DÉMARRER</span>
               <span className="group-hover:translate-x-1 transition-transform">→</span>
-            </a>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -109,17 +121,24 @@ export function Navbar() {
             <div className="container pt-24 pb-12 h-full flex flex-col">
               <nav className="flex-1 flex flex-col justify-center gap-8">
                 {navLinks.map((link, index) => (
-                  <motion.a
+                  <motion.div
                     key={link.href}
-                    href={link.href}
-                    className="font-display text-4xl text-text-primary hover:text-accent transition-colors"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
-                    onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    {link.label.toUpperCase()}
-                  </motion.a>
+                    <Link
+                      to={link.href}
+                      className={`
+                        font-display text-4xl transition-colors
+                        ${location.pathname === link.href
+                          ? 'text-accent'
+                          : 'text-text-primary hover:text-accent'}
+                      `}
+                    >
+                      {link.label.toUpperCase()}
+                    </Link>
+                  </motion.div>
                 ))}
               </nav>
 
@@ -128,13 +147,12 @@ export function Navbar() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.4 }}
               >
-                <a
-                  href="#contact"
+                <Link
+                  to="/contact"
                   className="block w-full py-5 bg-accent text-bg-primary text-center font-mono text-sm tracking-wider"
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   DÉMARRER UN PROJET
-                </a>
+                </Link>
               </motion.div>
             </div>
           </motion.div>

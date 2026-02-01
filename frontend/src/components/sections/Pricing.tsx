@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 interface Plan {
   id: string;
@@ -76,6 +77,7 @@ type Tab = 'web' | 'ia';
 export function Pricing() {
   const [activeTab, setActiveTab] = useState<Tab>('web');
   const plans = activeTab === 'web' ? webPlans : iaPlans;
+  const navigate = useNavigate();
 
   return (
     <section id="pricing" className="relative bg-bg-secondary overflow-hidden">
@@ -200,7 +202,7 @@ export function Pricing() {
 
                   {/* CTA */}
                   <button
-                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={() => navigate('/contact')}
                     className={`
                       w-full py-4 font-mono text-sm tracking-wider transition-all duration-300
                       ${plan.highlighted
@@ -244,7 +246,7 @@ export function Pricing() {
               </div>
             </div>
             <button
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => navigate('/contact')}
               className="flex items-center gap-4 font-mono text-sm text-accent hover:text-accent-hover transition-colors whitespace-nowrap"
             >
               <span>DEMANDER UN DEVIS</span>
