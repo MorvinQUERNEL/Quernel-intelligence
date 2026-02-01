@@ -132,5 +132,10 @@ jobs:
             chmod -R 755 "$FULL_PATH/frontend/dist" 2>/dev/null || true
             chmod -R 755 "$FULL_PATH/backend/var" 2>/dev/null || true
 
+            # Copy to public_html for web access
+            echo "=== Copying to public_html ==="
+            rm -rf "$FULL_PATH/public_html/"* 2>/dev/null || true
+            cp -r "$FULL_PATH/frontend/dist/"* "$FULL_PATH/public_html/"
+
             echo "=== Deployment Complete ==="
-            echo "Frontend deployed to: $FULL_PATH/frontend/dist"
+            echo "Site accessible at: https://quernel-intelligence.com/"
