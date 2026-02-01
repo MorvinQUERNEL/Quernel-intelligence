@@ -1,0 +1,9 @@
+# Robots.txt for quernel-intelligence.com
+# Quernel Intelligence - Création Web & Solutions IA
+
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Sitemaps
+Sitemap: https://quernel-intelligence.com/sitemap.xml

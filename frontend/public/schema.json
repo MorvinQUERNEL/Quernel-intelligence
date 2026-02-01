@@ -1,0 +1,65 @@
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "Organization",
+            "@id": "https://quernel-intelligence.com/#organization",
+            "name": "Quernel Intelligence",
+            "url": "https://quernel-intelligence.com",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://quernel-intelligence.com/logo.png"
+            },
+            "sameAs": [],
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "email": "contact@quernel-intelligence.com",
+                "contactType": "customer service",
+                "availableLanguage": "French"
+            }
+        },
+        {
+            "@type": "LocalBusiness",
+            "@id": "https://quernel-intelligence.com/#localbusiness",
+            "name": "Quernel Intelligence",
+            "url": "https://quernel-intelligence.com",
+            "image": "https://quernel-intelligence.com/logo.png",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Vigneux-sur-Seine",
+                "postalCode": "91270",
+                "addressRegion": "Île-de-France",
+                "addressCountry": "FR"
+            },
+            "priceRange": "€€"
+        },
+        {
+            "@type": "Service",
+            "@id": "https://quernel-intelligence.com/#service-web",
+            "name": "Création de Sites Internet",
+            "provider": {
+                "@id": "https://quernel-intelligence.com/#organization"
+            },
+            "description": "Création de sites vitrines professionnels, sites e-commerce et développement web sur mesure pour PME françaises.",
+            "areaServed": {
+                "@type": "Country",
+                "name": "France"
+            },
+            "serviceType": "Développement Web"
+        },
+        {
+            "@type": "Service",
+            "@id": "https://quernel-intelligence.com/#service-ia",
+            "name": "Solutions d'Intelligence Artificielle",
+            "provider": {
+                "@id": "https://quernel-intelligence.com/#organization"
+            },
+            "description": "Agents IA, chatbots entreprise, bots de trading et automatisation IA pour optimiser votre activité.",
+            "areaServed": {
+                "@type": "Country",
+                "name": "France"
+            },
+            "serviceType": "Intelligence Artificielle"
+        }
+    ]
+}

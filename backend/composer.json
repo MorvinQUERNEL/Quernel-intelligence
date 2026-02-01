@@ -7,19 +7,15 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "api-platform/core": "^4.2.15",
-        "doctrine/doctrine-bundle": "^2.18.2",
-        "doctrine/doctrine-migrations-bundle": "^3.7",
-        "doctrine/orm": "^2.20.9",
-        "lexik/jwt-authentication-bundle": "^3.2",
-        "nelmio/cors-bundle": "^2.6.1",
+        "nelmio/cors-bundle": "^2.6",
         "symfony/console": "7.4.*",
         "symfony/dotenv": "7.4.*",
-        "symfony/flex": "^2.10",
+        "symfony/flex": "^2",
         "symfony/framework-bundle": "7.4.*",
         "symfony/mailer": "7.4.*",
+        "symfony/rate-limiter": "7.4.*",
         "symfony/runtime": "7.4.*",
-        "symfony/security-bundle": "7.4.*",
+        "symfony/validator": "7.4.*",
         "symfony/yaml": "7.4.*"
     },
     "config": {
@@ -29,10 +25,7 @@
             "symfony/runtime": true
         },
         "bump-after-update": true,
-        "sort-packages": true,
-        "platform": {
-            "php": "8.2"
-        }
+        "sort-packages": true
     },
     "autoload": {
         "psr-4": {

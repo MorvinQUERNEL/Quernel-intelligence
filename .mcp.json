@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "claude-team": {
+      "command": "uvx",
+      "args": ["--from", "claude-team-mcp", "claude-team"],
+      "env": {
+        "CLAUDE_TEAM_PROJECT_DIR": "${PWD}"
+      }
+    }
+  }
+}

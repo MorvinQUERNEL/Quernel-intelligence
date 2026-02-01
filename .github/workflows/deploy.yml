@@ -5,186 +5,72 @@ on:
     branches: [main]
   workflow_dispatch:
 
-env:
-  NODE_VERSION: '20'
-  PHP_VERSION: '8.2'
-
 jobs:
-  build-frontend:
-    name: Build Frontend
+  build-and-deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      # Build Frontend
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: '20'
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install dependencies
-        working-directory: frontend
-        run: npm ci
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
 
       - name: Build frontend
-        working-directory: frontend
-        run: npm run build
-        env:
-          VITE_API_URL: https://quernel-intelligence.com/api
-
-      - name: Upload frontend build
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend-build
-          path: frontend/dist
-          retention-days: 1
-
-  build-backend:
-    name: Build Backend
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ env.PHP_VERSION }}
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, dom, filter, gd, json, opcache, zip
-          tools: composer:v2
-
-      - name: Get Composer cache directory
-        id: composer-cache
-        working-directory: backend
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('backend/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Install dependencies
-        working-directory: backend
-        run: composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
-
-      - name: Create backend archive
-        run: tar -czf backend.tar.gz -C backend .
-
-      - name: Upload backend archive
-        uses: actions/upload-artifact@v4
-        with:
-          name: backend-archive
-          path: backend.tar.gz
-          retention-days: 1
-
-  deploy:
-    name: Deploy to Hostinger
-    runs-on: ubuntu-latest
-    needs: [build-frontend, build-backend]
-    env:
-      HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
-      HOSTINGER_USERNAME: ${{ secrets.HOSTINGER_USERNAME }}
-      HOSTINGER_PASSWORD: ${{ secrets.HOSTINGER_PASSWORD }}
-      HOSTINGER_PORT: ${{ secrets.HOSTINGER_PORT }}
-      APP_SECRET: ${{ secrets.APP_SECRET }}
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      JWT_PASSPHRASE: ${{ secrets.JWT_PASSPHRASE }}
-    steps:
-      - name: Download frontend build
-        uses: actions/download-artifact@v4
-        with:
-          name: frontend-build
-          path: frontend-dist
-
-      - name: Download backend archive
-        uses: actions/download-artifact@v4
-        with:
-          name: backend-archive
-          path: .
-
-      - name: Create frontend archive
-        run: tar -czf frontend.tar.gz -C frontend-dist .
-
-      - name: Install sshpass
-        run: sudo apt-get install -y sshpass
-
-      - name: Upload archives to server
         run: |
-          sshpass -p "$HOSTINGER_PASSWORD" scp -o StrictHostKeyChecking=no -P "$HOSTINGER_PORT" \
-            frontend.tar.gz backend.tar.gz \
-            "$HOSTINGER_USERNAME@$HOSTINGER_HOST:domains/quernel-intelligence.com/"
+          cd frontend
+          npm run build
 
-      - name: Deploy and Configure
+      - name: Verify build output
         run: |
-          sshpass -p "$HOSTINGER_PASSWORD" ssh -o StrictHostKeyChecking=no -p "$HOSTINGER_PORT" "$HOSTINGER_USERNAME@$HOSTINGER_HOST" << ENDSSH
-          cd domains/quernel-intelligence.com
-
-          # Extract frontend
-          rm -rf public_html/*
-          tar -xzf frontend.tar.gz -C public_html/
-          rm frontend.tar.gz
-
-          # Extract backend
-          rm -rf backend
-          mkdir -p backend
-          tar -xzf backend.tar.gz -C backend/
-          rm backend.tar.gz
-
-          cd backend
-
-          # Create .env.local with production settings
-          cat > .env.local << 'ENVEOF'
-          APP_ENV=prod
-          APP_SECRET=${APP_SECRET}
-          DATABASE_URL="${DATABASE_URL}"
-          JWT_PASSPHRASE=${JWT_PASSPHRASE}
-          CORS_ALLOW_ORIGIN='^https?://(quernel-intelligence\.com|www\.quernel-intelligence\.com)\$'
-          ENVEOF
-
-          # Generate JWT keys if not exist
-          mkdir -p config/jwt
-          if [ ! -f config/jwt/private.pem ]; then
-            openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096 -pass pass:${JWT_PASSPHRASE} 2>/dev/null || true
-            openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout -passin pass:${JWT_PASSPHRASE} 2>/dev/null || true
-            chmod 600 config/jwt/private.pem 2>/dev/null || true
+          if [ ! -d "frontend/dist" ]; then
+            echo "Error: frontend/dist directory not found!"
+            exit 1
           fi
+          echo "Build successful. Contents of dist/:"
+          ls -la frontend/dist/
 
-          # Clear and warm up cache
-          php bin/console cache:clear --env=prod --no-debug 2>/dev/null || true
-          php bin/console cache:warmup --env=prod --no-debug 2>/dev/null || true
+      # Deploy via SSH
+      - name: Deploy to Hostinger
+        uses: appleboy/ssh-action@029f5b4aeeeb58fdfe1410a5d17f967dacf36262 # v1.0.3
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          envs: DEPLOY_PATH
+          script: |
+            set -e
 
-          # Run migrations
-          php bin/console doctrine:migrations:migrate --no-interaction --env=prod 2>/dev/null || true
+            echo "=== Deploying to Hostinger ==="
+            cd "$DEPLOY_PATH"
 
-          # Setup public_html
-          cd ../public_html
+            echo "=== Pulling latest changes ==="
+            git pull origin main
 
-          # Create symlink for API
-          rm -rf api 2>/dev/null || true
-          ln -sf ../backend/public api
+            echo "=== Building Frontend ==="
+            cd frontend
+            npm ci
+            npm run build
 
-          # Create .htaccess for SPA routing
-          cat > .htaccess << 'HTEOF'
-          RewriteEngine On
-          RewriteBase /
+            echo "=== Installing Backend Dependencies ==="
+            cd ../backend
+            composer install --no-dev --optimize-autoloader
+            php bin/console cache:clear --env=prod
 
-          # Redirect to HTTPS
-          RewriteCond %{HTTPS} off
-          RewriteRule ^(.*)\$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+            echo "=== Reloading Nginx ==="
+            sudo systemctl reload nginx
 
-          # API requests go to backend
-          RewriteCond %{REQUEST_URI} ^/api
-          RewriteRule ^api/(.*)\$ api/index.php [L,QSA]
-
-          # SPA fallback - if file doesn't exist, serve index.html
-          RewriteCond %{REQUEST_FILENAME} !-f
-          RewriteCond %{REQUEST_FILENAME} !-d
-          RewriteRule . /index.html [L]
-          HTEOF
-
-          echo "Deployment completed successfully!"
-          ENDSSH
+            echo "=== Deployment Complete ==="

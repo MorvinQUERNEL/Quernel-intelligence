@@ -1,13 +1,111 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
-  </head>
-  <body>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>Quernel Intelligence | Création de Sites Internet & Solutions IA</title>
+    <meta name="description" content="Agence de création web et intelligence artificielle. Sites vitrines, e-commerce, agents IA, bots de trading. Solutions sur mesure pour PME françaises.">
+    <meta name="keywords" content="création site internet, agence web, développement web, agent IA, chatbot, bot de trading, automatisation, Vigneux-sur-Seine">
+    <meta name="author" content="Quernel Intelligence">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://quernel-intelligence.com/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="Quernel Intelligence | Création Web & IA">
+    <meta property="og:description" content="Votre partenaire digital intelligent. Sites web + solutions IA sur mesure.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://quernel-intelligence.com/">
+    <meta property="og:image" content="https://quernel-intelligence.com/og-image.jpg">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:site_name" content="Quernel Intelligence">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Quernel Intelligence | Création Web & IA">
+    <meta name="twitter:description" content="Votre partenaire digital intelligent.">
+    <meta name="twitter:image" content="https://quernel-intelligence.com/og-image.jpg">
+
+    <!-- Performance: Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Organization",
+                "@id": "https://quernel-intelligence.com/#organization",
+                "name": "Quernel Intelligence",
+                "url": "https://quernel-intelligence.com",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://quernel-intelligence.com/logo.png"
+                },
+                "sameAs": [],
+                "contactPoint": {
+                    "@type": "ContactPoint",
+                    "email": "contact@quernel-intelligence.com",
+                    "contactType": "customer service",
+                    "availableLanguage": "French"
+                }
+            },
+            {
+                "@type": "LocalBusiness",
+                "@id": "https://quernel-intelligence.com/#localbusiness",
+                "name": "Quernel Intelligence",
+                "url": "https://quernel-intelligence.com",
+                "image": "https://quernel-intelligence.com/logo.png",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Vigneux-sur-Seine",
+                    "postalCode": "91270",
+                    "addressRegion": "Île-de-France",
+                    "addressCountry": "FR"
+                },
+                "priceRange": "€€"
+            },
+            {
+                "@type": "Service",
+                "@id": "https://quernel-intelligence.com/#service-web",
+                "name": "Création de Sites Internet",
+                "provider": {
+                    "@id": "https://quernel-intelligence.com/#organization"
+                },
+                "description": "Création de sites vitrines professionnels, sites e-commerce et développement web sur mesure pour PME françaises.",
+                "areaServed": {
+                    "@type": "Country",
+                    "name": "France"
+                },
+                "serviceType": "Développement Web"
+            },
+            {
+                "@type": "Service",
+                "@id": "https://quernel-intelligence.com/#service-ia",
+                "name": "Solutions d'Intelligence Artificielle",
+                "provider": {
+                    "@id": "https://quernel-intelligence.com/#organization"
+                },
+                "description": "Agents IA, chatbots entreprise, bots de trading et automatisation IA pour optimiser votre activité.",
+                "areaServed": {
+                    "@type": "Country",
+                    "name": "France"
+                },
+                "serviceType": "Intelligence Artificielle"
+            }
+        ]
+    }
+    </script>
+</head>
+<body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-  </body>
+</body>
 </html>

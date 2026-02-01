@@ -2,23 +2,25 @@
 node_modules/
 vendor/
 
+# Build outputs
+frontend/dist/
+frontend/build/
+var/
+
 # Environment files
 .env.local
 .env.*.local
-!.env.example
-!/backend/.env
-
-# Build outputs
-/frontend/dist/
-/backend/var/
-/backend/public/bundles/
+backend/.env.local
 
 # IDE
 .idea/
 .vscode/
 *.swp
 *.swo
+
+# OS
 .DS_Store
+Thumbs.db
 
 # Logs
 *.log
@@ -28,12 +30,11 @@ npm-debug.log*
 .cache/
 *.cache
 
-# JWT Keys
-/backend/config/jwt/*.pem
-
-# Testing
+# Test coverage
 coverage/
-.phpunit.result.cache
 
-# OS
-Thumbs.db
+# Temporary files
+tmp/
+temp/
+.worktrees
+backend/.env.dev
