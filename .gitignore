@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Build outputs
+/frontend/dist/
+/backend/var/
+/backend/public/bundles/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Cache
+.cache/
+*.cache
+
+# JWT Keys
+/backend/config/jwt/*.pem
+
+# Testing
+coverage/
+.phpunit.result.cache
+
+# OS
+Thumbs.db

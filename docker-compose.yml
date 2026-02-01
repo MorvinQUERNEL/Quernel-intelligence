@@ -1,0 +1,30 @@
+services:
+  database:
+    image: mysql:8.0
+    container_name: quernel_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: quernel_intelligence
+      MYSQL_USER: quernel
+      MYSQL_PASSWORD: quernel_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: quernel_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: database
+      PMA_USER: quernel
+      PMA_PASSWORD: quernel_password
+    ports:
+      - "8080:80"
+    depends_on:
+      - database
+
+volumes:
+  db_data:
