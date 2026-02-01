@@ -40,8 +40,49 @@ jobs:
           echo "Build successful. Contents of dist/:"
           ls -la frontend/dist/
 
-      # Deploy via SSH
-      - name: Deploy to Hostinger
+      # Prepare deployment package
+      - name: Create deployment archive
+        run: |
+          # Create a clean deployment directory
+          mkdir -p deploy_package/frontend
+          mkdir -p deploy_package/backend
+          mkdir -p deploy_package/nginx
+
+          # Copy built frontend
+          cp -r frontend/dist deploy_package/frontend/
+          cp -r frontend/public deploy_package/frontend/
+
+          # Copy backend (excluding vendor, will install on server)
+          cp -r backend/src deploy_package/backend/
+          cp -r backend/config deploy_package/backend/
+          cp -r backend/public deploy_package/backend/
+          cp -r backend/bin deploy_package/backend/
+          cp backend/composer.json deploy_package/backend/
+          cp backend/composer.lock deploy_package/backend/
+          cp backend/.env deploy_package/backend/
+          cp backend/.env.prod deploy_package/backend/ 2>/dev/null || true
+
+          # Copy nginx config
+          cp nginx/quernel-intelligence.conf deploy_package/nginx/
+
+          # Create archive
+          tar -czvf deploy.tar.gz -C deploy_package .
+          echo "Archive created:"
+          ls -la deploy.tar.gz
+
+      # Copy archive to server
+      - name: Copy files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          source: "deploy.tar.gz"
+          target: "/tmp"
+
+      # Extract and configure on server
+      - name: Deploy on server
         uses: appleboy/ssh-action@029f5b4aeeeb58fdfe1410a5d17f967dacf36262 # v1.0.3
         env:
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
@@ -55,22 +96,34 @@ jobs:
             set -e
 
             echo "=== Deploying to Hostinger ==="
+
+            # Create target directories if they don't exist
+            mkdir -p "$DEPLOY_PATH/frontend"
+            mkdir -p "$DEPLOY_PATH/backend"
+
+            # Extract archive
+            echo "=== Extracting deployment archive ==="
             cd "$DEPLOY_PATH"
+            tar -xzvf /tmp/deploy.tar.gz
 
-            echo "=== Pulling latest changes ==="
-            git pull origin main
+            # Clean up archive
+            rm -f /tmp/deploy.tar.gz
 
-            echo "=== Building Frontend ==="
-            cd frontend
-            npm ci
-            npm run build
-
+            # Install backend dependencies
             echo "=== Installing Backend Dependencies ==="
-            cd ../backend
-            composer install --no-dev --optimize-autoloader
-            php bin/console cache:clear --env=prod
+            cd "$DEPLOY_PATH/backend"
+            if command -v composer &> /dev/null; then
+              composer install --no-dev --optimize-autoloader
+              php bin/console cache:clear --env=prod || true
+            else
+              echo "Composer not found, skipping backend setup"
+            fi
 
-            echo "=== Reloading Nginx ==="
-            sudo systemctl reload nginx
+            # Set permissions
+            echo "=== Setting permissions ==="
+            chmod -R 755 "$DEPLOY_PATH/frontend/dist" 2>/dev/null || true
+            chmod -R 755 "$DEPLOY_PATH/backend/var" 2>/dev/null || true
 
             echo "=== Deployment Complete ==="
+            echo "Frontend deployed to: $DEPLOY_PATH/frontend/dist"
+            echo "Backend deployed to: $DEPLOY_PATH/backend"
