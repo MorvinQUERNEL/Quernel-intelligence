@@ -1,258 +1,303 @@
 import { motion } from 'framer-motion';
-import { SectionHeading } from '../ui/SectionHeading';
+import { useState } from 'react';
 
-interface ServiceItem {
-  icon: React.ReactNode;
+interface Service {
+  id: string;
+  index: string;
   title: string;
+  subtitle: string;
   description: string;
+  features: string[];
+  visual: 'web' | 'ia' | 'trading' | 'automation';
 }
 
-const webServices: ServiceItem[] = [
+const services: Service[] = [
   {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-      </svg>
-    ),
-    title: 'Site Vitrine',
-    description: 'Présence en ligne professionnelle et impactante',
+    id: 'web',
+    index: '001',
+    title: 'CRÉATION WEB',
+    subtitle: 'Sites & Applications',
+    description: 'Des sites qui convertissent. Design moderne, performance optimale, SEO intégré. Chaque pixel compte.',
+    features: ['Site Vitrine', 'E-Commerce', 'Application Web', 'Refonte'],
+    visual: 'web',
   },
   {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-      </svg>
-    ),
-    title: 'E-Commerce',
-    description: 'Boutique en ligne avec paiement sécurisé',
+    id: 'ia',
+    index: '002',
+    title: 'AGENTS IA',
+    subtitle: 'Intelligence Autonome',
+    description: 'Assistants virtuels 24/7. Ils répondent, qualifient, convertissent. Pendant que vous dormez.',
+    features: ['Chatbots IA', 'Support Client', 'Qualification Leads', 'FAQ Dynamique'],
+    visual: 'ia',
   },
   {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-      </svg>
-    ),
-    title: 'Application Web',
-    description: 'Outils sur mesure avec dashboard et API',
+    id: 'trading',
+    index: '003',
+    title: 'BOTS TRADING',
+    subtitle: 'Algorithmes Financiers',
+    description: 'Stratégies automatisées. Backtesting rigoureux. Gestion du risque intégrée.',
+    features: ['Crypto/Forex', 'Stratégies Custom', 'Backtesting', 'Alertes Telegram'],
+    visual: 'trading',
   },
   {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-      </svg>
-    ),
-    title: 'Refonte',
-    description: 'Modernisation et optimisation de votre site',
+    id: 'automation',
+    index: '004',
+    title: 'AUTOMATION',
+    subtitle: 'Workflows Intelligents',
+    description: 'Automatisez le répétitif. Connectez vos outils. Libérez votre temps.',
+    features: ['Workflows', 'Intégrations API', 'Emails Auto', 'Rapports IA'],
+    visual: 'automation',
   },
 ];
 
-const iaServices: ServiceItem[] = [
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-      </svg>
-    ),
-    title: 'Agents IA',
-    description: 'Assistants virtuels 24/7 pour vos clients',
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-      </svg>
-    ),
-    title: 'Bots de Trading',
-    description: 'Algorithmes automatisés pour les marchés',
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-      </svg>
-    ),
-    title: 'Automatisation',
-    description: 'Workflows et intégrations automatisés',
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-      </svg>
-    ),
-    title: 'IA E-Commerce',
-    description: 'Recommandations et relances intelligentes',
-  },
-];
-
-interface ServiceCardProps {
-  service: ServiceItem;
-  index: number;
-}
-
-const ServiceCard = ({ service, index }: ServiceCardProps) => (
-  <motion.div
-    className="group flex items-center gap-5 p-5 rounded-xl border border-border bg-bg-secondary/50 hover:border-border-hover hover:bg-bg-tertiary/50 transition-all duration-200 cursor-pointer"
-    initial={{ opacity: 0, x: -10 }}
-    whileInView={{ opacity: 1, x: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.3, delay: index * 0.05 }}
-    whileHover={{ x: 4 }}
-  >
-    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
-      {service.icon}
-    </div>
-    <div className="flex-grow min-w-0">
-      <h4 className="text-text-primary font-medium text-sm mb-1">{service.title}</h4>
-      <p className="text-text-muted text-sm truncate">{service.description}</p>
-    </div>
-    <svg
-      className="w-4 h-4 text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all duration-200 flex-shrink-0"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-    </svg>
-  </motion.div>
-);
-
-export function Services() {
-  return (
-    <section id="services" className="relative overflow-hidden">
-      <div className="container">
-        <SectionHeading
-          badge="Nos Services"
-          title="Deux expertises. Un seul partenaire."
-          subtitle="De la création web aux solutions IA, nous couvrons toute votre transformation digitale."
-        />
-
-        {/* Web Creation - Left visual, Right content */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24">
-          {/* Visual */}
-          <motion.div
-            className="relative order-2 lg:order-1"
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="aspect-[4/3] bg-bg-secondary border border-border rounded-xl overflow-hidden relative">
-              {/* Browser mockup content */}
-              <div className="absolute inset-0 p-6">
-                <div className="flex gap-1.5 mb-4">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-                </div>
-                <div className="space-y-3">
-                  <div className="h-6 w-24 bg-bg-tertiary rounded" />
-                  <div className="h-3 w-full bg-bg-tertiary rounded" />
-                  <div className="h-3 w-4/5 bg-bg-tertiary rounded" />
-                  <div className="h-3 w-3/5 bg-bg-tertiary rounded" />
-                  <div className="grid grid-cols-3 gap-2 mt-4">
-                    <div className="h-16 bg-bg-tertiary rounded" />
-                    <div className="h-16 bg-bg-tertiary rounded" />
-                    <div className="h-16 bg-bg-tertiary rounded" />
-                  </div>
-                </div>
-              </div>
-              {/* Accent decoration */}
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-accent/0 via-accent to-accent/0" />
+function ServiceVisual({ type }: { type: Service['visual'] }) {
+  const visuals = {
+    web: (
+      <div className="relative w-full aspect-[4/3] bg-bg-secondary border border-border overflow-hidden">
+        <div className="absolute inset-4 flex flex-col">
+          <div className="flex gap-1.5 mb-4">
+            <div className="w-2 h-2 rounded-full bg-accent/60" />
+            <div className="w-2 h-2 rounded-full bg-text-muted/30" />
+            <div className="w-2 h-2 rounded-full bg-text-muted/30" />
+          </div>
+          <div className="flex-1 grid grid-cols-3 gap-2">
+            <div className="col-span-2 space-y-2">
+              <div className="h-4 w-20 bg-accent/20" />
+              <div className="h-2 w-full bg-border" />
+              <div className="h-2 w-4/5 bg-border" />
+              <div className="h-2 w-3/5 bg-border" />
             </div>
-          </motion.div>
-
-          {/* Content */}
-          <div className="order-1 lg:order-2">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <h3 className="text-2xl font-semibold mb-3">Création Web</h3>
-              <p className="text-text-secondary mb-6">
-                Des sites qui convertissent, pas juste qui existent. Design moderne,
-                performance optimisée, SEO intégré.
-              </p>
-            </motion.div>
-
-            <div className="space-y-4">
-              {webServices.map((service, index) => (
-                <ServiceCard key={service.title} service={service} index={index} />
-              ))}
+            <div className="space-y-2">
+              <div className="h-16 bg-border" />
+              <div className="h-8 bg-accent/10" />
             </div>
           </div>
         </div>
-
-        {/* IA Solutions - Left content, Right visual */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Content */}
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <h3 className="text-2xl font-semibold mb-3">Solutions IA</h3>
-              <p className="text-text-secondary mb-6">
-                L'IA concrète qui génère du chiffre d'affaires. Automatisation,
-                assistance client, et analyse prédictive.
-              </p>
-            </motion.div>
-
-            <div className="space-y-4">
-              {iaServices.map((service, index) => (
-                <ServiceCard key={service.title} service={service} index={index} />
-              ))}
+        <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-accent to-transparent" />
+      </div>
+    ),
+    ia: (
+      <div className="relative w-full aspect-[4/3] bg-bg-secondary border border-border overflow-hidden font-mono text-xs">
+        <div className="absolute inset-4 flex flex-col gap-2">
+          <div className="text-text-muted">$ agent --init</div>
+          <div className="text-accent">✓ Connecté</div>
+          <div className="text-text-secondary">Analyse en cours...</div>
+          <div className="flex items-center gap-2 mt-2">
+            <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+            <span className="text-accent">Traitement actif</span>
+          </div>
+          <div className="mt-auto p-3 bg-bg-tertiary border border-border">
+            <div className="text-text-muted mb-1">Stats 24h</div>
+            <div className="flex justify-between">
+              <span className="text-text-muted">Requêtes:</span>
+              <span className="text-accent">1,247</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-text-muted">Résolution:</span>
+              <span className="text-accent">94%</span>
             </div>
           </div>
-
-          {/* Visual */}
-          <motion.div
-            className="relative"
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="aspect-[4/3] bg-bg-secondary border border-border rounded-xl overflow-hidden relative">
-              {/* Terminal mockup */}
-              <div className="absolute inset-0 p-6">
-                <div className="flex gap-1.5 mb-4">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+        </div>
+      </div>
+    ),
+    trading: (
+      <div className="relative w-full aspect-[4/3] bg-bg-secondary border border-border overflow-hidden">
+        <div className="absolute inset-4">
+          {/* Fake chart */}
+          <svg className="w-full h-full" viewBox="0 0 200 100" preserveAspectRatio="none">
+            <path
+              d="M0,80 L20,70 L40,75 L60,50 L80,55 L100,30 L120,40 L140,20 L160,35 L180,15 L200,25"
+              fill="none"
+              stroke="#38BDF8"
+              strokeWidth="2"
+            />
+            <path
+              d="M0,80 L20,70 L40,75 L60,50 L80,55 L100,30 L120,40 L140,20 L160,35 L180,15 L200,25 L200,100 L0,100 Z"
+              fill="url(#gradient)"
+              opacity="0.1"
+            />
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#38BDF8" />
+                <stop offset="100%" stopColor="transparent" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div className="absolute bottom-2 right-2 font-mono text-xs text-accent">
+            +12.4%
+          </div>
+        </div>
+      </div>
+    ),
+    automation: (
+      <div className="relative w-full aspect-[4/3] bg-bg-secondary border border-border overflow-hidden">
+        <div className="absolute inset-4 flex items-center justify-center">
+          {/* Workflow diagram */}
+          <div className="flex items-center gap-4">
+            {[1, 2, 3].map((n) => (
+              <div key={n} className="flex items-center gap-4">
+                <div className="w-12 h-12 border border-accent/50 flex items-center justify-center">
+                  <span className="font-mono text-xs text-accent">0{n}</span>
                 </div>
-                <div className="font-mono text-xs space-y-2">
-                  <div className="text-text-muted">$ agent-ia --start</div>
-                  <div className="text-success">✓ Agent connecté</div>
-                  <div className="text-text-secondary">Analyse en cours...</div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-                    <span className="text-accent">Traitement des demandes clients</span>
+                {n < 3 && (
+                  <div className="w-8 h-px bg-accent/50" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="absolute bottom-4 left-4 font-mono text-xs text-text-muted">
+          WORKFLOW/ACTIVE
+        </div>
+      </div>
+    ),
+  };
+
+  return visuals[type];
+}
+
+export function Services() {
+  const [activeService, setActiveService] = useState<string | null>(null);
+
+  return (
+    <section id="services" className="relative bg-bg-primary overflow-hidden">
+      {/* Section header */}
+      <div className="container">
+        <motion.div
+          className="flex items-start justify-between mb-24"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <div>
+            <div className="flex items-center gap-4 mb-6">
+              <span className="font-mono text-sm text-accent">002</span>
+              <div className="h-px w-12 bg-accent" />
+              <span className="font-mono text-xs text-text-muted tracking-wider">NOS EXPERTISES</span>
+            </div>
+            <h2 className="text-text-primary">
+              SERVICES
+            </h2>
+          </div>
+          <div className="hidden lg:block max-w-xs text-right">
+            <p className="text-text-secondary text-sm">
+              Quatre domaines d'expertise. Un seul objectif: votre croissance digitale.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Services list */}
+        <div className="space-y-0">
+          {services.map((service, index) => (
+            <motion.div
+              key={service.id}
+              className="group"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              onMouseEnter={() => setActiveService(service.id)}
+              onMouseLeave={() => setActiveService(null)}
+            >
+              {/* Divider */}
+              <div className="h-px bg-border group-hover:bg-accent/30 transition-colors duration-500" />
+
+              <div className="grid lg:grid-cols-12 gap-8 py-12 lg:py-16 items-center">
+                {/* Index */}
+                <div className="lg:col-span-1">
+                  <span className="font-mono text-sm text-text-muted group-hover:text-accent transition-colors">
+                    {service.index}
+                  </span>
+                </div>
+
+                {/* Title & Subtitle */}
+                <div className="lg:col-span-4">
+                  <h3 className="text-text-primary group-hover:text-accent transition-colors duration-300 mb-2">
+                    {service.title}
+                  </h3>
+                  <span className="font-mono text-xs text-text-muted tracking-wider">
+                    {service.subtitle}
+                  </span>
+                </div>
+
+                {/* Description */}
+                <div className="lg:col-span-3">
+                  <p className="text-text-secondary text-sm leading-relaxed">
+                    {service.description}
+                  </p>
+                </div>
+
+                {/* Features */}
+                <div className="lg:col-span-3">
+                  <div className="flex flex-wrap gap-2">
+                    {service.features.map((feature) => (
+                      <span
+                        key={feature}
+                        className="px-3 py-1 text-xs font-mono border border-border group-hover:border-accent/30 text-text-muted group-hover:text-text-secondary transition-all duration-300"
+                      >
+                        {feature}
+                      </span>
+                    ))}
                   </div>
-                  <div className="mt-4 p-3 bg-bg-tertiary rounded-lg">
-                    <div className="text-text-muted mb-1">Statistiques 24h</div>
-                    <div className="grid grid-cols-2 gap-2 text-[10px]">
-                      <div>
-                        <span className="text-text-muted">Requêtes:</span>
-                        <span className="text-text-primary ml-1">1,247</span>
-                      </div>
-                      <div>
-                        <span className="text-text-muted">Résolution:</span>
-                        <span className="text-success ml-1">94%</span>
-                      </div>
+                </div>
+
+                {/* Arrow */}
+                <div className="lg:col-span-1 flex justify-end">
+                  <motion.div
+                    className="w-10 h-10 border border-border group-hover:border-accent group-hover:bg-accent flex items-center justify-center transition-all duration-300"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    <span className="text-text-muted group-hover:text-bg-primary transition-colors">
+                      →
+                    </span>
+                  </motion.div>
+                </div>
+              </div>
+
+              {/* Expanded visual on hover - Desktop only */}
+              <motion.div
+                className="hidden lg:block overflow-hidden"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{
+                  height: activeService === service.id ? 'auto' : 0,
+                  opacity: activeService === service.id ? 1 : 0,
+                }}
+                transition={{ duration: 0.4, ease: 'easeInOut' }}
+              >
+                <div className="pb-12 grid grid-cols-12 gap-8">
+                  <div className="col-span-1" />
+                  <div className="col-span-5">
+                    <ServiceVisual type={service.visual} />
+                  </div>
+                  <div className="col-span-5 flex items-center">
+                    <div>
+                      <p className="text-text-secondary mb-6 leading-relaxed">
+                        {service.description} Chaque projet est unique, chaque solution est sur mesure.
+                      </p>
+                      <button
+                        onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                        className="font-mono text-sm text-accent hover:text-accent-hover transition-colors flex items-center gap-3"
+                      >
+                        <span>EN SAVOIR PLUS</span>
+                        <span className="w-6 h-px bg-current" />
+                      </button>
                     </div>
                   </div>
                 </div>
-              </div>
-              {/* Accent decoration */}
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-accent/0 via-accent to-accent/0" />
-            </div>
-          </motion.div>
+              </motion.div>
+            </motion.div>
+          ))}
+          {/* Final divider */}
+          <div className="h-px bg-border" />
         </div>
+      </div>
+
+      {/* Background decoration */}
+      <div className="absolute top-1/2 right-0 -translate-y-1/2 overflow-hidden pointer-events-none opacity-[0.02]">
+        <span className="font-display text-[40vw] leading-none text-white">
+          02
+        </span>
       </div>
     </section>
   );

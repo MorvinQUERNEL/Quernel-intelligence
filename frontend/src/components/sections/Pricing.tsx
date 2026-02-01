@@ -1,144 +1,75 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SectionHeading } from '../ui/SectionHeading';
-import { Button } from '../ui/Button';
-import { Badge } from '../ui/Badge';
-import { Card } from '../ui/Card';
 
 interface Plan {
+  id: string;
+  index: string;
   name: string;
   price: string;
   description: string;
   features: string[];
-  popular: boolean;
+  highlighted: boolean;
 }
 
 const webPlans: Plan[] = [
   {
-    name: 'Essentiel',
+    id: 'essential',
+    index: '01',
+    name: 'ESSENTIEL',
     price: '499',
-    description: 'Parfait pour démarrer',
-    features: [
-      'Site vitrine 5 pages',
-      'Design responsive',
-      'Formulaire de contact',
-      'SEO de base',
-      'Hébergement 1 an',
-    ],
-    popular: false,
+    description: 'Parfait pour démarrer votre présence en ligne',
+    features: ['Site vitrine 5 pages', 'Design responsive', 'Formulaire contact', 'SEO de base', 'Hébergement 1 an'],
+    highlighted: false,
   },
   {
-    name: 'Business',
+    id: 'business',
+    index: '02',
+    name: 'BUSINESS',
     price: '999',
-    description: 'La solution complète',
-    features: [
-      'Pages illimitées',
-      'Design premium sur mesure',
-      'Blog intégré',
-      'SEO avancé + analytics',
-      'Hébergement + maintenance',
-      'Formation utilisateur',
-    ],
-    popular: true,
+    description: 'La solution complète pour votre croissance',
+    features: ['Pages illimitées', 'Design premium', 'Blog intégré', 'SEO avancé', 'Maintenance incluse', 'Formation'],
+    highlighted: true,
   },
   {
-    name: 'Premium',
+    id: 'premium',
+    index: '03',
+    name: 'PREMIUM',
     price: '1999',
-    description: 'E-commerce & apps',
-    features: [
-      'Tout Business +',
-      'E-commerce complet',
-      'Paiement sécurisé',
-      'Gestion des stocks',
-      'API personnalisée',
-      'Support prioritaire',
-    ],
-    popular: false,
+    description: 'E-commerce et applications sur mesure',
+    features: ['Tout Business +', 'E-commerce complet', 'Paiement sécurisé', 'Gestion stocks', 'API custom', 'Support prioritaire'],
+    highlighted: false,
   },
 ];
 
 const iaPlans: Plan[] = [
   {
-    name: 'Agent IA',
+    id: 'agent',
+    index: '01',
+    name: 'AGENT IA',
     price: '499',
-    description: 'Chatbot intelligent',
-    features: [
-      'Chatbot IA sur mesure',
-      'Intégration site web',
-      'FAQ automatisée',
-      'Qualification leads',
-      '1000 conv./mois',
-    ],
-    popular: false,
+    description: 'Chatbot intelligent pour votre site',
+    features: ['Chatbot sur mesure', 'Intégration web', 'FAQ automatisée', 'Qualification leads', '1000 conv./mois'],
+    highlighted: false,
   },
   {
-    name: 'Automation Pro',
+    id: 'automation',
+    index: '02',
+    name: 'AUTOMATION PRO',
     price: '999',
-    description: 'Processus automatisés',
-    features: [
-      'Workflows automatisés',
-      'Intégration CRM/ERP',
-      'Emails automatiques',
-      'Rapports IA',
-      'API personnalisée',
-      'Support dédié',
-    ],
-    popular: true,
+    description: 'Automatisez vos processus métier',
+    features: ['Workflows auto', 'Intégration CRM', 'Emails automatiques', 'Rapports IA', 'API personnalisée', 'Support dédié'],
+    highlighted: true,
   },
   {
-    name: 'Trading Bot',
+    id: 'trading',
+    index: '03',
+    name: 'TRADING BOT',
     price: '1499',
-    description: 'Bot personnalisé',
-    features: [
-      'Bot crypto/forex',
-      'Stratégie sur mesure',
-      'Backtesting inclus',
-      'Gestion des risques',
-      'Dashboard temps réel',
-      'Alertes Telegram',
-    ],
-    popular: false,
+    description: 'Bot personnalisé pour les marchés',
+    features: ['Bot crypto/forex', 'Stratégie custom', 'Backtesting', 'Risk management', 'Dashboard temps réel', 'Alertes Telegram'],
+    highlighted: false,
   },
 ];
-
-function PricingCard({ plan }: { plan: Plan }) {
-  return (
-    <Card variant={plan.popular ? 'featured' : 'default'} className="p-6 md:p-8 h-full flex flex-col">
-      <div className="text-center mb-8">
-        <h3 className="text-lg font-semibold text-text-primary mb-1">{plan.name}</h3>
-        <p className="text-text-muted text-sm mb-4">{plan.description}</p>
-        <div className="flex items-baseline justify-center gap-1">
-          <span className="text-4xl font-bold font-mono text-text-primary">{plan.price}</span>
-          <span className="text-text-muted">€</span>
-        </div>
-      </div>
-
-      <ul className="space-y-4 mb-8 flex-grow">
-        {plan.features.map((feature, idx) => (
-          <li key={idx} className="flex items-start gap-3 text-sm text-text-secondary">
-            <svg
-              className="w-4 h-4 text-accent shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-            {feature}
-          </li>
-        ))}
-      </ul>
-
-      <Button
-        variant={plan.popular ? 'primary' : 'secondary'}
-        className="w-full"
-        onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-      >
-        Choisir
-      </Button>
-    </Card>
-  );
-}
 
 type Tab = 'web' | 'ia';
 
@@ -147,58 +78,143 @@ export function Pricing() {
   const plans = activeTab === 'web' ? webPlans : iaPlans;
 
   return (
-    <section id="pricing" className="relative overflow-hidden bg-bg-secondary/30">
+    <section id="pricing" className="relative bg-bg-secondary overflow-hidden">
       <div className="container">
-        <SectionHeading
-          badge="Tarifs"
-          title="Des prix clairs. Zéro surprise."
-          subtitle="Choisissez la formule adaptée à votre projet."
-        />
-
-        {/* Tab switcher */}
-        <div className="flex justify-center mb-12">
-          <div className="inline-flex items-center bg-bg-secondary border border-border rounded-lg p-1">
-            <button
-              onClick={() => setActiveTab('web')}
-              className={`px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-                activeTab === 'web'
-                  ? 'bg-accent text-white'
-                  : 'text-text-secondary hover:text-text-primary'
-              }`}
-            >
-              Création Web
-            </button>
-            <button
-              onClick={() => setActiveTab('ia')}
-              className={`px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-                activeTab === 'ia'
-                  ? 'bg-accent text-white'
-                  : 'text-text-secondary hover:text-text-primary'
-              }`}
-            >
-              Solutions IA
-            </button>
+        {/* Header */}
+        <motion.div
+          className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 lg:mb-24"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <div>
+            <div className="flex items-center gap-4 mb-6">
+              <span className="font-mono text-sm text-accent">003</span>
+              <div className="h-px w-12 bg-accent" />
+              <span className="font-mono text-xs text-text-muted tracking-wider">INVESTISSEMENT</span>
+            </div>
+            <h2 className="text-text-primary mb-4">
+              TARIFS
+            </h2>
+            <p className="text-text-secondary max-w-md">
+              Des prix clairs. Zéro surprise. Choisissez la formule adaptée à vos ambitions.
+            </p>
           </div>
-        </div>
+
+          {/* Tab switcher */}
+          <div className="mt-8 lg:mt-0">
+            <div className="inline-flex border border-border">
+              {[
+                { id: 'web', label: 'CRÉATION WEB' },
+                { id: 'ia', label: 'SOLUTIONS IA' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as Tab)}
+                  className={`
+                    px-6 py-3 font-mono text-sm tracking-wider transition-all duration-300
+                    ${activeTab === tab.id
+                      ? 'bg-accent text-bg-primary'
+                      : 'text-text-muted hover:text-text-primary'
+                    }
+                  `}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </motion.div>
 
         {/* Plans grid */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto"
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="grid md:grid-cols-3 gap-0"
           >
             {plans.map((plan, index) => (
               <motion.div
-                key={plan.name}
-                initial={{ opacity: 0, y: 20 }}
+                key={plan.id}
+                className={`
+                  group relative border border-border
+                  ${plan.highlighted ? 'bg-bg-tertiary border-accent/30' : 'bg-bg-primary'}
+                  ${index === 0 ? '' : 'md:-ml-px'}
+                `}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
               >
-                <PricingCard plan={plan} />
+                {/* Highlighted badge */}
+                {plan.highlighted && (
+                  <div className="absolute -top-px left-0 right-0 h-1 bg-accent" />
+                )}
+
+                <div className="p-8 lg:p-10">
+                  {/* Index & Name */}
+                  <div className="flex items-start justify-between mb-8">
+                    <div>
+                      <span className="font-mono text-xs text-text-muted block mb-2">
+                        {plan.index}
+                      </span>
+                      <h3 className="text-text-primary text-2xl">
+                        {plan.name}
+                      </h3>
+                    </div>
+                    {plan.highlighted && (
+                      <span className="font-mono text-[10px] text-accent border border-accent px-2 py-1">
+                        POPULAIRE
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Price */}
+                  <div className="mb-6">
+                    <div className="flex items-baseline gap-1">
+                      <span className="font-display text-6xl lg:text-7xl text-text-primary">
+                        {plan.price}
+                      </span>
+                      <span className="font-mono text-lg text-text-muted">€</span>
+                    </div>
+                    <p className="text-text-muted text-sm mt-2">
+                      {plan.description}
+                    </p>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="h-px bg-border mb-6" />
+
+                  {/* Features */}
+                  <ul className="space-y-4 mb-8">
+                    {plan.features.map((feature) => (
+                      <li key={feature} className="flex items-center gap-3">
+                        <span className="w-1.5 h-1.5 bg-accent flex-shrink-0" />
+                        <span className="text-text-secondary text-sm">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* CTA */}
+                  <button
+                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                    className={`
+                      w-full py-4 font-mono text-sm tracking-wider transition-all duration-300
+                      ${plan.highlighted
+                        ? 'bg-accent text-bg-primary hover:bg-accent-hover'
+                        : 'border border-border text-text-primary hover:border-accent hover:text-accent'
+                      }
+                    `}
+                  >
+                    CHOISIR
+                  </button>
+                </div>
+
+                {/* Hover accent */}
+                <div className="absolute bottom-0 left-0 w-0 h-px bg-accent group-hover:w-full transition-all duration-500" />
               </motion.div>
             ))}
           </motion.div>
@@ -206,39 +222,43 @@ export function Pricing() {
 
         {/* Combo offer */}
         <motion.div
-          className="mt-16 max-w-3xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
+          className="mt-16 lg:mt-24 border border-border bg-bg-primary p-8 lg:p-12"
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
         >
-          <div className="bg-bg-tertiary border border-border rounded-xl p-6 md:p-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-accent-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <svg className="w-6 h-6 text-accent-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <h4 className="font-semibold text-text-primary">Pack Combiné Web + IA</h4>
-                    <Badge variant="accent">-15%</Badge>
-                  </div>
-                  <p className="text-text-secondary text-sm">
-                    Combinez site web et solution IA pour une transformation digitale complète.
-                  </p>
-                </div>
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+            <div className="flex items-start gap-6">
+              <div className="w-16 h-16 border border-accent flex items-center justify-center flex-shrink-0">
+                <span className="font-display text-2xl text-accent">+</span>
               </div>
-              <Button
-                variant="ghost"
-                className="flex-shrink-0"
-                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                Demander un devis
-              </Button>
+              <div>
+                <div className="flex items-center gap-4 mb-2">
+                  <h4 className="font-display text-2xl text-text-primary">PACK COMBINÉ WEB + IA</h4>
+                  <span className="font-mono text-xs text-bg-primary bg-accent px-2 py-1">-15%</span>
+                </div>
+                <p className="text-text-secondary">
+                  Combinez site web et solution IA pour une transformation digitale complète.
+                </p>
+              </div>
             </div>
+            <button
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              className="flex items-center gap-4 font-mono text-sm text-accent hover:text-accent-hover transition-colors whitespace-nowrap"
+            >
+              <span>DEMANDER UN DEVIS</span>
+              <span className="w-8 h-px bg-current" />
+            </button>
           </div>
         </motion.div>
+      </div>
+
+      {/* Background decoration */}
+      <div className="absolute top-1/2 left-0 -translate-y-1/2 overflow-hidden pointer-events-none opacity-[0.02]">
+        <span className="font-display text-[40vw] leading-none text-white">
+          03
+        </span>
       </div>
     </section>
   );

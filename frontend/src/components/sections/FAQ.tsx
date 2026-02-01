@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SectionHeading } from '../ui/SectionHeading';
 
 interface FAQItem {
   question: string;
@@ -42,100 +41,153 @@ const faqs: FAQItem[] = [
   },
 ];
 
-function AccordionItem({ faq, isOpen, onClick }: {
+function AccordionItem({ faq, index, isOpen, onClick }: {
   faq: FAQItem;
+  index: number;
   isOpen: boolean;
   onClick: () => void;
 }) {
   return (
-    <div className="border-b border-border last:border-0">
+    <motion.div
+      className="border-b border-border"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
+    >
       <button
         onClick={onClick}
-        className="w-full py-5 flex items-center justify-between text-left group"
+        className="w-full py-6 lg:py-8 flex items-start gap-6 text-left group"
       >
-        <span className={`text-sm font-medium pr-4 transition-colors duration-200 ${
+        {/* Index number */}
+        <span className="font-mono text-xs text-text-muted pt-1">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+
+        {/* Question */}
+        <span className={`flex-1 text-lg lg:text-xl font-light transition-colors duration-300 ${
           isOpen ? 'text-accent' : 'text-text-primary group-hover:text-accent'
         }`}>
           {faq.question}
         </span>
-        <motion.svg
-          className={`w-5 h-5 flex-shrink-0 transition-colors duration-200 ${
-            isOpen ? 'text-accent' : 'text-text-muted'
-          }`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </motion.svg>
+
+        {/* Toggle icon */}
+        <div className="relative w-6 h-6 flex-shrink-0 mt-1">
+          <motion.span
+            className="absolute top-1/2 left-0 w-full h-px bg-current"
+            style={{ originX: 0.5 }}
+            animate={{
+              rotate: isOpen ? 0 : 0,
+              backgroundColor: isOpen ? 'var(--color-accent)' : 'var(--color-text-muted)'
+            }}
+          />
+          <motion.span
+            className="absolute top-1/2 left-0 w-full h-px bg-current"
+            animate={{
+              rotate: isOpen ? 0 : 90,
+              backgroundColor: isOpen ? 'var(--color-accent)' : 'var(--color-text-muted)'
+            }}
+            transition={{ duration: 0.2 }}
+          />
+        </div>
       </button>
+
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="overflow-hidden"
           >
-            <p className="pb-5 text-text-secondary text-sm leading-relaxed">
-              {faq.answer}
-            </p>
+            <div className="pl-12 pb-8 pr-12">
+              <p className="text-text-secondary leading-relaxed max-w-2xl">
+                {faq.answer}
+              </p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }
 
 export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  // Split FAQs into two columns
-  const midPoint = Math.ceil(faqs.length / 2);
-  const leftColumn = faqs.slice(0, midPoint);
-  const rightColumn = faqs.slice(midPoint);
-
   return (
-    <section id="faq" className="relative overflow-hidden">
+    <section id="faq" className="relative bg-bg-primary overflow-hidden">
       <div className="container">
-        <SectionHeading
-          badge="FAQ"
-          title="Questions fréquentes"
-          subtitle="Tout ce que vous devez savoir avant de démarrer."
-          centered={false}
-        />
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-0">
-          {/* Left column */}
+        {/* Header */}
+        <motion.div
+          className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 lg:mb-24"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <div>
-            {leftColumn.map((faq, index) => (
-              <AccordionItem
-                key={index}
-                faq={faq}
-                isOpen={openIndex === index}
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
-              />
-            ))}
+            <div className="flex items-center gap-4 mb-6">
+              <span className="font-mono text-sm text-accent">004</span>
+              <div className="h-px w-12 bg-accent" />
+              <span className="font-mono text-xs text-text-muted tracking-wider">FAQ</span>
+            </div>
+            <h2 className="text-text-primary mb-4">
+              QUESTIONS<br />
+              <span className="text-accent">FRÉQUENTES</span>
+            </h2>
           </div>
 
-          {/* Right column */}
-          <div>
-            {rightColumn.map((faq, index) => {
-              const actualIndex = index + midPoint;
-              return (
-                <AccordionItem
-                  key={actualIndex}
-                  faq={faq}
-                  isOpen={openIndex === actualIndex}
-                  onClick={() => setOpenIndex(openIndex === actualIndex ? null : actualIndex)}
-                />
-              );
-            })}
-          </div>
+          <p className="text-text-secondary max-w-md mt-8 lg:mt-0 lg:text-right">
+            Tout ce que vous devez savoir avant de démarrer votre projet digital.
+          </p>
+        </motion.div>
+
+        {/* Accordion */}
+        <div className="border-t border-border">
+          {faqs.map((faq, index) => (
+            <AccordionItem
+              key={index}
+              faq={faq}
+              index={index}
+              isOpen={openIndex === index}
+              onClick={() => setOpenIndex(openIndex === index ? null : index)}
+            />
+          ))}
         </div>
+
+        {/* CTA */}
+        <motion.div
+          className="mt-16 lg:mt-24 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 p-8 lg:p-12 border border-border"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <div>
+            <h4 className="font-display text-2xl text-text-primary mb-2">
+              ENCORE DES QUESTIONS ?
+            </h4>
+            <p className="text-text-secondary">
+              Notre équipe vous répond sous 24h.
+            </p>
+          </div>
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-4 font-mono text-sm text-accent hover:text-accent-hover transition-colors"
+          >
+            <span>NOUS CONTACTER</span>
+            <span className="w-8 h-px bg-current" />
+          </a>
+        </motion.div>
+      </div>
+
+      {/* Background decoration */}
+      <div className="absolute top-1/2 right-0 -translate-y-1/2 overflow-hidden pointer-events-none opacity-[0.02]">
+        <span className="font-display text-[40vw] leading-none text-white">
+          04
+        </span>
       </div>
     </section>
   );
