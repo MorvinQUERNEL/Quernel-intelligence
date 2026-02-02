@@ -3,11 +3,14 @@ import { AnimatePresence } from 'framer-motion';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { PageTransition } from './components/layout/PageTransition';
+import { CookieBanner } from './components/CookieBanner';
 import { HomePage } from './pages/HomePage';
 import { ServicesPage } from './pages/ServicesPage';
 import { PricingPage } from './pages/PricingPage';
 import { FAQPage } from './pages/FAQPage';
 import { ContactPage } from './pages/ContactPage';
+import { MentionsLegales } from './pages/MentionsLegales';
+import { PolitiqueConfidentialite } from './pages/PolitiqueConfidentialite';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -40,6 +43,16 @@ function AnimatedRoutes() {
             <ContactPage />
           </PageTransition>
         } />
+        <Route path="/mentions-legales" element={
+          <PageTransition>
+            <MentionsLegales />
+          </PageTransition>
+        } />
+        <Route path="/confidentialite" element={
+          <PageTransition>
+            <PolitiqueConfidentialite />
+          </PageTransition>
+        } />
       </Routes>
     </AnimatePresence>
   );
@@ -60,6 +73,9 @@ function App() {
         </main>
 
         <Footer />
+
+        {/* RGPD Cookie Consent Banner */}
+        <CookieBanner />
       </div>
     </Router>
   );
