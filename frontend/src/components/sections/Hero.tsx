@@ -78,7 +78,7 @@ export function Hero() {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.3 }}
                 >
-                  WE BUILD
+                  VOTRE
                 </motion.span>
                 <motion.span
                   className="block text-accent"
@@ -86,7 +86,7 @@ export function Hero() {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.4 }}
                 >
-                  DIGITAL
+                  CROISSANCE
                 </motion.span>
                 <motion.span
                   className="block"
@@ -94,7 +94,7 @@ export function Hero() {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.5 }}
                 >
-                  INTELLIGENCE
+                  DIGITALE
                 </motion.span>
               </h1>
 
@@ -115,8 +115,8 @@ export function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7 }}
             >
-              Sites web performants, agents IA autonomes, bots de trading algorithmique.
-              <span className="text-accent"> Nous concevons les outils qui travaillent pour vous.</span>
+              Gagnez du temps. Générez plus de clients. Automatisez l'essentiel.
+              <span className="text-accent"> Nous créons les outils digitaux qui font grandir votre entreprise.</span>
             </motion.p>
 
             {/* CTA */}
@@ -130,7 +130,7 @@ export function Hero() {
                 onClick={() => navigate('/contact')}
                 className="group relative px-8 py-4 bg-accent text-bg-primary font-semibold text-sm tracking-wide overflow-hidden transition-all duration-300 hover:pr-12"
               >
-                <span className="relative z-10">DÉMARRER UN PROJET</span>
+                <span className="relative z-10">OBTENIR MON DEVIS GRATUIT</span>
                 <motion.span
                   className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
@@ -142,7 +142,7 @@ export function Hero() {
                 onClick={() => navigate('/services')}
                 className="group flex items-center gap-3 text-text-secondary hover:text-accent transition-colors"
               >
-                <span className="font-mono text-sm">EXPLORER</span>
+                <span className="font-mono text-sm">DÉCOUVRIR NOS SERVICES</span>
                 <span className="w-8 h-px bg-current group-hover:w-12 transition-all duration-300" />
               </button>
             </motion.div>
@@ -159,10 +159,10 @@ export function Hero() {
               {/* Stats grid */}
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { number: '50+', label: 'PROJETS', sublabel: 'Livrés' },
-                  { number: '98%', label: 'SATISFACTION', sublabel: 'Client' },
+                  { number: '50+', label: 'ENTREPRISES', sublabel: 'Accompagnées' },
+                  { number: '98%', label: 'CLIENTS', sublabel: 'Satisfaits' },
                   { number: '24H', label: 'RÉPONSE', sublabel: 'Garantie' },
-                  { number: '∞', label: 'POSSIBILITÉS', sublabel: 'Créatives' },
+                  { number: '3x', label: 'PLUS DE LEADS', sublabel: 'En moyenne' },
                 ].map((stat, index) => (
                   <motion.div
                     key={stat.label}

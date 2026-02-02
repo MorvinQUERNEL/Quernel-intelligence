@@ -18,8 +18,8 @@ const webPlans: Plan[] = [
     index: '01',
     name: 'ESSENTIEL',
     price: '499',
-    description: 'Parfait pour démarrer votre présence en ligne',
-    features: ['Site vitrine 5 pages', 'Design responsive', 'Formulaire contact', 'SEO de base', 'Hébergement 1 an'],
+    description: 'Lancez votre présence en ligne en 2 semaines',
+    features: ['Site vitrine 5 pages', 'Design professionnel', 'Formulaire de contact', 'Visible sur Google', 'Hébergement 1 an inclus'],
     highlighted: false,
   },
   {
@@ -27,8 +27,8 @@ const webPlans: Plan[] = [
     index: '02',
     name: 'BUSINESS',
     price: '999',
-    description: 'La solution complète pour votre croissance',
-    features: ['Pages illimitées', 'Design premium', 'Blog intégré', 'SEO avancé', 'Maintenance incluse', 'Formation'],
+    description: 'Le choix de 70% de nos clients',
+    features: ['Pages illimitées', 'Design sur mesure', 'Blog pour attirer du trafic', 'SEO optimisé', 'Maintenance 1 an', 'Formation incluse'],
     highlighted: true,
   },
   {
@@ -36,8 +36,8 @@ const webPlans: Plan[] = [
     index: '03',
     name: 'PREMIUM',
     price: '1999',
-    description: 'E-commerce et applications sur mesure',
-    features: ['Tout Business +', 'E-commerce complet', 'Paiement sécurisé', 'Gestion stocks', 'API custom', 'Support prioritaire'],
+    description: 'Vendez en ligne dès demain',
+    features: ['Tout Business +', 'Boutique e-commerce', 'Paiement sécurisé CB', 'Gestion des stocks', 'Connexion comptabilité', 'Support prioritaire'],
     highlighted: false,
   },
 ];
@@ -48,8 +48,8 @@ const iaPlans: Plan[] = [
     index: '01',
     name: 'AGENT IA',
     price: '499',
-    description: 'Chatbot intelligent pour votre site',
-    features: ['Chatbot sur mesure', 'Intégration web', 'FAQ automatisée', 'Qualification leads', '1000 conv./mois'],
+    description: 'Ne perdez plus jamais un prospect',
+    features: ['Assistant disponible 24h/24', 'Répond en 3 secondes', 'Qualifie vos contacts', 'Prend des RDV', '1000 conversations/mois'],
     highlighted: false,
   },
   {
@@ -57,8 +57,8 @@ const iaPlans: Plan[] = [
     index: '02',
     name: 'AUTOMATION PRO',
     price: '999',
-    description: 'Automatisez vos processus métier',
-    features: ['Workflows auto', 'Intégration CRM', 'Emails automatiques', 'Rapports IA', 'API personnalisée', 'Support dédié'],
+    description: 'Récupérez 10h de travail par semaine',
+    features: ['Tâches automatisées', 'CRM synchronisé', 'Emails envoyés seuls', 'Rapports générés', 'Tous vos outils connectés', 'Support prioritaire'],
     highlighted: true,
   },
   {
@@ -66,8 +66,8 @@ const iaPlans: Plan[] = [
     index: '03',
     name: 'TRADING BOT',
     price: '1499',
-    description: 'Bot personnalisé pour les marchés',
-    features: ['Bot crypto/forex', 'Stratégie custom', 'Backtesting', 'Risk management', 'Dashboard temps réel', 'Alertes Telegram'],
+    description: 'Votre stratégie, automatisée',
+    features: ['Bot sur mesure', 'Stratégie testée', '5 ans de backtesting', 'Risques maîtrisés', 'Tableau de bord live', 'Alertes sur mobile'],
     highlighted: false,
   },
 ];
@@ -100,7 +100,7 @@ export function Pricing() {
               TARIFS
             </h2>
             <p className="text-text-secondary max-w-md">
-              Des prix clairs. Zéro surprise. Choisissez la formule adaptée à vos ambitions.
+              Prix fixes, sans surprise. Paiement en 3x sans frais disponible. Satisfait ou remboursé 30 jours.
             </p>
           </div>
 
@@ -169,7 +169,7 @@ export function Pricing() {
                     </div>
                     {plan.highlighted && (
                       <span className="font-mono text-[10px] text-accent border border-accent px-2 py-1">
-                        POPULAIRE
+                        LE + CHOISI
                       </span>
                     )}
                   </div>
@@ -211,7 +211,7 @@ export function Pricing() {
                       }
                     `}
                   >
-                    CHOISIR
+                    {plan.highlighted ? 'COMMENCER MAINTENANT' : 'DEMANDER UN DEVIS'}
                   </button>
                 </div>
 
@@ -237,11 +237,11 @@ export function Pricing() {
               </div>
               <div>
                 <div className="flex items-center gap-4 mb-2">
-                  <h4 className="font-display text-2xl text-text-primary">PACK COMBINÉ WEB + IA</h4>
-                  <span className="font-mono text-xs text-bg-primary bg-accent px-2 py-1">-15%</span>
+                  <h4 className="font-display text-2xl text-text-primary">PACK COMPLET WEB + IA</h4>
+                  <span className="font-mono text-xs text-bg-primary bg-accent px-2 py-1">ÉCONOMISEZ 15%</span>
                 </div>
                 <p className="text-text-secondary">
-                  Combinez site web et solution IA pour une transformation digitale complète.
+                  Site web + assistant IA : doublez votre capacité à convertir sans effort supplémentaire.
                 </p>
               </div>
             </div>
@@ -249,7 +249,7 @@ export function Pricing() {
               onClick={() => navigate('/contact')}
               className="flex items-center gap-4 font-mono text-sm text-accent hover:text-accent-hover transition-colors whitespace-nowrap"
             >
-              <span>DEMANDER UN DEVIS</span>
+              <span>RECEVOIR MON DEVIS PERSONNALISÉ</span>
               <span className="w-8 h-px bg-current" />
             </button>
           </div>

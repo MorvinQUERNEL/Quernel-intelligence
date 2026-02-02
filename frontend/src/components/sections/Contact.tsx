@@ -116,7 +116,7 @@ export function Contact() {
             </h2>
 
             <p className="text-text-secondary text-lg mb-12 max-w-md">
-              Une question, une idée, un projet ? Écrivez-nous et nous vous recontactons sous 24h.
+              Décrivez votre projet, on vous rappelle sous 24h avec des solutions concrètes. Aucun engagement, devis gratuit.
             </p>
 
             {/* Contact info */}
@@ -128,12 +128,12 @@ export function Contact() {
                   href: 'mailto:contact@quernel-intelligence.com',
                 },
                 {
-                  label: 'LOCALISATION',
-                  value: 'Vigneux-sur-Seine (91)',
+                  label: 'BASÉS EN',
+                  value: 'Île-de-France (91)',
                 },
                 {
-                  label: 'RÉPONSE',
-                  value: 'Sous 24h ouvrées',
+                  label: 'ENGAGEMENT',
+                  value: 'Réponse garantie sous 24h',
                 },
               ].map((item, index) => (
                 <motion.div
@@ -192,9 +192,9 @@ export function Contact() {
                 <div className="w-20 h-20 border border-accent flex items-center justify-center mb-8">
                   <span className="text-accent text-3xl">✓</span>
                 </div>
-                <h3 className="text-text-primary mb-4">MESSAGE ENVOYÉ</h3>
+                <h3 className="text-text-primary mb-4">BIEN REÇU !</h3>
                 <p className="text-text-secondary">
-                  Nous vous recontacterons dans les plus brefs délais.
+                  On analyse votre projet et on vous recontacte sous 24h avec des propositions concrètes.
                 </p>
               </motion.div>
             ) : (
@@ -300,7 +300,7 @@ export function Contact() {
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Décrivez votre projet..."
+                    placeholder="Décrivez votre projet en quelques mots : vos objectifs, vos défis actuels, vos questions..."
                     rows={4}
                     required
                     className={`${inputClasses} resize-none`}
@@ -310,7 +310,7 @@ export function Contact() {
                 {/* Error message */}
                 {status === 'error' && (
                   <p className="text-error font-mono text-sm">
-                    Une erreur est survenue. Veuillez réessayer.
+                    Oups ! Un problème technique. Réessayez ou écrivez-nous directement par email.
                   </p>
                 )}
 
@@ -320,8 +320,13 @@ export function Contact() {
                   disabled={status === 'loading'}
                   className="w-full py-5 bg-accent text-bg-primary font-mono text-sm tracking-wider hover:bg-accent-hover transition-colors disabled:opacity-50"
                 >
-                  {status === 'loading' ? 'ENVOI EN COURS...' : 'ENVOYER'}
+                  {status === 'loading' ? 'ENVOI EN COURS...' : 'ENVOYER MA DEMANDE'}
                 </button>
+
+                {/* Reassurance */}
+                <p className="text-text-muted text-xs text-center mt-4">
+                  Vos données restent confidentielles. Aucun engagement.
+                </p>
               </form>
             )}
           </motion.div>

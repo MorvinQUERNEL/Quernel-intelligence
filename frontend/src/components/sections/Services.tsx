@@ -18,8 +18,8 @@ const services: Service[] = [
     index: '001',
     title: 'CRÉATION WEB',
     subtitle: 'Sites & Applications',
-    description: 'Des sites qui convertissent. Design moderne, performance optimale, SEO intégré. Chaque pixel compte.',
-    features: ['Site Vitrine', 'E-Commerce', 'Application Web', 'Refonte'],
+    description: 'Transformez vos visiteurs en clients. Un site professionnel qui inspire confiance, génère des contacts et booste votre visibilité sur Google.',
+    features: ['Visible sur Google', 'Design sur mesure', 'Mobile-first', 'Résultats mesurables'],
     visual: 'web',
   },
   {
@@ -27,8 +27,8 @@ const services: Service[] = [
     index: '002',
     title: 'AGENTS IA',
     subtitle: 'Intelligence Autonome',
-    description: 'Assistants virtuels 24/7. Ils répondent, qualifient, convertissent. Pendant que vous dormez.',
-    features: ['Chatbots IA', 'Support Client', 'Qualification Leads', 'FAQ Dynamique'],
+    description: 'Ne ratez plus jamais un prospect. Votre assistant virtuel répond instantanément à vos clients, qualifie vos leads et prend des rendez-vous. 24h/24, 7j/7.',
+    features: ['Réponse instantanée', 'Qualification automatique', 'Prise de RDV', 'Multilingue'],
     visual: 'ia',
   },
   {
@@ -36,8 +36,8 @@ const services: Service[] = [
     index: '003',
     title: 'BOTS TRADING',
     subtitle: 'Algorithmes Financiers',
-    description: 'Stratégies automatisées. Backtesting rigoureux. Gestion du risque intégrée.',
-    features: ['Crypto/Forex', 'Stratégies Custom', 'Backtesting', 'Alertes Telegram'],
+    description: 'Faites travailler votre argent pendant que vous vivez. Stratégies testées, risques maîtrisés, alertes en temps réel sur votre téléphone.',
+    features: ['Stratégie personnalisée', 'Gestion du risque', 'Résultats historiques', 'Alertes instantanées'],
     visual: 'trading',
   },
   {
@@ -45,8 +45,8 @@ const services: Service[] = [
     index: '004',
     title: 'AUTOMATION',
     subtitle: 'Workflows Intelligents',
-    description: 'Automatisez le répétitif. Connectez vos outils. Libérez votre temps.',
-    features: ['Workflows', 'Intégrations API', 'Emails Auto', 'Rapports IA'],
+    description: 'Récupérez des heures chaque semaine. On automatise vos tâches répétitives : emails, factures, rapports, synchronisation entre vos outils.',
+    features: ['Gain de temps immédiat', 'Zéro erreur humaine', 'Outils connectés', 'Rapports automatiques'],
     visual: 'automation',
   },
 ];
@@ -184,7 +184,7 @@ export function Services() {
           </div>
           <div className="hidden lg:block max-w-xs text-right">
             <p className="text-text-secondary text-sm">
-              Quatre domaines d'expertise. Un seul objectif: votre croissance digitale.
+              Des solutions concrètes pour développer votre activité et vous libérer du temps.
             </p>
           </div>
         </motion.div>
@@ -275,13 +275,13 @@ export function Services() {
                   <div className="col-span-5 flex items-center">
                     <div>
                       <p className="text-text-secondary mb-6 leading-relaxed">
-                        {service.description} Chaque projet est unique, chaque solution est sur mesure.
+                        {service.description} Discutons de votre projet sans engagement.
                       </p>
                       <button
                         onClick={() => navigate('/contact')}
                         className="font-mono text-sm text-accent hover:text-accent-hover transition-colors flex items-center gap-3"
                       >
-                        <span>EN SAVOIR PLUS</span>
+                        <span>DEMANDER UN DEVIS GRATUIT</span>
                         <span className="w-6 h-px bg-current" />
                       </button>
                     </div>

@@ -45,7 +45,7 @@ export function Footer() {
                 <span className="font-display text-2xl text-accent ml-2">INTELLIGENCE</span>
               </Link>
               <p className="text-text-muted mb-6 max-w-xs">
-                Votre partenaire digital intelligent. Création web et solutions IA.
+                Sites web qui convertissent. IA qui travaille pour vous. Résultats mesurables.
               </p>
               <div className="space-y-2 font-mono text-xs text-text-muted">
                 <p>SASU QUERNEL INTELLIGENCE</p>
@@ -101,16 +101,16 @@ export function Footer() {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <h4 className="font-mono text-xs text-text-muted tracking-wider mb-6">
-              PRÊT À DÉMARRER ?
+              UN PROJET EN TÊTE ?
             </h4>
             <p className="text-text-secondary text-sm mb-6">
-              Discutons de votre projet et transformons vos idées en réalité digitale.
+              Parlez-nous de vos objectifs. Devis gratuit sous 24h, sans engagement.
             </p>
             <Link
               to="/contact"
               className="inline-flex items-center gap-3 px-6 py-3 bg-accent text-bg-primary font-mono text-xs tracking-wider hover:bg-accent-hover transition-colors"
             >
-              <span>NOUS CONTACTER</span>
+              <span>DEMANDER UN DEVIS</span>
               <span>→</span>
             </Link>
           </motion.div>

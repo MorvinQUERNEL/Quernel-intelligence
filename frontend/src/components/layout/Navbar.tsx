@@ -73,7 +73,7 @@ export function Navbar() {
               to="/contact"
               className="group inline-flex items-center gap-3 px-6 py-3 border border-accent text-accent font-mono text-xs tracking-wider hover:bg-accent hover:text-bg-primary transition-all duration-300"
             >
-              <span>DÉMARRER</span>
+              <span>DEVIS GRATUIT</span>
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </Link>
           </div>
@@ -151,7 +151,7 @@ export function Navbar() {
                   to="/contact"
                   className="block w-full py-5 bg-accent text-bg-primary text-center font-mono text-sm tracking-wider"
                 >
-                  DÉMARRER UN PROJET
+                  OBTENIR MON DEVIS GRATUIT
                 </Link>
               </motion.div>
             </div>

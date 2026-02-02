@@ -10,35 +10,35 @@ interface FAQItem {
 const faqs: FAQItem[] = [
   {
     question: 'Combien coûte un site web ?',
-    answer: 'Nos tarifs commencent à 499€ pour un site vitrine essentiel. Le prix varie selon la complexité : nombre de pages, fonctionnalités (e-commerce, blog, réservation), et intégrations spécifiques. Nous proposons toujours un devis détaillé gratuit.',
+    answer: 'À partir de 499€ pour un site vitrine professionnel. Le prix dépend de vos besoins : nombre de pages, boutique en ligne, réservation en ligne... On vous envoie un devis détaillé gratuit sous 24h, sans engagement. Et vous pouvez payer en 3x sans frais.',
   },
   {
-    question: 'Quel délai pour créer un site ?',
-    answer: 'Un site vitrine prend généralement 2 à 4 semaines. Un site e-commerce ou une application web complexe nécessite 4 à 8 semaines. Ce délai inclut le design, le développement, les révisions et la mise en ligne.',
+    question: 'En combien de temps mon site sera-t-il en ligne ?',
+    answer: 'Comptez 2 à 3 semaines pour un site vitrine, 4 à 6 semaines pour un e-commerce. On vous tient informé à chaque étape et vous validez le design avant le développement. Pas de mauvaise surprise.',
   },
   {
-    question: 'Puis-je modifier mon site moi-même ?',
-    answer: 'Oui, nous intégrons un système de gestion de contenu (CMS) intuitif et nous vous formons à son utilisation. Vous pouvez modifier textes, images et produits en toute autonomie.',
+    question: 'Pourrai-je modifier mon site moi-même ?',
+    answer: 'Absolument. On installe un espace d\'administration simple, comme modifier un document Word. Textes, photos, produits : vous gérez tout seul. Et on vous forme gratuitement pour être autonome dès le premier jour.',
   },
   {
-    question: "L'hébergement est-il inclus ?",
-    answer: "Oui, la première année d'hébergement est incluse dans nos offres. Ensuite, nous proposons des forfaits maintenance et hébergement à partir de 15€/mois incluant sauvegardes, mises à jour et support.",
+    question: 'L\'hébergement est-il inclus ?',
+    answer: 'Oui, la première année est offerte. Ensuite, le forfait maintenance démarre à 15€/mois. Il inclut l\'hébergement, les sauvegardes automatiques, les mises à jour de sécurité et notre support par email.',
   },
   {
-    question: "Qu'est-ce qu'un agent IA exactement ?",
-    answer: "Un agent IA est un assistant virtuel intelligent intégré à votre site. Il comprend les questions de vos visiteurs grâce au traitement du langage naturel et y répond 24/7. Il peut qualifier des leads, répondre aux FAQ, prendre des rendez-vous.",
+    question: 'C\'est quoi un agent IA, concrètement ?',
+    answer: 'C\'est un assistant virtuel sur votre site qui répond à vos visiteurs 24h/24. Il comprend leurs questions, donne des réponses personnalisées, qualifie les contacts intéressants et peut même prendre des rendez-vous dans votre agenda. Comme un collaborateur qui ne dort jamais.',
   },
   {
-    question: 'Un bot de trading est-il risqué ?',
-    answer: "Tout trading comporte des risques. Nos bots sont développés avec des systèmes de gestion des risques (stop-loss, position sizing). Nous effectuons un backtesting rigoureux et vous accompagnons dans la configuration. Le capital investi reste le vôtre.",
+    question: 'Les bots de trading sont-ils risqués ?',
+    answer: 'Le trading comporte toujours des risques, bot ou pas. Notre différence : on teste chaque stratégie sur 5 ans de données historiques avant de la déployer. On intègre des limites de pertes automatiques. Et surtout, vous gardez le contrôle total de votre capital à tout moment.',
   },
   {
-    question: "Comment l'IA peut aider mon e-commerce ?",
-    answer: "L'IA optimise votre e-commerce avec des recommandations personnalisées (+15-30% de panier moyen), des relances panier abandonnées automatiques, la segmentation client, et un chatbot pour le support. ROI mesurable dès le premier mois.",
+    question: 'Que peut faire l\'IA pour ma boutique en ligne ?',
+    answer: 'Beaucoup ! Recommander les bons produits à chaque visiteur (+20% de panier moyen en moyenne), relancer automatiquement les paniers abandonnés, répondre aux questions clients instantanément. Des résultats mesurables dès les premières semaines.',
   },
   {
-    question: 'Combien de temps pour mettre en place un agent IA ?',
-    answer: "Un agent IA basique est opérationnel en 1 à 2 semaines. Ce délai inclut l'entraînement sur votre base de connaissances, les tests et l'intégration à votre site ou messagerie.",
+    question: 'Et si je ne suis pas satisfait ?',
+    answer: 'Garantie satisfait ou remboursé pendant 30 jours. Si le résultat ne vous convient pas, on vous rembourse intégralement, sans discussion. C\'est notre engagement qualité.',
   },
 ];
 
@@ -141,7 +141,7 @@ export function FAQ() {
           </div>
 
           <p className="text-text-secondary max-w-md mt-8 lg:mt-0 lg:text-right">
-            Tout ce que vous devez savoir avant de démarrer votre projet digital.
+            Les réponses aux questions que vous vous posez. Et si la vôtre n'y est pas, on est là.
           </p>
         </motion.div>
 
@@ -168,17 +168,17 @@ export function FAQ() {
         >
           <div>
             <h4 className="font-display text-2xl text-text-primary mb-2">
-              ENCORE DES QUESTIONS ?
+              UNE QUESTION ? UN DOUTE ?
             </h4>
             <p className="text-text-secondary">
-              Notre équipe vous répond sous 24h.
+              Écrivez-nous, on vous répond personnellement sous 24h.
             </p>
           </div>
           <Link
             to="/contact"
             className="inline-flex items-center gap-4 font-mono text-sm text-accent hover:text-accent-hover transition-colors"
           >
-            <span>NOUS CONTACTER</span>
+            <span>POSER MA QUESTION</span>
             <span className="w-8 h-px bg-current" />
           </Link>
         </motion.div>
