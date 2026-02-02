@@ -1,0 +1,37 @@
+{
+  "name": "Quernel Intelligence - Création Web & Solutions IA",
+  "short_name": "Quernel",
+  "description": "Agence de création web et intelligence artificielle. Sites vitrines, e-commerce, agents IA, bots de trading.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0A0F",
+  "theme_color": "#38BDF8",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "lang": "fr",
+  "categories": ["business", "technology"],
+  "shortcuts": [
+    {
+      "name": "Services",
+      "url": "/services",
+      "description": "Découvrir nos services"
+    },
+    {
+      "name": "Tarifs",
+      "url": "/tarifs",
+      "description": "Consulter nos tarifs"
+    },
+    {
+      "name": "Contact",
+      "url": "/contact",
+      "description": "Nous contacter"
+    }
+  ]
+}

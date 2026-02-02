@@ -1,9 +1,51 @@
 # Robots.txt for quernel-intelligence.com
-# Quernel Intelligence - Création Web & Solutions IA
+# Quernel Intelligence - Agence Création Web & Solutions IA
+# https://quernel-intelligence.com
 
+# Allow all crawlers
 User-agent: *
 Allow: /
+
+# Disallow API and admin paths
 Disallow: /api/
+Disallow: /admin/
+Disallow: /_*
+Disallow: /private/
+
+# Disallow query strings that create duplicate content
+Disallow: /*?*
+
+# Allow important query parameters for tracking (optional)
+Allow: /*?utm_*
+
+# Crawl-delay for polite crawling (seconds)
+Crawl-delay: 1
+
+# Google-specific rules
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Bing-specific rules
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Block AI training crawlers (optional - comment out if you want to be indexed by AI)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
 
 # Sitemaps
 Sitemap: https://quernel-intelligence.com/sitemap.xml

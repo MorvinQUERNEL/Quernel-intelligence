@@ -1,65 +1,163 @@
 {
-    "@context": "https://schema.org",
-    "@graph": [
-        {
-            "@type": "Organization",
-            "@id": "https://quernel-intelligence.com/#organization",
-            "name": "Quernel Intelligence",
-            "url": "https://quernel-intelligence.com",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https://quernel-intelligence.com/logo.png"
-            },
-            "sameAs": [],
-            "contactPoint": {
-                "@type": "ContactPoint",
-                "email": "contact@quernel-intelligence.com",
-                "contactType": "customer service",
-                "availableLanguage": "French"
-            }
-        },
-        {
-            "@type": "LocalBusiness",
-            "@id": "https://quernel-intelligence.com/#localbusiness",
-            "name": "Quernel Intelligence",
-            "url": "https://quernel-intelligence.com",
-            "image": "https://quernel-intelligence.com/logo.png",
-            "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "Vigneux-sur-Seine",
-                "postalCode": "91270",
-                "addressRegion": "Île-de-France",
-                "addressCountry": "FR"
-            },
-            "priceRange": "€€"
-        },
-        {
-            "@type": "Service",
-            "@id": "https://quernel-intelligence.com/#service-web",
-            "name": "Création de Sites Internet",
-            "provider": {
-                "@id": "https://quernel-intelligence.com/#organization"
-            },
-            "description": "Création de sites vitrines professionnels, sites e-commerce et développement web sur mesure pour PME françaises.",
-            "areaServed": {
-                "@type": "Country",
-                "name": "France"
-            },
-            "serviceType": "Développement Web"
-        },
-        {
-            "@type": "Service",
-            "@id": "https://quernel-intelligence.com/#service-ia",
-            "name": "Solutions d'Intelligence Artificielle",
-            "provider": {
-                "@id": "https://quernel-intelligence.com/#organization"
-            },
-            "description": "Agents IA, chatbots entreprise, bots de trading et automatisation IA pour optimiser votre activité.",
-            "areaServed": {
-                "@type": "Country",
-                "name": "France"
-            },
-            "serviceType": "Intelligence Artificielle"
-        }
-    ]
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://quernel-intelligence.com/#organization",
+      "name": "Quernel Intelligence",
+      "url": "https://quernel-intelligence.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://quernel-intelligence.com/logo.png",
+        "width": 512,
+        "height": 512
+      },
+      "sameAs": [],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "contact@quernel-intelligence.com",
+        "contactType": "customer service",
+        "availableLanguage": ["French"],
+        "areaServed": "FR"
+      },
+      "foundingDate": "2024",
+      "slogan": "Votre partenaire digital intelligent"
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://quernel-intelligence.com/#localbusiness",
+      "name": "Quernel Intelligence",
+      "url": "https://quernel-intelligence.com",
+      "image": "https://quernel-intelligence.com/logo.png",
+      "description": "Agence de création web et intelligence artificielle. Sites vitrines, e-commerce, agents IA, bots de trading. Solutions sur mesure pour PME françaises.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Vigneux-sur-Seine",
+        "postalCode": "91270",
+        "addressRegion": "Île-de-France",
+        "addressCountry": "FR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 48.7005,
+        "longitude": 2.4169
+      },
+      "priceRange": "€€",
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "09:00",
+        "closes": "18:00"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "France"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://quernel-intelligence.com/#website",
+      "url": "https://quernel-intelligence.com",
+      "name": "Quernel Intelligence",
+      "description": "Agence de création web et solutions IA sur mesure pour PME françaises",
+      "publisher": {
+        "@id": "https://quernel-intelligence.com/#organization"
+      },
+      "inLanguage": "fr-FR"
+    },
+    {
+      "@type": "Service",
+      "@id": "https://quernel-intelligence.com/#service-web",
+      "name": "Création de Sites Internet",
+      "provider": {
+        "@id": "https://quernel-intelligence.com/#organization"
+      },
+      "description": "Création de sites vitrines professionnels, sites e-commerce et développement web sur mesure pour PME françaises.",
+      "areaServed": {
+        "@type": "Country",
+        "name": "France"
+      },
+      "serviceType": "Développement Web",
+      "offers": {
+        "@type": "AggregateOffer",
+        "lowPrice": "499",
+        "highPrice": "1999",
+        "priceCurrency": "EUR"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Offres Création Web",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "name": "Site Essentiel",
+            "description": "Site vitrine 5 pages avec design responsive",
+            "price": "499",
+            "priceCurrency": "EUR"
+          },
+          {
+            "@type": "Offer",
+            "name": "Site Business",
+            "description": "Pages illimitées, blog intégré, SEO avancé",
+            "price": "999",
+            "priceCurrency": "EUR"
+          },
+          {
+            "@type": "Offer",
+            "name": "Site Premium",
+            "description": "E-commerce complet avec paiement sécurisé",
+            "price": "1999",
+            "priceCurrency": "EUR"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://quernel-intelligence.com/#service-ia",
+      "name": "Solutions d'Intelligence Artificielle",
+      "provider": {
+        "@id": "https://quernel-intelligence.com/#organization"
+      },
+      "description": "Agents IA, chatbots entreprise, bots de trading et automatisation IA pour optimiser votre activité.",
+      "areaServed": {
+        "@type": "Country",
+        "name": "France"
+      },
+      "serviceType": "Intelligence Artificielle",
+      "offers": {
+        "@type": "AggregateOffer",
+        "lowPrice": "499",
+        "highPrice": "1499",
+        "priceCurrency": "EUR"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Offres Solutions IA",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "name": "Agent IA",
+            "description": "Chatbot intelligent pour votre site",
+            "price": "499",
+            "priceCurrency": "EUR"
+          },
+          {
+            "@type": "Offer",
+            "name": "Automation Pro",
+            "description": "Automatisation des processus métier",
+            "price": "999",
+            "priceCurrency": "EUR"
+          },
+          {
+            "@type": "Offer",
+            "name": "Trading Bot",
+            "description": "Bot personnalisé pour les marchés crypto/forex",
+            "price": "1499",
+            "priceCurrency": "EUR"
+          }
+        ]
+      }
+    }
+  ]
 }
