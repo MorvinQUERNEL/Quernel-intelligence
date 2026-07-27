@@ -29,8 +29,8 @@ const faqData = [
     answer: "Un agent IA est un assistant virtuel intelligent intégré à votre site. Il comprend les questions de vos visiteurs grâce au traitement du langage naturel et y répond 24/7. Il peut qualifier des leads, répondre aux FAQ, prendre des rendez-vous.",
   },
   {
-    question: 'Un bot de trading est-il risqué ?',
-    answer: "Tout trading comporte des risques. Nos bots sont développés avec des systèmes de gestion des risques (stop-loss, position sizing). Nous effectuons un backtesting rigoureux et vous accompagnons dans la configuration. Le capital investi reste le vôtre.",
+    question: "En quoi consiste l'audit IA ?",
+    answer: "L'audit cartographie vos processus (acquisition, vente, administratif, support) et identifie où l'IA apporte un gain réel, chiffré en fourchettes avec les hypothèses de calcul. Vous repartez avec un top 3 des opportunités et un plan de mise en œuvre. La version flash est gratuite en ligne, l'audit complet va de 490 à 990 € selon la taille de l'entreprise.",
   },
   {
     question: "Comment l'IA peut aider mon e-commerce ?",
@@ -49,7 +49,7 @@ export function FAQPage() {
     <>
       <SEO
         title="FAQ - Questions Fréquentes"
-        description="Réponses à vos questions sur la création de sites web, les tarifs, les délais, les agents IA et les bots de trading. Tout ce que vous devez savoir avant de démarrer votre projet."
+        description="Réponses à vos questions sur les agents IA, l'audit IA, l'automatisation, la création de sites web, les tarifs et les délais. Tout savoir avant de démarrer votre projet."
         canonical="https://quernel-intelligence.com/faq"
         jsonLd={[breadcrumbSchema, faqSchema]}
       />

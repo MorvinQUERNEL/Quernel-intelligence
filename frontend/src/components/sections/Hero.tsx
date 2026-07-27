@@ -61,7 +61,7 @@ export function Hero() {
             >
               <span className="font-mono text-sm text-accent">001</span>
               <div className="h-px w-12 bg-accent" />
-              <span className="font-mono text-xs text-text-muted tracking-wider">DIGITAL AGENCY</span>
+              <span className="font-mono text-xs text-text-muted tracking-wider">SOLUTIONS IA POUR ENTREPRISES</span>
             </motion.div>
 
             {/* Main title - Massive */}
@@ -78,7 +78,7 @@ export function Hero() {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.3 }}
                 >
-                  VOTRE
+                  L'IA QUI
                 </motion.span>
                 <motion.span
                   className="block text-accent"
@@ -86,7 +86,7 @@ export function Hero() {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.4 }}
                 >
-                  CROISSANCE
+                  AUGMENTE
                 </motion.span>
                 <motion.span
                   className="block"
@@ -94,7 +94,7 @@ export function Hero() {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.5 }}
                 >
-                  DIGITALE
+                  VOS REVENUS
                 </motion.span>
               </h1>
 
@@ -115,8 +115,8 @@ export function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7 }}
             >
-              Gagnez du temps. Générez plus de clients. Automatisez l'essentiel.
-              <span className="text-accent"> Nous créons les outils digitaux qui font grandir votre entreprise.</span>
+              Agents IA sur mesure, workflows automatisés, audits chiffrés.
+              <span className="text-accent"> Nous installons l'IA là où elle rapporte : prospection, support client, administratif, contenu.</span>
             </motion.p>
 
             {/* CTA */}
@@ -127,10 +127,10 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.8 }}
             >
               <button
-                onClick={() => navigate('/contact')}
+                onClick={() => navigate('/audit')}
                 className="group relative px-8 py-4 bg-accent text-bg-primary font-semibold text-sm tracking-wide overflow-hidden transition-all duration-300 hover:pr-12"
               >
-                <span className="relative z-10">OBTENIR MON DEVIS GRATUIT</span>
+                <span className="relative z-10">MON AUDIT IA GRATUIT</span>
                 <motion.span
                   className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
@@ -139,10 +139,10 @@ export function Hero() {
               </button>
 
               <button
-                onClick={() => navigate('/services')}
+                onClick={() => navigate('/agents')}
                 className="group flex items-center gap-3 text-text-secondary hover:text-accent transition-colors"
               >
-                <span className="font-mono text-sm">DÉCOUVRIR NOS SERVICES</span>
+                <span className="font-mono text-sm">VOIR LES AGENTS EN ACTION</span>
                 <span className="w-8 h-px bg-current group-hover:w-12 transition-all duration-300" />
               </button>
             </motion.div>
@@ -219,7 +219,7 @@ export function Hero() {
           </div>
 
           <div className="hidden md:flex items-center gap-8">
-            {['WEB', 'IA', 'TRADING', 'AUTOMATION'].map((tag) => (
+            {['AGENTS IA', 'WORKFLOWS', 'AUDITS', 'WEB'].map((tag) => (
               <span key={tag} className="font-mono text-xs text-text-muted hover:text-accent transition-colors cursor-default">
                 {tag}
               </span>

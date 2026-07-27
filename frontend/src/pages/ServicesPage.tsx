@@ -16,7 +16,7 @@ export function ServicesPage() {
     <>
       <SEO
         title="Nos Services - Création Web & Solutions IA"
-        description="Découvrez nos services : création de sites vitrines et e-commerce, agents IA intelligents, bots de trading algorithmique, automatisation des processus. Solutions digitales sur mesure."
+        description="Nos services : agents IA métier, workflows d'automatisation, audits IA chiffrés, et création de sites vitrines et e-commerce. Solutions sur mesure pour PME."
         canonical="https://quernel-intelligence.com/services"
         jsonLd={[breadcrumbSchema, webServiceSchema, iaServiceSchema]}
       />

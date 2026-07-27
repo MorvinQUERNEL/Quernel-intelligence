@@ -15,10 +15,10 @@ const footerLinks: Record<string, FooterLink[]> = {
     { label: 'Refonte', href: '/services' },
   ],
   'SOLUTIONS IA': [
-    { label: 'Agents IA', href: '/services' },
-    { label: 'Bots de Trading', href: '/services' },
+    { label: 'Agents IA', href: '/agents' },
+    { label: 'Audit IA', href: '/audit' },
     { label: 'Automatisation', href: '/services' },
-    { label: 'IA E-Commerce', href: '/services' },
+    { label: 'Démo en ligne', href: 'https://agents.quernel-cloud.com', external: true },
   ],
   'CONTACT': [
     { label: 'contact@quernel-intelligence.com', href: 'mailto:contact@quernel-intelligence.com', external: true },

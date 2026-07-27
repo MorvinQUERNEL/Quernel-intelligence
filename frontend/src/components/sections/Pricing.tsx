@@ -44,30 +44,30 @@ const webPlans: Plan[] = [
 
 const iaPlans: Plan[] = [
   {
-    id: 'agent',
+    id: 'audit',
     index: '01',
-    name: 'AGENT IA',
-    price: '499',
-    description: 'Ne perdez plus jamais un prospect',
-    features: ['Assistant disponible 24h/24', 'Répond en 3 secondes', 'Qualifie vos contacts', 'Prend des RDV', '1000 conversations/mois'],
+    name: 'AUDIT IA COMPLET',
+    price: '490',
+    description: 'Sachez où l\'IA vous rapporte, avant d\'investir',
+    features: ['Cartographie de vos processus', 'Gains chiffrés en fourchettes', 'Top 3 des opportunités', 'Plan de mise en œuvre', 'Déduit si vous lancez un projet', 'De 490 à 990 € selon la taille'],
     highlighted: false,
   },
   {
-    id: 'automation',
+    id: 'agent',
     index: '02',
+    name: 'AGENT IA',
+    price: '499',
+    description: 'Un employé numérique formé à votre métier',
+    features: ['Prospection, support, admin ou contenu', 'Formé sur vos données', 'Validation humaine avant envoi', 'Démo en ligne avant achat', 'Accompagnement au démarrage'],
+    highlighted: true,
+  },
+  {
+    id: 'automation',
+    index: '03',
     name: 'AUTOMATION PRO',
     price: '999',
     description: 'Récupérez 10h de travail par semaine',
     features: ['Tâches automatisées', 'CRM synchronisé', 'Emails envoyés seuls', 'Rapports générés', 'Tous vos outils connectés', 'Support prioritaire'],
-    highlighted: true,
-  },
-  {
-    id: 'trading',
-    index: '03',
-    name: 'TRADING BOT',
-    price: '1499',
-    description: 'Votre stratégie, automatisée',
-    features: ['Bot sur mesure', 'Stratégie testée', '5 ans de backtesting', 'Risques maîtrisés', 'Tableau de bord live', 'Alertes sur mobile'],
     highlighted: false,
   },
 ];
@@ -75,7 +75,7 @@ const iaPlans: Plan[] = [
 type Tab = 'web' | 'ia';
 
 export function Pricing() {
-  const [activeTab, setActiveTab] = useState<Tab>('web');
+  const [activeTab, setActiveTab] = useState<Tab>('ia');
   const plans = activeTab === 'web' ? webPlans : iaPlans;
   const navigate = useNavigate();
 
@@ -108,8 +108,8 @@ export function Pricing() {
           <div className="mt-8 lg:mt-0">
             <div className="inline-flex border border-border">
               {[
-                { id: 'web', label: 'CRÉATION WEB' },
                 { id: 'ia', label: 'SOLUTIONS IA' },
+                { id: 'web', label: 'CRÉATION WEB' },
               ].map((tab) => (
                 <button
                   key={tab.id}

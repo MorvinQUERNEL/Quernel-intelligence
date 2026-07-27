@@ -34,7 +34,7 @@ export const localBusinessSchema = {
   name: SITE_NAME,
   url: BASE_URL,
   image: `${BASE_URL}/logo.png`,
-  description: 'Agence de création web et intelligence artificielle. Sites vitrines, e-commerce, agents IA, bots de trading.',
+  description: 'Agents IA sur mesure, workflows automatisés et audits IA pour PME. Création de sites web en complément.',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Vigneux-sur-Seine',
@@ -61,7 +61,7 @@ export const websiteSchema = {
   '@id': `${BASE_URL}/#website`,
   url: BASE_URL,
   name: SITE_NAME,
-  description: 'Agence de création web et solutions IA sur mesure pour PME françaises',
+  description: 'Solutions IA (agents, workflows, audits) et création web pour PME françaises',
   publisher: { '@id': `${BASE_URL}/#organization` },
   inLanguage: 'fr-FR',
   potentialAction: {
@@ -95,7 +95,7 @@ export const iaServiceSchema = {
   '@id': `${BASE_URL}/#service-ia`,
   name: "Solutions d'Intelligence Artificielle",
   provider: { '@id': `${BASE_URL}/#organization` },
-  description: "Agents IA, chatbots entreprise, bots de trading et automatisation IA pour optimiser votre activité.",
+  description: "Agents IA métier (prospection, support, administratif, contenu), workflows automatisés et audits IA chiffrés.",
   areaServed: { '@type': 'Country', name: 'France' },
   serviceType: 'Intelligence Artificielle',
   offers: {

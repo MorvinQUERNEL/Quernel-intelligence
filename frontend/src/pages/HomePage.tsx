@@ -12,8 +12,8 @@ export function HomePage() {
   return (
     <>
       <SEO
-        title="Quernel Intelligence | Création de Sites Internet & Solutions IA"
-        description="Agence de création web et intelligence artificielle à Vigneux-sur-Seine. Sites vitrines, e-commerce, agents IA, bots de trading. Solutions sur mesure pour PME françaises. Devis gratuit."
+        title="Quernel Intelligence | Agents IA, Workflows & Audits pour Entreprises"
+        description="Agents IA sur mesure, workflows automatisés et audits IA chiffrés pour PME françaises. Audit flash gratuit en ligne, démo des agents en direct. Création de sites web en complément."
         canonical="https://quernel-intelligence.com/"
         jsonLd={[
           organizationSchema,

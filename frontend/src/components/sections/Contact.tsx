@@ -17,8 +17,8 @@ const projectTypes = [
   { value: 'site-vitrine', label: 'Site vitrine' },
   { value: 'ecommerce', label: 'E-commerce' },
   { value: 'agent-ia', label: 'Agent IA' },
-  { value: 'bot-trading', label: 'Bot de trading' },
-  { value: 'automatisation', label: 'Automatisation' },
+  { value: 'audit-ia', label: 'Audit IA' },
+  { value: 'automatisation', label: 'Automatisation / Workflow' },
   { value: 'autre', label: 'Autre' },
 ];
 

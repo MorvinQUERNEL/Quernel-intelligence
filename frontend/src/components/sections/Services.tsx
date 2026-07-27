@@ -9,45 +9,45 @@ interface Service {
   subtitle: string;
   description: string;
   features: string[];
-  visual: 'web' | 'ia' | 'trading' | 'automation';
+  visual: 'web' | 'ia' | 'audit' | 'automation';
 }
 
 const services: Service[] = [
   {
-    id: 'web',
+    id: 'ia',
     index: '001',
+    title: 'AGENTS IA',
+    subtitle: 'Vos employés numériques',
+    description: 'Un agent prospecte, un autre répond à vos clients, un troisième prépare devis et relances. Chacun est formé à votre métier et travaille sous votre contrôle. Testez-les en direct sur notre plateforme de démonstration.',
+    features: ['Prospection', 'Support client', 'Devis & relances', 'Contenu & analyse'],
+    visual: 'ia',
+  },
+  {
+    id: 'automation',
+    index: '002',
+    title: 'WORKFLOWS',
+    subtitle: 'Automatisation sur mesure',
+    description: 'Récupérez des heures chaque semaine. On relie vos outils existants et on automatise vos tâches répétitives : emails, factures, rapports, synchronisation des données.',
+    features: ['Gain de temps immédiat', 'Outils connectés', 'Zéro ressaisie', 'Rapports automatiques'],
+    visual: 'automation',
+  },
+  {
+    id: 'audit',
+    index: '003',
+    title: 'AUDIT IA',
+    subtitle: 'Par où commencer, chiffré',
+    description: 'Avant d\'investir, sachez ce que l\'IA peut vraiment vous rapporter. On cartographie vos processus et on chiffre les gains, en fourchettes honnêtes. Version flash gratuite en ligne.',
+    features: ['Audit flash gratuit', 'Gains chiffrés', 'Plan de mise en œuvre', 'Sans jargon'],
+    visual: 'audit',
+  },
+  {
+    id: 'web',
+    index: '004',
     title: 'CRÉATION WEB',
     subtitle: 'Sites & Applications',
     description: 'Transformez vos visiteurs en clients. Un site professionnel qui inspire confiance, génère des contacts et booste votre visibilité sur Google.',
     features: ['Visible sur Google', 'Design sur mesure', 'Mobile-first', 'Résultats mesurables'],
     visual: 'web',
-  },
-  {
-    id: 'ia',
-    index: '002',
-    title: 'AGENTS IA',
-    subtitle: 'Intelligence Autonome',
-    description: 'Ne ratez plus jamais un prospect. Votre assistant virtuel répond instantanément à vos clients, qualifie vos leads et prend des rendez-vous. 24h/24, 7j/7.',
-    features: ['Réponse instantanée', 'Qualification automatique', 'Prise de RDV', 'Multilingue'],
-    visual: 'ia',
-  },
-  {
-    id: 'trading',
-    index: '003',
-    title: 'BOTS TRADING',
-    subtitle: 'Algorithmes Financiers',
-    description: 'Faites travailler votre argent pendant que vous vivez. Stratégies testées, risques maîtrisés, alertes en temps réel sur votre téléphone.',
-    features: ['Stratégie personnalisée', 'Gestion du risque', 'Résultats historiques', 'Alertes instantanées'],
-    visual: 'trading',
-  },
-  {
-    id: 'automation',
-    index: '004',
-    title: 'AUTOMATION',
-    subtitle: 'Workflows Intelligents',
-    description: 'Récupérez des heures chaque semaine. On automatise vos tâches répétitives : emails, factures, rapports, synchronisation entre vos outils.',
-    features: ['Gain de temps immédiat', 'Zéro erreur humaine', 'Outils connectés', 'Rapports automatiques'],
-    visual: 'automation',
   },
 ];
 
@@ -101,7 +101,7 @@ function ServiceVisual({ type }: { type: Service['visual'] }) {
         </div>
       </div>
     ),
-    trading: (
+    audit: (
       <div className="relative w-full aspect-[4/3] bg-bg-secondary border border-border overflow-hidden">
         <div className="absolute inset-4">
           {/* Fake chart */}
@@ -125,7 +125,7 @@ function ServiceVisual({ type }: { type: Service['visual'] }) {
             </defs>
           </svg>
           <div className="absolute bottom-2 right-2 font-mono text-xs text-accent">
-            +12.4%
+            8-12 h/sem récupérables
           </div>
         </div>
       </div>

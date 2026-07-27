@@ -67,7 +67,7 @@ export function PricingPage() {
     <>
       <SEO
         title="Tarifs - Création Web & Solutions IA"
-        description="Tarifs transparents pour la création de sites web (à partir de 499€) et solutions IA (agents IA, bots trading). Devis gratuit. Zéro surprise. Paiement en plusieurs fois possible."
+        description="Tarifs transparents : audit IA complet dès 490€, agents IA dès 499€, automatisation dès 999€, sites web dès 499€. Audit flash gratuit en ligne. Devis gratuit."
         canonical="https://quernel-intelligence.com/tarifs"
         jsonLd={[breadcrumbSchema, pricingSchema, offersSchema]}
       />

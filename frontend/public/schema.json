@@ -29,7 +29,7 @@
       "name": "Quernel Intelligence",
       "url": "https://quernel-intelligence.com",
       "image": "https://quernel-intelligence.com/logo.png",
-      "description": "Agence de création web et intelligence artificielle. Sites vitrines, e-commerce, agents IA, bots de trading. Solutions sur mesure pour PME françaises.",
+      "description": "Agents IA sur mesure, workflows automatisés et audits IA pour augmenter les revenus des PME françaises. Création de sites web en complément.",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Vigneux-sur-Seine",
@@ -119,7 +119,7 @@
       "provider": {
         "@id": "https://quernel-intelligence.com/#organization"
       },
-      "description": "Agents IA, chatbots entreprise, bots de trading et automatisation IA pour optimiser votre activité.",
+      "description": "Agents IA métier, workflows automatisés et audits IA chiffrés pour optimiser votre activité.",
       "areaServed": {
         "@type": "Country",
         "name": "France"
@@ -127,8 +127,8 @@
       "serviceType": "Intelligence Artificielle",
       "offers": {
         "@type": "AggregateOffer",
-        "lowPrice": "499",
-        "highPrice": "1499",
+        "lowPrice": "490",
+        "highPrice": "999",
         "priceCurrency": "EUR"
       },
       "hasOfferCatalog": {
@@ -137,23 +137,24 @@
         "itemListElement": [
           {
             "@type": "Offer",
+            "name": "Audit IA Complet",
+            "description": "Cartographie des processus et gains IA chiffrés",
+            "price": "490",
+            "priceCurrency": "EUR"
+          },
+          {
+            "@type": "Offer",
             "name": "Agent IA",
-            "description": "Chatbot intelligent pour votre site",
+            "description": "Agent métier sur mesure : prospection, support, administratif ou contenu",
             "price": "499",
             "priceCurrency": "EUR"
           },
+
           {
             "@type": "Offer",
             "name": "Automation Pro",
-            "description": "Automatisation des processus métier",
+            "description": "Workflows connectés à vos outils existants",
             "price": "999",
-            "priceCurrency": "EUR"
-          },
-          {
-            "@type": "Offer",
-            "name": "Trading Bot",
-            "description": "Bot personnalisé pour les marchés crypto/forex",
-            "price": "1499",
             "priceCurrency": "EUR"
           }
         ]

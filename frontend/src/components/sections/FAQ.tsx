@@ -29,8 +29,8 @@ const faqs: FAQItem[] = [
     answer: 'C\'est un assistant virtuel sur votre site qui répond à vos visiteurs 24h/24. Il comprend leurs questions, donne des réponses personnalisées, qualifie les contacts intéressants et peut même prendre des rendez-vous dans votre agenda. Comme un collaborateur qui ne dort jamais.',
   },
   {
-    question: 'Les bots de trading sont-ils risqués ?',
-    answer: 'Le trading comporte toujours des risques, bot ou pas. Notre différence : on teste chaque stratégie sur 5 ans de données historiques avant de la déployer. On intègre des limites de pertes automatiques. Et surtout, vous gardez le contrôle total de votre capital à tout moment.',
+    question: 'À quoi sert l\'audit IA ?',
+    answer: 'À savoir où l\'IA vous fait gagner du temps ou de l\'argent avant de dépenser un euro. On cartographie vos processus, on chiffre les gains possibles en fourchettes honnêtes, et on vous dit aussi ce que l\'IA ne réglera pas. La version flash est gratuite et en ligne ; l\'audit complet est déduit si vous lancez un projet avec nous.',
   },
   {
     question: 'Que peut faire l\'IA pour ma boutique en ligne ?',
