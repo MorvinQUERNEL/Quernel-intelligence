@@ -1,0 +1,78 @@
+# Quernel Intelligence
+
+> Quernel Intelligence installe l'intelligence artificielle la ou elle rapporte aux PME : agents IA sur mesure, workflows automatises et audits IA chiffres. Creation de sites internet en offre complementaire. Basee a Vigneux-sur-Seine (91270), Ile-de-France, France. Fondee par Morvin Quernel, developpeur full-stack.
+
+## Identite
+
+- **Nom** : Quernel Intelligence
+- **Type** : Solutions IA pour entreprises (agents, workflows, audits) + creation web
+- **Fondateur** : Morvin Quernel (https://morvin-quernel.com)
+- **Localisation** : Vigneux-sur-Seine, 91270, Essonne, Ile-de-France, France
+- **Site web** : https://quernel-intelligence.com
+- **Demo agents IA** : https://agents.quernel-cloud.com (demonstration libre, donnees fictives)
+- **Email** : contact@quernel-intelligence.com
+- **Langues** : Francais, Anglais
+- **Zone d'intervention** : France entiere
+
+## Services et tarifs
+
+### Solutions Intelligence Artificielle (offre principale)
+| Offre | Prix | Description |
+|-------|------|-------------|
+| Audit IA flash | Gratuit | Formulaire en ligne 2 minutes, rapport PDF des gains IA possibles par processus |
+| Audit IA complet | 490-990 EUR | Cartographie des processus, gains chiffres en fourchettes, plan de mise en oeuvre. Deduit si projet lance |
+| Agent IA | des 499 EUR | Agent metier sur mesure : prospection, support client, devis/relances, contenu ou analyse. Validation humaine avant tout envoi |
+| Automation Pro | des 999 EUR | Workflows relies aux outils existants : emails, factures, rapports, synchronisation |
+
+### Les 6 agents IA proposes
+1. **Auditeur IA** : cartographie les processus et chiffre les gains en fourchettes prudentes
+2. **Prospecteur** : cibles B2B qualifiees avec signal d'achat source + sequences d'emails personnalisees
+3. **Support client** : tri de boite de reception, to-do priorisee, brouillons de reponse
+4. **Assistant admin** : devis structures, relances d'impayes graduees, suivi de facturation
+5. **Createur de contenu** : posts LinkedIn, scripts courts, emails, prets a publier
+6. **Analyste** : rapports de performance vs baseline, plan 30 jours, jamais de chiffre invente
+
+### Creation de sites internet (offre complementaire)
+| Offre | Prix | Description |
+|-------|------|-------------|
+| Site Essentiel | 499 EUR | Site vitrine 5 pages, responsive, SEO de base |
+| Site Business | 999 EUR | Pages illimitees, blog, SEO avance |
+| Site Premium | 1999 EUR | E-commerce complet, paiement en ligne |
+
+## Methode
+
+1. **Audit d'abord** : on mesure avant d'investir. Gains toujours exprimes en fourchettes avec hypotheses explicites, jamais de promesse garantie.
+2. **Agents sous controle** : les agents produisent des brouillons et livrables, l'humain valide. Rien ne part vers un vrai client sans relecture.
+3. **Preuve par la demo** : les 6 agents sont testables en ligne sur https://agents.quernel-cloud.com avec des donnees fictives.
+
+## FAQ
+
+**Qu'est-ce qu'un agent IA ?**
+Un employe numerique forme a votre metier : il prospecte, repond aux clients, prepare devis et relances, ou redige du contenu. Il travaille sous votre controle, avec validation humaine.
+
+**A quoi sert l'audit IA ?**
+A savoir ou l'IA vous fait gagner du temps ou de l'argent avant de depenser un euro. Version flash gratuite en ligne, audit complet de 490 a 990 EUR (deduit si projet lance).
+
+**Combien coute un site internet ?**
+A partir de 499 EUR pour un site vitrine, 999 EUR pour un site business, 1999 EUR pour un e-commerce.
+
+**Travaillez-vous a distance ?**
+Oui, dans toute la France par visio, email et telephone.
+
+**Quels sont les modes de paiement ?**
+Virement bancaire et carte bancaire (Stripe). Acompte de 30 % a la commande, solde a la livraison.
+
+## Pages
+
+- [Accueil](https://quernel-intelligence.com/) - Presentation
+- [Agents IA](https://quernel-intelligence.com/agents) - Les 6 agents, gains attendus, acces demo
+- [Audit IA](https://quernel-intelligence.com/audit) - Audit flash gratuit + audit complet
+- [Services](https://quernel-intelligence.com/services) - Agents, workflows, audits, creation web
+- [Tarifs](https://quernel-intelligence.com/tarifs) - Grille tarifaire complete
+- [FAQ](https://quernel-intelligence.com/faq) - Questions frequentes
+- [Contact](https://quernel-intelligence.com/contact) - Formulaire de contact
+- [Devis](https://quernel-intelligence.com/devis) - Devis instantane en ligne
+
+## Documentation complete
+
+Pour une documentation exhaustive, consultez : https://quernel-intelligence.com/llms-full.txt

@@ -6,7 +6,7 @@
     <!-- Page d'accueil -->
     <url>
         <loc>https://quernel-intelligence.com/</loc>
-        <lastmod>2026-02-02</lastmod>
+        <lastmod>2026-07-27</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
         <xhtml:link rel="alternate" hreflang="fr" href="https://quernel-intelligence.com/"/>
@@ -17,10 +17,30 @@
         </image:image>
     </url>
 
+    <!-- Page Agents IA -->
+    <url>
+        <loc>https://quernel-intelligence.com/agents</loc>
+        <lastmod>2026-07-27</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://quernel-intelligence.com/agents"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://quernel-intelligence.com/agents"/>
+    </url>
+
+    <!-- Page Audit IA -->
+    <url>
+        <loc>https://quernel-intelligence.com/audit</loc>
+        <lastmod>2026-07-27</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://quernel-intelligence.com/audit"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://quernel-intelligence.com/audit"/>
+    </url>
+
     <!-- Page Services -->
     <url>
         <loc>https://quernel-intelligence.com/services</loc>
-        <lastmod>2026-02-02</lastmod>
+        <lastmod>2026-07-27</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
         <xhtml:link rel="alternate" hreflang="fr" href="https://quernel-intelligence.com/services"/>
@@ -30,7 +50,7 @@
     <!-- Page Tarifs -->
     <url>
         <loc>https://quernel-intelligence.com/tarifs</loc>
-        <lastmod>2026-02-02</lastmod>
+        <lastmod>2026-07-27</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
         <xhtml:link rel="alternate" hreflang="fr" href="https://quernel-intelligence.com/tarifs"/>
@@ -40,7 +60,7 @@
     <!-- Page FAQ -->
     <url>
         <loc>https://quernel-intelligence.com/faq</loc>
-        <lastmod>2026-02-02</lastmod>
+        <lastmod>2026-07-27</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
         <xhtml:link rel="alternate" hreflang="fr" href="https://quernel-intelligence.com/faq"/>
@@ -50,7 +70,7 @@
     <!-- Page Contact -->
     <url>
         <loc>https://quernel-intelligence.com/contact</loc>
-        <lastmod>2026-02-02</lastmod>
+        <lastmod>2026-07-27</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
         <xhtml:link rel="alternate" hreflang="fr" href="https://quernel-intelligence.com/contact"/>
@@ -60,7 +80,7 @@
     <!-- Mentions légales -->
     <url>
         <loc>https://quernel-intelligence.com/mentions-legales</loc>
-        <lastmod>2026-02-02</lastmod>
+        <lastmod>2026-07-27</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>
@@ -68,7 +88,7 @@
     <!-- Politique de confidentialité -->
     <url>
         <loc>https://quernel-intelligence.com/politique-confidentialite</loc>
-        <lastmod>2026-02-02</lastmod>
+        <lastmod>2026-07-27</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>

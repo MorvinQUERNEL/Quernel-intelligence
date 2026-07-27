@@ -1,0 +1,255 @@
+# Quernel Intelligence - Documentation Complete
+
+> Quernel Intelligence installe l'intelligence artificielle la ou elle rapporte aux PME : agents IA sur mesure, workflows automatises et audits IA chiffres. Creation de sites internet en offre complementaire. Fondee par Morvin Quernel, basee a Vigneux-sur-Seine (91270) en Ile-de-France, France. L'entreprise accompagne PME, artisans, commercants et startups.
+
+---
+
+## 1. Presentation
+
+### Qui sommes-nous ?
+
+Quernel Intelligence est une agence digitale independante fondee en 2024 par Morvin Quernel, developpeur full-stack passionne par le web et l'intelligence artificielle. Basee a Vigneux-sur-Seine dans l'Essonne (departement 91), l'agence propose des solutions accessibles et modernes aux entreprises francaises.
+
+### Notre mission
+
+Rendre la creation web et l'intelligence artificielle accessibles aux PME francaises, avec des solutions performantes a des tarifs adaptes.
+
+### Nos valeurs
+- **Excellence technique** : technologies modernes (React, Symfony, IA generative)
+- **Accessibilite** : tarifs adaptes aux petites structures, a partir de 499 EUR
+- **Accompagnement** : support technique inclus, suivi personnalise
+- **Transparence** : devis detailles, pas de frais caches
+
+### Coordonnees
+- **Raison sociale** : Quernel Intelligence
+- **Fondateur** : Morvin Quernel
+- **Site web** : https://quernel-intelligence.com
+- **Email** : contact@quernel-intelligence.com
+- **Adresse** : Vigneux-sur-Seine, 91270, Essonne, Ile-de-France, France
+- **Coordonnees GPS** : 48.7005, 2.4169
+- **Horaires** : Lundi au Vendredi, 9h00 - 18h00
+- **Langues** : Francais, Anglais
+- **Portfolio fondateur** : https://morvin-quernel.com
+- **Plateforme educative** : https://netrevision.fr
+
+---
+
+## 2. Catalogue de services
+
+### 2.1 Creation de sites internet
+
+Nous creons des sites web professionnels adaptes aux besoins de chaque client.
+
+#### Site Essentiel - 499 EUR
+- 5 pages professionnelles (Accueil, A propos, Services, Portfolio, Contact)
+- Design responsive adapte mobile, tablette et desktop
+- Optimisation SEO de base (meta tags, sitemap, robots.txt)
+- Formulaire de contact fonctionnel avec notifications email
+- Hebergement et nom de domaine inclus la premiere annee
+- Certificat SSL/HTTPS inclus
+- Delai de livraison : 1 a 2 semaines
+
+#### Site Business - 999 EUR
+- Tout le contenu du Site Essentiel, plus :
+- Pages illimitees
+- Blog integre avec systeme de gestion de contenu
+- SEO avance (schema.org, Open Graph, donnees structurees, analytics)
+- Formulaires personnalises (devis, reservation, inscription newsletter)
+- Integration Google Analytics 4 et Google Search Console
+- Optimisation des performances (Core Web Vitals, Lighthouse 90+)
+- Integration emailing / newsletter
+- Delai de livraison : 2 a 3 semaines
+
+#### Site Premium / E-commerce - 1999 EUR
+- Tout le contenu du Site Business, plus :
+- Boutique en ligne complete avec catalogue produits
+- Paiement securise (integration Stripe, PayPal)
+- Gestion de stock et suivi des commandes
+- Tableau de bord administrateur
+- Systeme de notifications (email, SMS)
+- Options multi-devises et multi-langues
+- Delai de livraison : 3 a 4 semaines
+
+### 2.2 Solutions d'Intelligence Artificielle (offre principale)
+
+Nous installons l'IA la ou elle rapporte : prospection, support client, administratif, contenu, analyse.
+
+#### Audit IA flash - Gratuit
+- Formulaire en ligne (2 minutes) sur https://quernel-intelligence.com/audit
+- Rapport PDF automatique : gains IA possibles par processus, en ordres de grandeur
+- Sans engagement
+
+#### Audit IA complet - 490 a 990 EUR selon la taille
+- Une demi-journee avec l'equipe (sur site ou visio)
+- Cartographie des processus, chronometrage des taches reelles
+- Gains chiffres en fourchettes avec hypotheses explicites
+- Top 3 des opportunites et plan de mise en oeuvre priorise
+- Montant deduit si un projet est lance
+
+#### Agent IA - des 499 EUR
+- Agent metier sur mesure parmi 6 profils : Auditeur IA, Prospecteur, Support client, Assistant admin, Createur de contenu, Analyste
+- Forme sur les donnees et le ton de l'entreprise
+- Validation humaine avant tout envoi (brouillons, jamais d'envoi automatique non relu)
+- Demonstration libre en ligne : https://agents.quernel-cloud.com
+- Accompagnement au demarrage
+
+#### Automation Pro - des 999 EUR
+- Audit des processus metier automatisables
+- Automatisation des taches repetitives avec IA
+- Integration dans les workflows et outils existants (CRM, ERP, emailing)
+- Rapports et alertes automatises
+- Formation de l'equipe a l'utilisation
+- Support et maintenance inclus
+
+---
+
+## 3. Technologies et expertise
+
+### Frontend
+- React 18+ avec TypeScript
+- Vite pour le build et le dev server
+- Tailwind CSS pour le design
+- Framer Motion pour les animations
+- React Router pour le routing SPA
+- Responsive design mobile-first
+
+### Backend
+- Symfony 7 (PHP 8.2+) pour les APIs RESTful
+- Doctrine ORM pour la gestion de base de donnees
+- JWT pour l'authentification securisee
+- Node.js et Express pour les services temps reel
+- Python pour le machine learning et les scripts IA
+
+### Intelligence Artificielle
+- APIs OpenAI (GPT-4, GPT-4o, GPT-4 Turbo)
+- APIs Anthropic (Claude 3, Claude 3.5)
+- LangChain pour les pipelines IA complexes
+- TensorFlow et PyTorch pour les modeles custom
+- Agents autonomes et chaines de raisonnement
+- RAG (Retrieval-Augmented Generation)
+
+### Base de donnees
+- PostgreSQL, MySQL, MariaDB
+- Redis pour le cache et les sessions
+- Doctrine ORM / Eloquent
+
+### Infrastructure et DevOps
+- Hebergement VPS Linux (Ubuntu, Debian)
+- Nginx en reverse proxy
+- SSL/TLS via Let's Encrypt
+- Docker pour la containerisation
+- CI/CD automatise
+- Git / GitHub pour le versioning
+
+---
+
+## 4. Zone d'intervention
+
+### Local (Ile-de-France)
+- **Vigneux-sur-Seine** (91270) - Siege de l'agence
+- **Essonne** (91) - Departement d'implantation
+- **Val-de-Marne** (94), **Seine-et-Marne** (77), **Hauts-de-Seine** (92)
+- **Paris** (75) et toute la petite couronne
+- **Yvelines** (78), **Val-d'Oise** (95), **Seine-Saint-Denis** (93)
+- Toute l'Ile-de-France
+
+### National
+- Prestations a distance dans toute la France metropolitaine
+- Echanges par visioconference (Google Meet, Zoom), email et telephone
+- Livraison et support 100% en ligne
+- Memes tarifs partout en France
+
+---
+
+## 5. Questions frequentes (FAQ)
+
+### Generalites
+
+**Q: Qui est derriere Quernel Intelligence ?**
+R: Quernel Intelligence est une agence fondee et dirigee par Morvin Quernel, developpeur web full-stack et specialiste en intelligence artificielle. Son portfolio : https://morvin-quernel.com
+
+**Q: Depuis quand l'agence existe-t-elle ?**
+R: L'agence a ete fondee en 2024.
+
+**Q: Ou etes-vous situes ?**
+R: A Vigneux-sur-Seine (91270), dans l'Essonne, en Ile-de-France.
+
+**Q: Travaillez-vous uniquement en Ile-de-France ?**
+R: Non. Nous travaillons avec des clients dans toute la France. Toutes les prestations peuvent se faire a distance.
+
+**Q: Comment vous contacter ?**
+R: Par email a contact@quernel-intelligence.com ou via le formulaire de contact sur https://quernel-intelligence.com/contact
+
+### Sites Internet
+
+**Q: Combien coute la creation d'un site internet ?**
+R: Les tarifs commencent a 499 EUR pour un site vitrine essentiel (5 pages), 999 EUR pour un site business (pages illimitees, blog, SEO avance), et 1999 EUR pour un e-commerce complet.
+
+**Q: Quel est le delai de creation ?**
+R: En moyenne : 1-2 semaines pour un site vitrine, 2-3 semaines pour un site business, 3-4 semaines pour un e-commerce.
+
+**Q: Le site sera-t-il adapte aux mobiles ?**
+R: Oui, tous nos sites sont 100% responsive et optimises pour mobile, tablette et desktop.
+
+**Q: Le referencement (SEO) est-il inclus ?**
+R: Le SEO de base est inclus dans toutes les formules. Le SEO avance (donnees structurees, analytics, optimisation performances) est inclus a partir de la formule Business.
+
+**Q: Proposez-vous un hebergement ?**
+R: Oui, l'hebergement et le nom de domaine sont inclus la premiere annee dans toutes les formules.
+
+**Q: Que se passe-t-il apres la livraison ?**
+R: Le support technique et les mises a jour de securite sont inclus. Nous restons disponibles pour toute modification ou evolution.
+
+### Intelligence Artificielle
+
+**Q: Qu'est-ce qu'un agent IA / chatbot ?**
+R: C'est un programme intelligent integre a votre site web, capable de repondre automatiquement aux questions des visiteurs 24h/24, de qualifier des prospects et d'automatiser des taches repetitives.
+
+**Q: Avec quelles technologies d'IA travaillez-vous ?**
+R: Nous utilisons principalement les APIs OpenAI (GPT-4) et Anthropic (Claude), ainsi que des modeles open-source selon les besoins.
+
+**Q: A quoi sert l'audit IA ?**
+R: A identifier ou l'IA fait gagner du temps ou de l'argent avant d'investir. Les gains sont chiffres en fourchettes avec hypotheses explicites, jamais en promesses garanties. Version flash gratuite en ligne.
+
+**Q: Les agents IA envoient-ils des messages tout seuls ?**
+R: Non. Les agents preparent des brouillons et des livrables ; un humain valide avant tout envoi vers un vrai client ou prospect.
+
+### Paiement et conditions
+
+**Q: Quels sont les modes de paiement ?**
+R: Virement bancaire et PayPal.
+
+**Q: Faut-il payer en une seule fois ?**
+R: Non. Un acompte de 30% est demande a la commande, et le solde a la livraison.
+
+**Q: Y a-t-il un engagement ?**
+R: Non, pas d'engagement de duree. Vous payez le projet, pas un abonnement.
+
+---
+
+## 6. Projets et realisations
+
+### Quernel Intelligence (quernel-intelligence.com)
+Site vitrine de l'agence avec presentation des services, tarifs et formulaire de contact. Technologies : React, Vite, TypeScript, Symfony, Tailwind CSS.
+
+### NetRevision (netrevision.fr)
+Plateforme educative gratuite pour la revision des certifications reseaux (CCNA). Cours interactifs, examens blancs, exercices de subnetting, leaderboard. Technologies : React, Node.js.
+
+### Plateforme d'agents IA (agents.quernel-cloud.com)
+Plateforme de demonstration des 6 agents IA de Quernel Intelligence, testable librement avec des donnees fictives. Technologies : Next.js, React, Claude (Anthropic).
+
+---
+
+## 7. Liens et ressources
+
+- Site principal : https://quernel-intelligence.com
+- Agents IA : https://quernel-intelligence.com/agents
+- Audit IA : https://quernel-intelligence.com/audit
+- Demo agents : https://agents.quernel-cloud.com
+- Services : https://quernel-intelligence.com/services
+- Tarifs : https://quernel-intelligence.com/tarifs
+- FAQ : https://quernel-intelligence.com/faq
+- Contact : https://quernel-intelligence.com/contact
+- Portfolio fondateur : https://morvin-quernel.com
+- CV fondateur : https://morvin-quernel.com/CV-Morvin.pdf
+- Plateforme NetRevision : https://netrevision.fr

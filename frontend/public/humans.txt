@@ -1,0 +1,15 @@
+/* TEAM */
+Developer & Founder: Morvin Quernel
+Site: https://morvin-quernel.com
+Email: contact@quernel-intelligence.com
+Location: Vigneux-sur-Seine (91270), Ile-de-France, France
+
+/* SITE */
+Name: Quernel Intelligence
+URL: https://quernel-intelligence.com
+Description: Agence de creation de sites internet et solutions IA
+Last update: 2026-02-24
+Language: French
+Standards: HTML5, CSS3, ES6+, Schema.org, Open Graph
+Components: React, TypeScript, Vite, Tailwind CSS, Symfony, PostgreSQL
+Software: Nginx, Let's Encrypt SSL
