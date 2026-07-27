@@ -33,14 +33,25 @@ if (!file_exists($smtpConfig)) {
 }
 require_once $smtpConfig;
 
-function clean($v) { return htmlspecialchars(strip_tags(trim($v ?? '')), ENT_QUOTES, 'UTF-8'); }
+// Supprime aussi CR/LF/TAB : indispensable contre l'injection d'en-têtes email
+// (un \r\n dans une valeur reprise en Subject permettrait d'ajouter Bcc/Cc).
+function clean($v) {
+    $v = str_replace(["\r", "\n", "\t", "%0d", "%0a"], ' ', $v ?? '');
+    return htmlspecialchars(strip_tags(trim($v)), ENT_QUOTES, 'UTF-8');
+}
+// Variante pour le corps du message : conserve les sauts de ligne
+// (jamais utilisée dans un en-tête email).
+function cleanBody($v) {
+    $v = str_replace(["\r", "%0d", "%0a"], '', $v ?? '');
+    return htmlspecialchars(strip_tags(trim($v)), ENT_QUOTES, 'UTF-8');
+}
 
 $name = clean($data['name']);
 $email = filter_var(trim($data['email']), FILTER_VALIDATE_EMAIL);
 $phone = clean($data['phone'] ?? '');
 $projectType = clean($data['projectType'] ?? '');
 $budget = clean($data['budget'] ?? '');
-$message = clean($data['message']);
+$message = cleanBody($data['message']);
 
 if (!$email) { http_response_code(400); echo json_encode(['success'=>false,'error'=>'Email invalide']); exit; }
 if (mb_strlen($message) > 5000 || mb_strlen($name) > 200) {

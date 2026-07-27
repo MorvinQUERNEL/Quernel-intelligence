@@ -37,14 +37,25 @@ if (!file_exists($smtpConfig)) {
 require_once $smtpConfig; // définit SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM
 
 // ===== SANITIZE =====
-function clean($v) { return htmlspecialchars(strip_tags(trim($v ?? '')), ENT_QUOTES, 'UTF-8'); }
+// Supprime aussi CR/LF/TAB : indispensable contre l'injection d'en-têtes email
+// (un \r\n dans une valeur reprise en Subject permettrait d'ajouter Bcc/Cc).
+function clean($v) {
+    $v = str_replace(["\r", "\n", "\t", "%0d", "%0a"], ' ', $v ?? '');
+    return htmlspecialchars(strip_tags(trim($v)), ENT_QUOTES, 'UTF-8');
+}
+// Variante pour les champs de corps de texte : conserve les sauts de ligne
+// (jamais utilisée dans un en-tête email).
+function cleanBody($v) {
+    $v = str_replace(["\r", "%0d", "%0a"], '', $v ?? '');
+    return htmlspecialchars(strip_tags(trim($v)), ENT_QUOTES, 'UTF-8');
+}
 
 $entreprise = clean($data['entreprise']);
 $email = filter_var(trim($data['email']), FILTER_VALIDATE_EMAIL);
 $secteur = clean($data['secteur'] ?? 'autre');
 $taille = clean($data['taille'] ?? '');
 $objectif = clean($data['objectif'] ?? '');
-$taches = clean($data['taches']);
+$taches = cleanBody($data['taches']);
 $outils = clean($data['outils'] ?? '');
 
 if (!$email) { http_response_code(400); echo json_encode(['error'=>'Invalid email']); exit; }
@@ -103,7 +114,11 @@ $ins->execute();
 $db->close();
 
 // ===== ANALYSE DES TÂCHES (règles simples, fourchettes prudentes) =====
+// Translittération pour un matching insensible aux accents
+// (« règlement » doit matcher le mot-clé « reglement »)
 $t = mb_strtolower($taches . ' ' . $outils);
+$translit = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $t);
+if ($translit !== false) { $t = mb_strtolower($translit); }
 
 $opportunites = [];
 $lib = [
