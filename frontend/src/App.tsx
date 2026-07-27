@@ -6,6 +6,8 @@ import { PageTransition } from './components/layout/PageTransition';
 import { CookieBanner } from './components/CookieBanner';
 import { HomePage } from './pages/HomePage';
 import { ServicesPage } from './pages/ServicesPage';
+import { AgentsPage } from './pages/AgentsPage';
+import { AuditPage } from './pages/AuditPage';
 import { PricingPage } from './pages/PricingPage';
 import { FAQPage } from './pages/FAQPage';
 import { ContactPage } from './pages/ContactPage';
@@ -26,6 +28,16 @@ function AnimatedRoutes() {
         <Route path="/services" element={
           <PageTransition>
             <ServicesPage />
+          </PageTransition>
+        } />
+        <Route path="/agents" element={
+          <PageTransition>
+            <AgentsPage />
+          </PageTransition>
+        } />
+        <Route path="/audit" element={
+          <PageTransition>
+            <AuditPage />
           </PageTransition>
         } />
         <Route path="/tarifs" element={
