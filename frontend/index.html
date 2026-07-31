@@ -121,7 +121,8 @@
 <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- Chatbot Quernel Intelligence (notre propre plateforme agents.quernel-cloud.com) -->
-    <script src="https://agents.quernel-cloud.com/widget.js" data-key="qw_112727ca05cb3a1c4416be2ec3838bfa" data-color="#38BDF8" data-title="Une question sur nos agents IA ?" defer></script>
+    <!-- Chatbot Quernel Intelligence (notre plateforme agents.quernel-cloud.com).
+         SRI : après toute mise à jour de widget.js, relancer tools/update-widget-sri.sh -->
+    <script src="https://agents.quernel-cloud.com/widget.js" integrity="sha384-2Lh1YFL9uB4YNOiLMs2se9ilgkEc6QgMC7W3O7WpYp9cWouq8X7Z0Rt+PsfX97Pw" crossorigin="anonymous" data-key="qw_112727ca05cb3a1c4416be2ec3838bfa" data-color="#38BDF8" data-title="Une question sur nos agents IA ?" defer></script>
 </body>
 </html>
