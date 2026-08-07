@@ -1,51 +1,70 @@
 # Robots.txt for quernel-intelligence.com
-# Quernel Intelligence - Agence Création Web & Solutions IA
+# Quernel Intelligence - Solutions IA (agents IA, workflows, audits) & création web
 # https://quernel-intelligence.com
 
-# Allow all crawlers
+# Tous les crawlers : indexation autorisée
 User-agent: *
 Allow: /
-
-# Disallow API and admin paths
 Disallow: /api/
 Disallow: /admin/
-Disallow: /_*
 Disallow: /private/
 
-# Disallow query strings that create duplicate content
-Disallow: /*?*
-
-# Allow important query parameters for tracking (optional)
-Allow: /*?utm_*
-
-# Crawl-delay for polite crawling (seconds)
-Crawl-delay: 1
-
-# Google-specific rules
+# ── Moteurs de recherche ──
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 0
 
-# Bing-specific rules
 User-agent: Bingbot
 Allow: /
-Crawl-delay: 1
 
-# Block AI training crawlers (optional - comment out if you want to be indexed by AI)
+# ── Crawlers IA : AUTORISÉS (on veut être lu et cité par les IA) ──
+# Cohérent avec /ai.txt (ai-search: allowed, ai-citation: allowed).
 User-agent: GPTBot
-Disallow: /
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
 
 User-agent: ChatGPT-User
-Disallow: /
+Allow: /
 
-User-agent: CCBot
-Disallow: /
-
-User-agent: anthropic-ai
-Disallow: /
+User-agent: ClaudeBot
+Allow: /
 
 User-agent: Claude-Web
-Disallow: /
+Allow: /
 
-# Sitemaps
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Sitemap
 Sitemap: https://quernel-intelligence.com/sitemap.xml

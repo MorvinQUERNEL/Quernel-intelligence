@@ -70,7 +70,16 @@ export function Navbar() {
           </div>
 
           {/* CTA */}
-          <div className="hidden lg:block">
+          <div className="hidden lg:flex items-center gap-6">
+            <a
+              href="https://agents.quernel-cloud.com"
+              target="_blank"
+              rel="noopener"
+              className="group inline-flex items-center gap-1.5 font-mono text-xs tracking-wider text-accent hover:text-accent/80 transition-colors"
+            >
+              PLATEFORME IA
+              <span className="bg-accent px-1.5 py-0.5 text-[9px] font-bold text-bg-primary">NOUVEAU</span>
+            </a>
             <Link
               to="/contact"
               className="group inline-flex items-center gap-3 px-6 py-3 border border-accent text-accent font-mono text-xs tracking-wider hover:bg-accent hover:text-bg-primary transition-all duration-300"

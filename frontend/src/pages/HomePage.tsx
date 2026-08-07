@@ -1,4 +1,5 @@
 import { Hero } from '../components/sections/Hero';
+import { PlatformPromo } from '../components/sections/PlatformPromo';
 import {
   SEO,
   organizationSchema,
@@ -6,14 +7,15 @@ import {
   websiteSchema,
   webServiceSchema,
   iaServiceSchema,
+  platformSchema,
 } from '../components/seo';
 
 export function HomePage() {
   return (
     <>
       <SEO
-        title="Quernel Intelligence | Agents IA, Workflows & Audits pour Entreprises"
-        description="Agents IA sur mesure, workflows automatisés et audits IA chiffrés pour PME françaises. Audit flash gratuit en ligne, démo des agents en direct. Création de sites web en complément."
+        title="Agents IA pour PME | Quernel Intelligence — plateforme et audits IA"
+        description="Déployez une équipe de 9 agents IA spécialisés pour votre PME : prospection, support client, administratif, contenu, analyse. Plateforme testable gratuitement, dès 99 €/mois. Audit IA flash gratuit."
         canonical="https://quernel-intelligence.com/"
         jsonLd={[
           organizationSchema,
@@ -21,9 +23,11 @@ export function HomePage() {
           websiteSchema,
           webServiceSchema,
           iaServiceSchema,
+          platformSchema,
         ]}
       />
       <Hero />
+      <PlatformPromo />
     </>
   );
 }

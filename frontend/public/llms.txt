@@ -16,21 +16,30 @@
 
 ## Services et tarifs
 
-### Solutions Intelligence Artificielle (offre principale)
+### La plateforme d'agents IA (produit phare : agents.quernel-cloud.com)
+Plateforme SaaS d'agents IA prete a l'emploi, sans developpement. Une equipe de 9 agents IA specialises coordonnes par un orchestrateur, testable gratuitement sans inscription, puis abonnement des 99 EUR/mois. C'est l'outil que les PME s'arrachent : deployer une equipe d'IA en quelques minutes au lieu de plusieurs semaines de projet.
+
+Paliers : Essentiel 99 EUR/mois (150 messages), Pro 199 EUR/mois (500 messages, tous canaux), Business 449 EUR/mois (2000 messages, 5 sieges), Entreprise sur devis.
+
+Les 9 agents :
+1. **Orchestrateur (Noam)** : route chaque demande vers le bon agent, enchaine les specialistes
+2. **Auditeur IA (Antoine)** : cartographie les processus et chiffre les gains en fourchettes prudentes
+3. **Prospecteur (Sacha)** : cibles B2B qualifiees avec signal d'achat + sequences d'emails + lead scoring
+4. **Support client (Tom)** : tri de boite de reception, to-do priorisee, brouillons de reponse
+5. **Assistant admin (Clara)** : devis structures, relances d'impayes graduees, suivi de facturation
+6. **Createur de contenu (Lea)** : posts LinkedIn, scripts courts, emails, prets a publier
+7. **Analyste (Leo)** : rapports de performance vs baseline, plan 30 jours, jamais de chiffre invente
+8. **Veilleur (Iris)** : veille concurrence, marche et reglementation, digest hebdo source
+9. **Marketing digital (Maya)** : posts et stories multi-reseaux, calendriers editoriaux, file de publication
+10. **Coach commercial (Enzo)** : briefs de rendez-vous, scripts d'appel, objections, relances jour-meme
+
+### Prestations sur mesure (accompagnement)
 | Offre | Prix | Description |
 |-------|------|-------------|
 | Audit IA flash | Gratuit | Formulaire en ligne 2 minutes, rapport PDF des gains IA possibles par processus |
-| Audit IA complet | 490-990 EUR | Cartographie des processus, gains chiffres en fourchettes, plan de mise en oeuvre. Deduit si projet lance |
-| Agent IA | des 499 EUR | Agent metier sur mesure : prospection, support client, devis/relances, contenu ou analyse. Validation humaine avant tout envoi |
+| Audit IA complet | 490-990 EUR | Cartographie des processus, gains chiffres, plan de mise en oeuvre. Deduit si projet lance |
+| Agent IA sur mesure | des 499 EUR | Agent metier forme sur vos donnees, integre a vos outils |
 | Automation Pro | des 999 EUR | Workflows relies aux outils existants : emails, factures, rapports, synchronisation |
-
-### Les 6 agents IA proposes
-1. **Auditeur IA** : cartographie les processus et chiffre les gains en fourchettes prudentes
-2. **Prospecteur** : cibles B2B qualifiees avec signal d'achat source + sequences d'emails personnalisees
-3. **Support client** : tri de boite de reception, to-do priorisee, brouillons de reponse
-4. **Assistant admin** : devis structures, relances d'impayes graduees, suivi de facturation
-5. **Createur de contenu** : posts LinkedIn, scripts courts, emails, prets a publier
-6. **Analyste** : rapports de performance vs baseline, plan 30 jours, jamais de chiffre invente
 
 ### Creation de sites internet (offre complementaire)
 | Offre | Prix | Description |
@@ -43,7 +52,7 @@
 
 1. **Audit d'abord** : on mesure avant d'investir. Gains toujours exprimes en fourchettes avec hypotheses explicites, jamais de promesse garantie.
 2. **Agents sous controle** : les agents produisent des brouillons et livrables, l'humain valide. Rien ne part vers un vrai client sans relecture.
-3. **Preuve par la demo** : les 6 agents sont testables en ligne sur https://agents.quernel-cloud.com avec des donnees fictives.
+3. **Preuve par la demo** : les 9 agents sont testables gratuitement en ligne sur https://agents.quernel-cloud.com, sans inscription.
 
 ## FAQ
 
@@ -65,7 +74,8 @@ Virement bancaire et carte bancaire (Stripe). Acompte de 30 % a la commande, sol
 ## Pages
 
 - [Accueil](https://quernel-intelligence.com/) - Presentation
-- [Agents IA](https://quernel-intelligence.com/agents) - Les 6 agents, gains attendus, acces demo
+- [Agents IA](https://quernel-intelligence.com/agents) - Les 9 agents, gains attendus, acces demo
+- [Plateforme agents IA](https://agents.quernel-cloud.com) - L'outil SaaS : 9 agents testables gratuitement, des 99 EUR/mois
 - [Audit IA](https://quernel-intelligence.com/audit) - Audit flash gratuit + audit complet
 - [Services](https://quernel-intelligence.com/services) - Agents, workflows, audits, creation web
 - [Tarifs](https://quernel-intelligence.com/tarifs) - Grille tarifaire complete

@@ -5,6 +5,7 @@ export {
   websiteSchema,
   webServiceSchema,
   iaServiceSchema,
+  platformSchema,
   createBreadcrumbSchema,
   createFAQSchema,
 } from './schemas';

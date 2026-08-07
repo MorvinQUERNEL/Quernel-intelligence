@@ -106,6 +106,27 @@ export const iaServiceSchema = {
   },
 };
 
+// Plateforme SaaS d'agents IA (produit phare) — SoftwareApplication
+export const platformSchema = {
+  '@type': 'SoftwareApplication',
+  '@id': 'https://agents.quernel-cloud.com/#software',
+  name: 'Agents IA Quernel Intelligence',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  url: 'https://agents.quernel-cloud.com',
+  inLanguage: 'fr-FR',
+  description:
+    "Plateforme SaaS d'agents IA pour PME : 9 agents spécialisés (prospection, support client, administratif, contenu, analyse, veille, marketing, commercial) coordonnés par un orchestrateur. Démo gratuite sans inscription, dès 99 €/mois.",
+  provider: { '@id': `${BASE_URL}/#organization` },
+  offers: {
+    '@type': 'AggregateOffer',
+    lowPrice: '99',
+    highPrice: '449',
+    priceCurrency: 'EUR',
+    offerCount: 3,
+  },
+};
+
 // Breadcrumb helper
 export function createBreadcrumbSchema(items: Array<{ name: string; url: string }>) {
   return {
