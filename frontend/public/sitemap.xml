@@ -60,6 +60,14 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- Conditions générales de vente -->
+  <url>
+    <loc>https://quernel-intelligence.com/cgv</loc>
+    <lastmod>2026-08-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
   <!-- Mentions légales -->
   <url>
     <loc>https://quernel-intelligence.com/mentions-legales</loc>

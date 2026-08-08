@@ -133,6 +133,13 @@ export function Footer() {
               </Link>
               <span className="text-text-muted">·</span>
               <Link
+                to="/cgv"
+                className="font-mono text-xs text-text-muted hover:text-accent transition-colors"
+              >
+                CGV
+              </Link>
+              <span className="text-text-muted">·</span>
+              <Link
                 to="/confidentialite"
                 className="font-mono text-xs text-text-muted hover:text-accent transition-colors"
               >

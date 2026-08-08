@@ -100,7 +100,7 @@ export function Pricing() {
               TARIFS
             </h2>
             <p className="text-text-secondary max-w-md">
-              Prix fixes, sans surprise. Paiement en 3x sans frais disponible. Satisfait ou remboursé 30 jours.
+              Prix fixes, sans surprise. Paiement en 3x sans frais dès 1 000 €. Acompte remboursé si vous annulez avant le démarrage.
             </p>
           </div>
 

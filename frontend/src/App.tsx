@@ -13,6 +13,7 @@ import { FAQPage } from './pages/FAQPage';
 import { ContactPage } from './pages/ContactPage';
 import { MentionsLegales } from './pages/MentionsLegales';
 import { PolitiqueConfidentialite } from './pages/PolitiqueConfidentialite';
+import { ConditionsGeneralesVente } from './pages/ConditionsGeneralesVente';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -63,6 +64,11 @@ function AnimatedRoutes() {
         <Route path="/confidentialite" element={
           <PageTransition>
             <PolitiqueConfidentialite />
+          </PageTransition>
+        } />
+        <Route path="/cgv" element={
+          <PageTransition>
+            <ConditionsGeneralesVente />
           </PageTransition>
         } />
       </Routes>

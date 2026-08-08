@@ -10,7 +10,7 @@ interface FAQItem {
 const faqs: FAQItem[] = [
   {
     question: 'Combien coûte un site web ?',
-    answer: 'À partir de 499€ pour un site vitrine professionnel. Le prix dépend de vos besoins : nombre de pages, boutique en ligne, réservation en ligne... On vous envoie un devis détaillé gratuit sous 24h, sans engagement. Et vous pouvez payer en 3x sans frais.',
+    answer: 'À partir de 499€ pour un site vitrine professionnel. Le prix dépend de vos besoins : nombre de pages, boutique en ligne, réservation en ligne... On vous envoie un devis détaillé gratuit sous 24h, sans engagement. Et dès 1 000 €, vous pouvez régler en 3 fois sans frais.',
   },
   {
     question: 'En combien de temps mon site sera-t-il en ligne ?',
@@ -38,7 +38,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: 'Et si je ne suis pas satisfait ?',
-    answer: 'Garantie satisfait ou remboursé pendant 30 jours. Si le résultat ne vous convient pas, on vous rembourse intégralement, sans discussion. C\'est notre engagement qualité.',
+    answer: 'On corrige. Chaque prestation inclut deux séries de révisions dans les 30 jours après la livraison, sans frais. Si après ça le résultat ne correspond toujours pas à ce qui était prévu au devis, on vous rembourse la part concernée. Et tant que les travaux n\'ont pas démarré, vous pouvez annuler : l\'acompte vous est rendu en entier. Le détail est dans nos CGV.',
   },
 ];
 
